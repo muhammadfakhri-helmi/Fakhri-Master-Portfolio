@@ -73,6 +73,15 @@ client record is in the repository.
 | Keyboard | Skip link → header → hero CTAs → work index → … in visual order, visible focus ring throughout |
 | Console | No errors or warnings |
 
+## Live site (28 Sep 2026)
+
+https://muhammadfakhri-helmi.github.io/Fakhri-Master-Portfolio/ and `/id/` — deployed by
+the workflow (build and deploy jobs green). Both pages, the CV (same SHA-256 as pinned),
+posters, frames, preview images and favicon answer 200; canonical, hreflang, `og:url` and
+`og:image` are absolute. A full scroll at 1440 px makes 22 requests, all to
+`muhammadfakhri-helmi.github.io`, none failed, console clean; *Explore live* loads the WIMS
+case study in the dialog; the Indonesian page at 390 px has no horizontal overflow.
+
 ## Outbound links (28 Sep 2026)
 
 WIMS case study, INPEX 3D story, drillstring case study (EN and `/id/`), Simprug case

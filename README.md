@@ -167,37 +167,18 @@ personal identifiers). Keep that file local; the check still runs without it in 
 The one document allowed through is `cv/Muhammad-Fakhri-Helmi-CV.pdf`, and only while
 its SHA-256 matches `docs/public-cv.json`.
 
-## Deploy to GitHub Pages
+## Deployment
 
-Nothing has been deployed. When you are ready:
+Live on GitHub Pages since 28 Sep 2026 (published at Fakhri's request):
 
-1. Create an empty GitHub repository, e.g. `Fakhri-Master-Portfolio`
-   (or `muhammadfakhri-helmi.github.io` to serve it at the account's root URL).
-2. From this folder:
+- English: https://muhammadfakhri-helmi.github.io/Fakhri-Master-Portfolio/
+- Bahasa Indonesia: https://muhammadfakhri-helmi.github.io/Fakhri-Master-Portfolio/id/
+- Repository: https://github.com/muhammadfakhri-helmi/Fakhri-Master-Portfolio
 
-   ```bash
-   git add -A
-   ```
-
-   ```bash
-   git commit -m "Master portfolio"
-   ```
-
-   ```bash
-   git branch -M main
-   ```
-
-   ```bash
-   git remote add origin https://github.com/muhammadfakhri-helmi/Fakhri-Master-Portfolio.git
-   ```
-
-   ```bash
-   git push -u origin main
-   ```
-
-3. In the repository: **Settings → Pages → Source: GitHub Actions**. The included
-   workflow (`.github/workflows/deploy-pages.yml`) runs `npm run verify` and publishes
-   `dist/`. It also sets `VITE_SITE_URL` so the link-preview image URL is absolute.
+Every push to `main` runs `.github/workflows/deploy-pages.yml`: `npm run verify`
+(typecheck, privacy check, build, dist check) with `VITE_SITE_URL` set to the Pages URL —
+which makes the canonical, hreflang and link-preview URLs absolute — then publishes
+`dist/`. A failing privacy check stops the deployment.
 
 The build uses relative paths (`base: "./"`), so the same `dist/` works at a project
 sub-path or at the root — verified by serving it under `/Fakhri-Master-Portfolio/`.
