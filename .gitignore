@@ -1,0 +1,37 @@
+# dependencies and build output
+node_modules/
+dist/
+
+# local tooling
+.claude/
+.vscode/
+*.local
+*.log
+
+# private, never committed: sensitive terms for the privacy check
+.privacy-terms.local.txt
+
+# raw documents and data never belong in this public repository
+*.pdf
+*.xlsx
+*.xls
+*.xlsm
+*.csv
+*.doc
+*.docx
+*.ppt
+*.pptx
+*.zip
+*.db
+*.sqlite
+
+# …except the one CV this site serves, pinned by hash in docs/public-cv.json
+!public/cv/Muhammad-Fakhri-Helmi-CV.pdf
+
+# original character PNGs stay in their source folder; only WebP derivatives ship
+public/character/*.png
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

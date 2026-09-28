@@ -1,0 +1,94 @@
+{
+  "frames": [
+    {
+      "frame": "frame-01-intro-open",
+      "source": {
+        "file": "frame-01-intro-open.png",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 1197847,
+        "sha256": "98e6f0e4218bd4d4442b6c24e3e026ec422533eb503c9c807e0a331fec7049b0"
+      },
+      "derivatives": [
+        {
+          "file": "frame-01-intro-open-1122.webp",
+          "width": 1122,
+          "height": 1402,
+          "bytes": 148720
+        },
+        {
+          "file": "frame-01-intro-open-840.webp",
+          "width": 840,
+          "height": 1050,
+          "bytes": 95162
+        },
+        {
+          "file": "frame-01-intro-open-560.webp",
+          "width": 560,
+          "height": 700,
+          "bytes": 50902
+        }
+      ]
+    },
+    {
+      "frame": "frame-02-intro-crossing",
+      "source": {
+        "file": "frame-02-intro-crossing.png",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 1191090,
+        "sha256": "9b38803780f9d0d8599783f8cdb4fd21b16505e4147c0811a20be33d3c84819f"
+      },
+      "derivatives": [
+        {
+          "file": "frame-02-intro-crossing-1122.webp",
+          "width": 1122,
+          "height": 1402,
+          "bytes": 153684
+        },
+        {
+          "file": "frame-02-intro-crossing-840.webp",
+          "width": 840,
+          "height": 1050,
+          "bytes": 97164
+        },
+        {
+          "file": "frame-02-intro-crossing-560.webp",
+          "width": 560,
+          "height": 700,
+          "bytes": 51070
+        }
+      ]
+    },
+    {
+      "frame": "frame-03-intro-final",
+      "source": {
+        "file": "frame-03-intro-final.png",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 1216984,
+        "sha256": "9cd306e539e5be82c0af47bd5a545aade87a10ebc4931e124a769950ae7a9283"
+      },
+      "derivatives": [
+        {
+          "file": "frame-03-intro-final-1122.webp",
+          "width": 1122,
+          "height": 1402,
+          "bytes": 165114
+        },
+        {
+          "file": "frame-03-intro-final-840.webp",
+          "width": 840,
+          "height": 1050,
+          "bytes": 99528
+        },
+        {
+          "file": "frame-03-intro-final-560.webp",
+          "width": 560,
+          "height": 700,
+          "bytes": 48908
+        }
+      ]
+    }
+  ]
+}

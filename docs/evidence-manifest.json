@@ -1,0 +1,156 @@
+{
+  "captured": "2026-09-28",
+  "viewport": "1280x800 @1.5x",
+  "posters": [
+    {
+      "id": "wims-model",
+      "site": "https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/",
+      "shows": "WIMS case study opening view: 3D wellhead / X-mas tree model",
+      "source_sha256": "ddabf6a5dbc4c90348f4b4f87f2ab8ce7decc23c9c1fa02aa1eb5e0bd0829580",
+      "files": {
+        "wims-model-800.webp": 22020,
+        "wims-model-1600.webp": 53050
+      }
+    },
+    {
+      "id": "wims-equipment",
+      "site": "https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/",
+      "shows": "Interactive wellhead integrity model with fictional findings",
+      "source_sha256": "b1743c8ca404884ec2b38ef8064a6cfdae7906f51b46fd9cd66d85e1552baba1",
+      "files": {
+        "wims-equipment-800.webp": 25560,
+        "wims-equipment-1600.webp": 59888
+      }
+    },
+    {
+      "id": "wims-dashboard",
+      "site": "https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/",
+      "shows": "Operational dashboard (fictional demonstration values)",
+      "source_sha256": "f974a6f6118247ee41885fb873a4191adb3934782610bf7fbbf187e0fd733f0e",
+      "files": {
+        "wims-dashboard-800.webp": 25644,
+        "wims-dashboard-1600.webp": 64274
+      }
+    },
+    {
+      "id": "wims-attention",
+      "site": "https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/",
+      "shows": "Need-attention workflow for one fictional valve record",
+      "source_sha256": "ac507bf0fb874319337823002f80240bd2b9f04ad4f40f6e847bcecdf6ae5302",
+      "files": {
+        "wims-attention-800.webp": 27188,
+        "wims-attention-1600.webp": 68822
+      }
+    },
+    {
+      "id": "wims-archive",
+      "site": "https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/",
+      "shows": "Searchable report register with fictional wells",
+      "source_sha256": "aab2c9d61278db6de231c8c38eb6d04cb397fb0e1d342c59cd0904f53da17e5c",
+      "files": {
+        "wims-archive-800.webp": 23902,
+        "wims-archive-1600.webp": 62072
+      }
+    },
+    {
+      "id": "wims-planning",
+      "site": "https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/",
+      "shows": "Visit history and next-due planning (fictional well and dates)",
+      "source_sha256": "80b14b0aa60e9593027cf9eed0cbdfabaa064803b315601775cc2c7e5d26f7e2",
+      "files": {
+        "wims-planning-800.webp": 27528,
+        "wims-planning-1600.webp": 69270
+      }
+    },
+    {
+      "id": "inpex-overview",
+      "site": "https://muhammadfakhri-helmi.github.io/fakhri-experience/",
+      "shows": "Conductor-analysis story, chapter 01: system overview and study inputs",
+      "source_sha256": "6b62770e04e7a5081e0ab6ee1929559e393e499da94e8ab641ba891e738cd769",
+      "files": {
+        "inpex-overview-800.webp": 31652,
+        "inpex-overview-1600.webp": 82934
+      }
+    },
+    {
+      "id": "inpex-offset",
+      "site": "https://muhammadfakhri-helmi.github.io/fakhri-experience/",
+      "shows": "Chapter 05: offset limit and operating envelope",
+      "source_sha256": "8e0adbbc85d5dafbff7237986bfefebdcd60a3578c17dfac9c70dbef3af46330",
+      "files": {
+        "inpex-offset-800.webp": 36002,
+        "inpex-offset-1600.webp": 93216
+      }
+    },
+    {
+      "id": "inpex-summary",
+      "site": "https://muhammadfakhri-helmi.github.io/fakhri-experience/",
+      "shows": "Chapter 11: engineering summary",
+      "source_sha256": "bbc82f4c9324e1e37587b983c295739d1dab76be3fd523bf6070fbc68d1138bb",
+      "files": {
+        "inpex-summary-800.webp": 39762,
+        "inpex-summary-1600.webp": 105034
+      }
+    },
+    {
+      "id": "alpha-rig",
+      "site": "https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/",
+      "shows": "Alpha-05 animation: rig on location",
+      "source_sha256": "a8053cb1d197951796eaff64f56b997e36cf104c7aba73294790e61a2e102bf6",
+      "files": {
+        "alpha-rig-800.webp": 25992,
+        "alpha-rig-1600.webp": 65468
+      }
+    },
+    {
+      "id": "alpha-bit",
+      "site": "https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/",
+      "shows": "Alpha-05 animation: drilling the 12-1/4 in. section, BHA list",
+      "source_sha256": "555ce20c6b3e430b7274fd9c2687f33ad465d9e696c3ea9f9859ba569a53f7df",
+      "files": {
+        "alpha-bit-800.webp": 21058,
+        "alpha-bit-1600.webp": 50952
+      }
+    },
+    {
+      "id": "alpha-well",
+      "site": "https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/",
+      "shows": "Alpha-05 animation: whole-well view with casing shoes",
+      "source_sha256": "360b184ad29e33a07c6dc8869c843b596deb1c055fde20267e97fd92e27cde9d",
+      "files": {
+        "alpha-well-800.webp": 23248,
+        "alpha-well-1600.webp": 58024
+      }
+    },
+    {
+      "id": "alpha-complete",
+      "site": "https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/",
+      "shows": "Alpha-05 animation: completion",
+      "source_sha256": "cf5b0512fee3d70988c10ef6cc789ddd3100270d9d2fdbaa0c7fe024585b29b5",
+      "files": {
+        "alpha-complete-800.webp": 23854,
+        "alpha-complete-1600.webp": 58826
+      }
+    },
+    {
+      "id": "thesis-top",
+      "site": "https://muhammadfakhri-helmi.github.io/Fakhri-Tugas-Akhir-Design/",
+      "shows": "Drillstring thesis case study: opening view",
+      "source_sha256": "00b240a3fec352fe82d1b2ff677389084b7b5ae61dc60bf6e73ddd45ae27ae25",
+      "files": {
+        "thesis-top-800.webp": 21760,
+        "thesis-top-1600.webp": 48270
+      }
+    },
+    {
+      "id": "simprug-top",
+      "site": "https://muhammadfakhri-helmi.github.io/Simprug-Economic-Case-Study/",
+      "shows": "Simprug case study: opening view with the 3D field model",
+      "source_sha256": "47acebb5069959629a2601bc88bf6b5d79500b93582d7fbca515c69c55339746",
+      "files": {
+        "simprug-top-800.webp": 28938,
+        "simprug-top-1600.webp": 67636
+      }
+    }
+  ]
+}

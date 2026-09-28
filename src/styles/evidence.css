@@ -1,0 +1,525 @@
+/* Evidence windows, the digital-evidence index and the live dialog.
+   A window is a quiet browser frame around views captured from Fakhri's public
+   case-study sites (public/evidence/, see docs/ASSET_MANIFEST.md). The live
+   site only loads, in the dialog, when a visitor asks for it. */
+
+.ev-window {
+  margin: 0;
+  overflow: hidden;
+  background: var(--hull);
+  border: 1px solid var(--rule-strong);
+  border-radius: 6px;
+  box-shadow: 0 32px 64px -32px rgb(0 0 0 / 0.75);
+}
+
+.ev-chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.9rem;
+  padding: 0.3rem 0.4rem 0.3rem 0.85rem;
+  background: #0c1422;
+  border-bottom: 1px solid var(--rule);
+}
+
+.ev-dot {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--hivis);
+  box-shadow: 0 0 0 3px var(--hivis-soft);
+}
+
+.ev-url {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font: 400 0.75rem/1.2 var(--font-mono);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--steel);
+}
+
+.ev-url b {
+  font-weight: 500;
+  color: var(--vellum);
+}
+
+.ev-open,
+.ev-tour {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-width: 2.5rem;
+  min-height: 2.25rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--vellum);
+  font: 600 0.8125rem/1 var(--font-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color var(--t-micro) var(--ease-out);
+}
+
+.ev-tour {
+  padding: 0;
+  width: 2.25rem;
+  min-width: 2.25rem;
+}
+
+.ev-open:hover,
+.ev-tour:hover {
+  border-color: var(--vellum);
+}
+
+.ev-open .icon {
+  color: var(--hivis);
+  transition: transform var(--t-ui) var(--ease-out);
+}
+
+.ev-open:hover .icon {
+  transform: translate(2px, -2px);
+}
+
+.ev-tour[hidden] {
+  display: none;
+}
+
+.ev-tour-play,
+[data-tour="off"] .ev-tour-pause {
+  display: none;
+}
+
+[data-tour="off"] .ev-tour-play {
+  display: block;
+}
+
+/* ---------- tabs ---------- */
+
+.ev-tabs {
+  display: flex;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--rule);
+  scrollbar-width: none;
+}
+
+.ev-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+html:not(.js) .ev-tabs {
+  display: none;
+}
+
+.ev-tab {
+  position: relative;
+  flex: none;
+  min-height: 2.75rem;
+  padding: 0 0.95rem;
+  border: 0;
+  background: none;
+  color: var(--steel);
+  font: 500 0.8125rem/1.2 var(--font-body);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--t-micro) var(--ease-out);
+}
+
+.ev-tab:hover,
+.ev-tab[aria-selected="true"] {
+  color: var(--vellum);
+}
+
+.ev-tab:focus-visible {
+  outline-offset: -3px;
+}
+
+.ev-tab .num {
+  margin-right: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--hivis);
+}
+
+.ev-tab::after {
+  content: "";
+  position: absolute;
+  left: 0.95rem;
+  right: 0.95rem;
+  bottom: -1px;
+  height: 2px;
+  background: var(--hivis);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.ev-tab[aria-selected="true"]::after {
+  transform: none;
+}
+
+/* While the tour runs, the line under the active tab fills over its turn. */
+.ev-tab.is-timing::after {
+  animation: tour-line 5200ms linear both;
+}
+
+@keyframes tour-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* ---------- panels: stacked in one grid cell, crossfaded ---------- */
+
+.ev-stage {
+  display: grid;
+}
+
+.ev-panel {
+  grid-area: 1 / 1;
+  z-index: 1;
+  background: var(--hull);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 360ms var(--ease-out);
+}
+
+/* The outgoing panel stays opaque under the incoming one, then disappears. */
+.ev-panel[hidden] {
+  display: block;
+  z-index: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0s linear 380ms,
+    visibility 0s linear 380ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ev-panel,
+  .ev-panel[hidden] {
+    transition: none;
+  }
+}
+
+.ev-shot {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #070d17;
+}
+
+.ev-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.ev-shot--html {
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(var(--rule) 1px, transparent 1px) 0 0 / 100% 36px,
+    #0b1321;
+}
+
+.ev-cap {
+  padding: 0.75rem 0.95rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: rgb(242 238 230 / 0.9);
+}
+
+.ev-caption {
+  padding: 0.6rem 0.95rem 0.75rem;
+  border-top: 1px solid var(--rule);
+  background: #0c1422;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--steel);
+}
+
+.ev-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--hivis);
+  border-radius: 999px;
+  background: rgb(10 17 29 / 0.88);
+  font: 500 0.75rem/1.2 var(--font-mono);
+  letter-spacing: 0.04em;
+  color: var(--vellum);
+}
+
+/* "Explore live" — shown only when the dialog can open. */
+.ev-launch {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: none;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.5rem;
+  padding: 0.5rem 1.05rem 0.5rem 0.85rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--hivis);
+  color: var(--deep);
+  font: 600 0.875rem/1 var(--font-body);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 0.5);
+  cursor: pointer;
+  transition:
+    background-color var(--t-micro) var(--ease-out),
+    transform var(--t-micro) var(--ease-out);
+}
+
+.has-live .ev-launch {
+  display: inline-flex;
+}
+
+.ev-launch:hover {
+  background: #f07a45;
+}
+
+.ev-launch:active {
+  transform: translateY(1px);
+}
+
+.ev-launch:focus-visible {
+  outline-color: var(--vellum);
+}
+
+.ev-launch .icon {
+  width: 0.85em;
+  height: 0.85em;
+}
+
+.ev-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s4);
+  margin-top: var(--s2);
+}
+
+/* ---------- INPEX stage 3: public-safe comment workflow ---------- */
+
+.tracker {
+  display: grid;
+  gap: var(--s2);
+  width: min(88%, 32rem);
+}
+
+.tracker-grid {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.tracker-grid i {
+  aspect-ratio: 1;
+  border-radius: 1px;
+  background: var(--hivis);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .ev-panel:not([hidden]) .tracker-grid i {
+    animation: tracker-in 420ms var(--ease-out) both;
+  }
+
+  .js .ev-panel:not([hidden]) .tracker-grid i:nth-child(n + 14) {
+    animation-delay: 140ms;
+  }
+}
+
+@keyframes tracker-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tracker-count {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.1rem);
+  font-weight: 780;
+  line-height: 1;
+}
+
+/* ============ Digital-evidence index ============ */
+
+.ev-grid {
+  display: grid;
+  gap: var(--s5) var(--s4);
+}
+
+@media (min-width: 700px) {
+  .ev-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .ev-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.ev-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ev-item-shot {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  margin-bottom: 0.4rem;
+  overflow: hidden;
+  background: #070d17;
+  border: 1px solid var(--rule-strong);
+  border-radius: 6px;
+}
+
+.ev-item-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 700ms var(--ease-out);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .ev-item:hover .ev-item-shot img {
+    transform: scale(1.03);
+  }
+}
+
+.ev-item-ctx {
+  text-decoration: none;
+  transition: color var(--t-micro) var(--ease-out);
+}
+
+.ev-item-ctx:hover {
+  color: var(--hivis);
+}
+
+.ev-item-title {
+  font-size: 1.75rem;
+  line-height: 1.05;
+}
+
+.ev-item-text {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: rgb(242 238 230 / 0.86);
+}
+
+.ev-item .link-out {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+/* ============ Live dialog ============ */
+
+.live-dialog {
+  width: min(96vw, 92rem);
+  height: min(92vh, 62rem);
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  overflow: hidden;
+  background: var(--deep);
+  color: var(--vellum);
+  border: 1px solid var(--rule-strong);
+  border-radius: 8px;
+}
+
+.live-dialog::backdrop {
+  background: rgb(5 9 16 / 0.84);
+}
+
+@supports (backdrop-filter: blur(2px)) {
+  .live-dialog::backdrop {
+    backdrop-filter: blur(4px);
+  }
+}
+
+html:has(.live-dialog[open]) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .live-dialog[open] {
+    animation: fade-up 260ms var(--ease-out);
+  }
+}
+
+.live-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.live-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s1) var(--s2);
+  padding: 0.7rem var(--s2);
+  border-bottom: 1px solid var(--rule);
+}
+
+.live-heading {
+  flex: 1;
+  min-width: 12rem;
+}
+
+.live-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 760;
+  line-height: 1.05;
+}
+
+.live-frame {
+  flex: 1;
+  min-height: 0;
+  background: #070d17;
+}
+
+.live-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.live-note {
+  padding: 0.5rem var(--s2);
+  border-top: 1px solid var(--rule);
+  font-size: 0.75rem;
+  color: var(--steel);
+}
+
+@media (max-width: 759px) {
+  .live-dialog {
+    width: 100vw;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+}

@@ -1,0 +1,101 @@
+<!doctype html>
+<!-- Source of public/og-image.jpg (1200 × 630). Render with a headless browser,
+     e.g. through the dev server at /scripts/og/og.html, then save as JPEG. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>OG image</title>
+    <style>
+      @font-face {
+        font-family: "Sofia Sans Extra Condensed";
+        font-weight: 1 1000;
+        src: url("../../node_modules/@fontsource-variable/sofia-sans-extra-condensed/files/sofia-sans-extra-condensed-latin-wght-normal.woff2") format("woff2-variations");
+      }
+      @font-face {
+        font-family: "IBM Plex Mono";
+        font-weight: 500;
+        src: url("../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2") format("woff2");
+      }
+      html,
+      body {
+        margin: 0;
+        background: #0a111d;
+      }
+      .card {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: #0a111d;
+        color: #f2eee6;
+      }
+      .halo {
+        position: absolute;
+        right: -120px;
+        top: -40px;
+        width: 760px;
+        height: 760px;
+        background: radial-gradient(closest-side, rgb(44 79 127 / 0.55), rgb(44 79 127 / 0.15) 60%, transparent);
+      }
+      .figure {
+        position: absolute;
+        right: 70px;
+        bottom: -150px;
+        height: 780px;
+        -webkit-mask-image: linear-gradient(to bottom, #000 76%, transparent 96%);
+        mask-image: linear-gradient(to bottom, #000 76%, transparent 96%);
+      }
+      .copy {
+        position: absolute;
+        left: 72px;
+        top: 76px;
+      }
+      .eyebrow {
+        font: 500 17px/1 "IBM Plex Mono", monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #9da8ba;
+      }
+      h1 {
+        margin: 26px 0 0;
+        font: 800 136px/0.86 "Sofia Sans Extra Condensed", sans-serif;
+      }
+      p {
+        margin: 34px 0 0;
+        max-width: 520px;
+        font: 620 38px/1.05 "Sofia Sans Extra Condensed", sans-serif;
+      }
+      p b {
+        font-weight: inherit;
+        color: #e8622a;
+      }
+      .rule {
+        position: absolute;
+        left: 72px;
+        bottom: 60px;
+        width: 64px;
+        height: 4px;
+        background: #e8622a;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="halo"></div>
+      <img class="figure" src="../../public/character/frame-03-intro-final-1122.webp" alt="" />
+      <div class="copy">
+        <div class="eyebrow">Petroleum engineer · Jakarta, Indonesia</div>
+        <h1>Muhammad<br />Fakhri Helmi</h1>
+        <p>I connect field operations, project coordination and <b>practical digital tools.</b></p>
+      </div>
+      <div class="rule"></div>
+    </div>
+    <script>
+      // ?lang=id renders public/og-image-id.jpg for the Indonesian page.
+      if (new URLSearchParams(location.search).get("lang") === "id") {
+        document.documentElement.lang = "id";
+        document.querySelector("p").innerHTML = "Saya menghubungkan operasi lapangan, koordinasi proyek, dan <b>alat digital yang praktis.</b>";
+      }
+    </script>
+  </body>
+</html>

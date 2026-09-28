@@ -1,0 +1,71 @@
+/* Design tokens — see docs/DESIGN_SYSTEM.md for the reasoning behind each role. */
+
+:root {
+  color-scheme: dark;
+
+  /* Palette (roles) */
+  --deep: #0a111d; /* page background: deep water */
+  --hull: #0f1829; /* raised surfaces */
+  --hull-2: #131f33; /* hover / nested surface */
+  --rule: #22324b; /* hairlines, borders, diagram strokes */
+  --rule-strong: #34486a;
+  --vellum: #f2eee6; /* primary text, warm white */
+  --steel: #9da8ba; /* secondary text, labels */
+  --hivis: #e8622a; /* the one accent: action, live figures, callout lines, focus */
+  --hivis-soft: rgb(232 98 42 / 0.14);
+  --rim: #2c4f7f; /* the photo's blue rim light, only inside the halo */
+
+  /* Type */
+  --font-display: "Sofia Sans Extra Condensed", "Arial Narrow", "Roboto Condensed", sans-serif-condensed, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --step-title: clamp(2.75rem, 1.6rem + 3.6vw, 5.25rem); /* section titles */
+  --step-h3: clamp(2.1rem, 1.45rem + 2vw, 3.4rem); /* project titles */
+  --step-lead: clamp(1.2rem, 1.02rem + 0.55vw, 1.5rem);
+  --step-body: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --step-small: 0.875rem;
+  --step-label: 0.75rem;
+
+  /* 8-point spacing */
+  --s1: 0.5rem; /* 8 */
+  --s2: 1rem; /* 16 */
+  --s3: 1.5rem; /* 24 */
+  --s4: 2rem; /* 32 */
+  --s5: 3rem; /* 48 */
+  --s6: 4rem; /* 64 */
+  --s7: 6rem; /* 96 */
+  --s8: 8rem; /* 128 */
+
+  --gutter: 1rem;
+  --max: 82rem; /* 1312 px content width */
+  --hdr: 3.5rem; /* header height: 56 px on mobile */
+  --radius: 2px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-micro: 180ms;
+  --t-ui: 240ms;
+  --t-reveal: 700ms;
+
+  /* Layers */
+  --z-figure: 1;
+  --z-copy: 2;
+  --z-header: 30;
+  --z-skip: 50;
+}
+
+@media (min-width: 760px) {
+  :root {
+    --gutter: 2.5rem;
+    --hdr: 4.5rem;
+  }
+}
+
+@media (min-width: 1180px) {
+  :root {
+    --gutter: 4rem;
+  }
+}

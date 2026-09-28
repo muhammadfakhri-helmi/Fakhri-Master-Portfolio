@@ -1,0 +1,1731 @@
+<!doctype html>
+<!--
+  Page template shared by both languages. build/i18n-pages.ts renders it into
+  index.html (English) and id/index.html (Bahasa Indonesia): every double-brace
+  placeholder comes from src/i18n/en.ts or src/i18n/id.ts; page.* values are
+  computed per page. The structure follows the latest CV (see docs/REBUILD_AUDIT.md).
+-->
+<html lang="{{meta.lang}}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{meta.title}}</title>
+    <meta name="description" content="{{meta.description}}" />
+    <meta name="theme-color" content="#0A111D" />
+    <meta name="color-scheme" content="dark" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="{{meta.ogLocale}}" />
+    <meta property="og:locale:alternate" content="{{meta.ogLocaleAlt}}" />
+    <meta property="og:title" content="{{meta.ogTitle}}" />
+    <meta property="og:description" content="{{meta.ogDescription}}" />
+    <meta property="og:image" content="{{page.ogImage}}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {{page.headLinks}}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Muhammad Fakhri Helmi",
+        "jobTitle": "Petroleum Engineer",
+        "email": "mailto:muhammadfakhrihelmi@gmail.com",
+        "telephone": "+62 852-6150-5740",
+        "address": { "@type": "PostalAddress", "addressLocality": "Jakarta", "addressCountry": "ID" },
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "Universitas Pertamina" },
+        "memberOf": { "@type": "Organization", "name": "Jakarta Drilling Society" },
+        "knowsLanguage": ["id", "en"],
+        "sameAs": ["https://www.linkedin.com/in/fakhri-helmi"]
+      }
+    </script>
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{{common.skip}}</a>
+
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a class="wordmark" href="#top"><span class="wordmark-node" aria-hidden="true"></span>Fakhri Helmi</a>
+        <nav class="site-nav" aria-label="{{nav.label}}">
+          <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+            <span class="menu-toggle-bars" aria-hidden="true"></span>{{nav.menu}}
+          </button>
+          <ul class="nav-list" id="site-nav">
+            <li><a href="#experience">{{nav.experience}}</a></li>
+            <li><a href="#academic">{{nav.academic}}</a></li>
+            <li><a href="#evidence">{{nav.evidence}}</a></li>
+            <li><a href="#about">{{nav.about}}</a></li>
+            <li><a href="#contact">{{nav.contact}}</a></li>
+          </ul>
+        </nav>
+        <div class="lang-switch" role="group" aria-label="{{nav.langLabel}}">
+          <a href="{{page.hrefEn}}" hreflang="en" lang="en" data-lang-link {{page.currentEn}}>EN<span class="sr-only"> — English</span></a>
+          <a href="{{page.hrefId}}" hreflang="id" lang="id" data-lang-link {{page.currentId}}>ID<span class="sr-only"> — Bahasa Indonesia</span></a>
+        </div>
+        <a class="btn btn--ghost header-cta" href="{{page.cv}}" download>
+          {{common.cvShort}}
+          <svg class="icon icon--dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>
+          <span class="sr-only">{{common.cvMeta}}</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ============ HERO ============ -->
+      <section class="hero" id="top" aria-labelledby="hero-name">
+        <div class="hero-copy">
+          <p class="label hero-eyebrow">{{hero.eyebrow}}</p>
+          <h1 class="hero-name" id="hero-name">
+            <span class="line"><span class="line-inner">Muhammad</span></span>
+            <span class="line"><span class="line-inner">Fakhri</span></span>
+            <span class="line"><span class="line-inner">Helmi</span></span>
+          </h1>
+        </div>
+
+        <p class="hero-statement">
+          <span>{{hero.pos1}}</span><span class="sep"> · </span><span>{{hero.pos2}}</span><span class="sep"> · </span><span>{{hero.pos3}}</span>
+        </p>
+
+        <p class="hero-lede">{{hero.lede}}</p>
+
+        <div class="hero-actions">
+          <a class="btn btn--primary" href="#experience">
+            {{hero.ctaExp}}
+            <svg class="icon icon--down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M18 13l-6 6-6-6" /></svg>
+          </a>
+          <a class="btn btn--ghost" href="{{page.cv}}" download>
+            {{common.cv}}
+            <svg class="icon icon--dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>
+            <span class="sr-only">{{common.cvMeta}}</span>
+          </a>
+          <a class="btn btn--ghost" href="https://www.linkedin.com/in/fakhri-helmi" target="_blank" rel="me noopener">
+            LinkedIn
+            <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+            <span class="sr-only">{{common.newTab}}</span>
+          </a>
+        </div>
+
+        <nav class="hero-index" aria-label="{{hero.indexLabel}}">
+          <p class="label">{{hero.indexLabel}}</p>
+          <div class="hero-index-groups">
+            <div class="hero-index-group">
+              <p class="hero-index-cat">{{hero.gWork}}</p>
+              <ol>
+                <li><a href="#oses"><span class="idx">01</span><span class="t">{{hero.i1t}}</span><span class="d">{{hero.i1d}}</span></a></li>
+                <li><a href="#inpex"><span class="idx">02</span><span class="t">{{hero.i2t}}</span><span class="d">{{hero.i2d}}</span></a></li>
+                <li><a href="#pdsi"><span class="idx">03</span><span class="t">{{hero.i3t}}</span><span class="d">{{hero.i3d}}</span></a></li>
+              </ol>
+            </div>
+            <div class="hero-index-group">
+              <p class="hero-index-cat">{{hero.gAcad}}</p>
+              <ol>
+                <li><a href="#drillstring"><span class="idx">04</span><span class="t">{{hero.i4t}}</span><span class="d">{{hero.i4d}}</span></a></li>
+                <li><a href="#economics"><span class="idx">05</span><span class="t">{{hero.i5t}}</span><span class="d">{{hero.i5d}}</span></a></li>
+              </ol>
+            </div>
+            <div class="hero-index-group">
+              <p class="hero-index-cat">{{hero.gAff}}</p>
+              <ol>
+                <li><a href="#alpha05"><span class="idx">06</span><span class="t">{{hero.i6t}}</span><span class="d">{{hero.i6d}}</span></a></li>
+              </ol>
+            </div>
+          </div>
+        </nav>
+
+        <div class="hero-figure-wrap">
+          <div class="halo" aria-hidden="true"></div>
+          <character-sequence class="hero-figure" sequence="intro" role="img" aria-label="{{hero.figure}}">
+            <picture>
+              <source
+                media="(prefers-reduced-motion: reduce)"
+                type="image/webp"
+                srcset="/character/frame-03-intro-final-560.webp 560w, /character/frame-03-intro-final-840.webp 840w, /character/frame-03-intro-final-1122.webp 1122w"
+                sizes="(min-width: 1180px) 76vh, (min-width: 900px) 46vw, 86vw"
+              />
+              <img
+                src="/character/frame-01-intro-open-840.webp"
+                srcset="/character/frame-01-intro-open-560.webp 560w, /character/frame-01-intro-open-840.webp 840w, /character/frame-01-intro-open-1122.webp 1122w"
+                sizes="(min-width: 1180px) 76vh, (min-width: 900px) 46vw, 86vw"
+                width="1122"
+                height="1402"
+                alt=""
+                fetchpriority="high"
+                decoding="async"
+              />
+            </picture>
+          </character-sequence>
+        </div>
+      </section>
+
+      <!-- ============ CAREER SNAPSHOT ============ -->
+      <section class="section snapshot" id="snapshot" aria-labelledby="snapshot-title">
+        <div class="container snapshot-grid">
+          <div class="snapshot-copy" data-reveal>
+            <h2 class="label" id="snapshot-title">{{snap.label}}</h2>
+            <p class="snapshot-pull">{{snap.pull}}</p>
+            <p class="snapshot-text">{{snap.text}}</p>
+            <dl class="facts-list">
+              <div>
+                <dt class="label">{{snap.fEdu}}</dt>
+                <dd>{{snap.fEduV}}</dd>
+              </div>
+              <div>
+                <dt class="label">{{snap.fProgram}}</dt>
+                <dd>{{snap.fProgramV}}</dd>
+              </div>
+              <div class="facts-wide">
+                <dt class="label">{{snap.fReady}}</dt>
+                <dd>{{snap.fReadyV}}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="snapshot-rail" data-reveal style="--reveal-delay: 100ms">
+            <p class="label">{{snap.railLabel}}</p>
+            <dl class="metric-rail">
+              <div class="metric"><dt>{{snap.m1}}<span class="metric-src">PHE OSES</span></dt><dd class="num">{{snap.m1v}}</dd></div>
+              <div class="metric"><dt>{{snap.m2}}<span class="metric-src">PHE OSES</span></dt><dd class="num">{{snap.m2v}}</dd></div>
+              <div class="metric"><dt>{{snap.m6}}<span class="metric-src">PHE OSES</span></dt><dd class="num">{{snap.m6v}}</dd></div>
+              <div class="metric"><dt>{{snap.m3}}<span class="metric-src">WIMS</span></dt><dd class="num">{{snap.m3v}}</dd></div>
+              <div class="metric"><dt>{{snap.m4}}<span class="metric-src">WIMS</span></dt><dd class="num">{{snap.m4v}}</dd></div>
+              <div class="metric"><dt>{{snap.m5}}<span class="metric-src">WIMS</span></dt><dd class="num">{{snap.m5v}}</dd></div>
+              <div class="metric"><dt>{{snap.m7}}<span class="metric-src">PHE OSES</span></dt><dd class="num">{{snap.m7v}}</dd></div>
+              <div class="metric"><dt>{{snap.m8}}<span class="metric-src">INPEX Masela</span></dt><dd class="num">{{snap.m8v}}</dd></div>
+              <div class="metric"><dt>{{snap.m9}}<span class="metric-src">INPEX Masela</span></dt><dd class="num">{{snap.m9v}}</dd></div>
+            </dl>
+            <p class="metric-note">{{snap.railNote}}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PROFESSIONAL EXPERIENCE ============ -->
+      <section class="experience" id="experience" aria-labelledby="experience-title">
+        <div class="container section-head section-head--cat" data-reveal>
+          <p class="label">{{exp.label}}</p>
+          <h2 class="section-title" id="experience-title">{{exp.title}}</h2>
+          <p class="section-lead">{{exp.lead}}</p>
+        </div>
+
+        <!-- ===== PT Asia Serv Indonesia ===== -->
+        <article class="employer" id="asiaserv" aria-labelledby="asiaserv-org">
+          <div class="employer-bar">
+            <div class="container employer-bar-inner">
+              <h3 class="employer-org" id="asiaserv-org">PT Asia Serv Indonesia</h3>
+              <p class="employer-role">{{as.role}}</p>
+              <p class="employer-when">{{as.when}}</p>
+            </div>
+          </div>
+
+          <div class="container employer-intro" data-reveal>
+            <div>
+              <p class="label label--accent">{{as.program}}</p>
+              <p class="employer-scope">{{as.scope}}</p>
+              <p class="employer-note">{{as.note}}</p>
+            </div>
+            <nav class="ws-index" aria-label="{{as.wsLabel}}">
+              <p class="label">{{as.wsLabel}}</p>
+              <ol>
+                <li><a href="#oses"><span class="ws-key" aria-hidden="true">A</span>{{as.wsA}}</a></li>
+                <li><a href="#wims"><span class="ws-key" aria-hidden="true">B</span>{{as.wsB}}</a></li>
+                <li><a href="#inpex"><span class="ws-key" aria-hidden="true">C</span>{{as.wsC}}</a></li>
+                <li><a href="#readiness"><span class="ws-key" aria-hidden="true">D</span>{{as.wsD}}</a></li>
+              </ol>
+            </nav>
+          </div>
+
+          <!-- Workstream A · PHE OSES operations -->
+          <section class="ws" id="oses" aria-labelledby="oses-title">
+            <div class="container">
+              <header class="ws-head" data-reveal>
+                <p class="ws-meta"><span class="ws-key" aria-hidden="true">A</span><span class="label">{{oses.meta}}</span></p>
+                <h4 class="ws-title" id="oses-title">{{oses.title}}</h4>
+              </header>
+
+              <dl class="impact" aria-label="{{oses.impactLabel}}" data-reveal>
+                <div class="impact-item"><dt>{{oses.i1}}</dt><dd class="num">{{oses.i1v}}</dd></div>
+                <div class="impact-item"><dt>{{oses.i2}}</dt><dd class="num">{{oses.i2v}}</dd></div>
+                <div class="impact-item"><dt>{{oses.i3}}</dt><dd class="num">{{oses.i3v}}</dd></div>
+                <div class="impact-item"><dt>{{oses.i4}}</dt><dd class="num">{{oses.i4v}}</dd></div>
+                <div class="impact-item"><dt>{{oses.i5}}</dt><dd class="num">{{oses.i5v}}</dd></div>
+              </dl>
+
+              <div class="ws-body">
+                <div class="ws-story" data-reveal>
+                  <dl class="story">
+                    <div><dt class="label">{{label.problem}}</dt><dd>{{oses.problem}}</dd></div>
+                    <div><dt class="label">{{label.role}}</dt><dd>{{oses.role}}</dd></div>
+                    <div><dt class="label">{{label.actions}}</dt><dd>{{oses.actions}}</dd></div>
+                    <div><dt class="label">{{label.outputs}}</dt><dd>{{oses.outputs}}</dd></div>
+                  </dl>
+                  <p class="tools"><span class="label">{{label.tools}}</span><span>{{oses.tools}}</span></p>
+                  <p class="ws-note">{{oses.boundary}}</p>
+                </div>
+
+                <div class="ws-evidence" data-reveal style="--reveal-delay: 100ms">
+                  <p class="label ev-label">{{oses.evLabel}}</p>
+                  <ul class="ev-rail" tabindex="0" aria-label="{{oses.evLabel}}">
+                    <li class="ev-card">
+                      <h5 class="ev-card-k">{{oses.e1k}}</h5>
+                      <div class="loop" aria-hidden="true">
+                        <div class="loop-crews">
+                          <span class="loop-crew"><b>{{oses.svgCrewA}}</b><i></i><i></i><i></i><i></i></span>
+                          <span class="loop-crew"><b>{{oses.svgCrewB}}</b><i></i><i></i><i></i><i></i></span>
+                        </div>
+                        <ol class="loop-steps">
+                          <li>{{oses.svgVisits}}</li>
+                          <li>{{oses.svgReport}}</li>
+                          <li class="hot">{{oses.svgReview}} <span class="num">5–6</span></li>
+                          <li>{{oses.svgFollow}}</li>
+                        </ol>
+                      </div>
+                      <p class="ev-card-t">{{oses.e1t}}</p>
+                    </li>
+
+                    <li class="ev-card">
+                      <h5 class="ev-card-k">{{oses.e2k}}</h5>
+                      <div class="cadence" aria-hidden="true">
+                        <p class="cadence-big num">{{oses.i1v}}</p>
+                        <div class="cadence-scale"><span class="cadence-range"></span></div>
+                        <div class="cadence-ticks">
+                          <span class="t-floor">{{oses.svgFloor}}</span>
+                          <span class="t-peak">{{oses.svgPeak}}</span>
+                        </div>
+                      </div>
+                      <p class="ev-card-t">{{oses.e2t}}</p>
+                    </li>
+
+                    <li class="ev-card">
+                      <h5 class="ev-card-k">{{oses.e3k}}</h5>
+                      <ol class="gate-chain">
+                        <li>{{oses.r1}}</li>
+                        <li>{{oses.r2}}</li>
+                        <li>{{oses.r3}}</li>
+                        <li>{{oses.r4}}</li>
+                        <li class="hot">{{oses.r5}}</li>
+                      </ol>
+                      <p class="ev-card-t">{{oses.e3t}}</p>
+                    </li>
+
+                    <li class="ev-card">
+                      <h5 class="ev-card-k">{{oses.e4k}}</h5>
+                      <div class="bars" aria-hidden="true">
+                        <div class="bar-row">
+                          <span class="bar-l">{{oses.before}}</span>
+                          <span class="bar"><i class="bar-fill" style="--w: 75%"></i><i class="bar-range" style="--w: 25%"></i></span>
+                          <span class="bar-v">{{oses.beforeV}}</span>
+                        </div>
+                        <div class="bar-row">
+                          <span class="bar-l">{{oses.after}}</span>
+                          <span class="bar"><i class="bar-fill hot" style="--w: 37.5%"></i></span>
+                          <span class="bar-v hot">{{oses.afterV}}</span>
+                        </div>
+                      </div>
+                      <p class="ev-card-t">{{oses.e4t}}</p>
+                    </li>
+
+                    <li class="ev-card">
+                      <h5 class="ev-card-k">{{oses.e5k}}</h5>
+                      <div class="score" role="img" aria-label="{{oses.scoreSr}}">
+                        <p class="score-big num" aria-hidden="true">{{oses.i5v}}</p>
+                        <span class="score-meter" aria-hidden="true"></span>
+                      </div>
+                      <p class="ev-card-t">{{oses.e5t}}</p>
+                    </li>
+
+                    <li class="ev-card ev-card--link">
+                      <h5 class="ev-card-k">{{oses.e6k}}</h5>
+                      <img
+                        class="ev-card-img"
+                        src="/evidence/wims-dashboard-800.webp"
+                        width="800"
+                        height="500"
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <p class="ev-card-t">{{oses.e6t}}</p>
+                      <a class="link-out ev-card-cta" href="#wims">
+                        {{oses.e6cta}}
+                        <svg class="icon icon--down" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M18 13l-6 6-6-6" /></svg>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Workstream B · WIMS -->
+          <section class="ws ws--wims" id="wims" aria-labelledby="wims-title">
+            <div class="container">
+              <header class="ws-head" data-reveal>
+                <p class="ws-meta"><span class="ws-key" aria-hidden="true">B</span><span class="label">{{wims.meta}}</span></p>
+                <h4 class="ws-title" id="wims-title">{{wims.title}}</h4>
+              </header>
+
+              <dl class="impact" aria-label="{{wims.impactLabel}}" data-reveal>
+                <div class="impact-item"><dt>{{wims.i1}}</dt><dd class="num">{{wims.i1v}}</dd></div>
+                <div class="impact-item"><dt>{{wims.i2}}</dt><dd class="num">{{wims.i2v}}</dd></div>
+                <div class="impact-item"><dt>{{wims.i3}}</dt><dd class="num">{{wims.i3v}}</dd></div>
+                <div class="impact-item"><dt>{{wims.i4}}</dt><dd class="num">{{wims.i4v}}</dd></div>
+              </dl>
+
+              <div class="ws-body ws-body--window">
+                <div class="ws-story" data-reveal>
+                  <dl class="story">
+                    <div><dt class="label">{{label.problem}}</dt><dd>{{wims.problem}}</dd></div>
+                    <div><dt class="label">{{label.role}}</dt><dd>{{wims.role}}</dd></div>
+                    <div><dt class="label">{{label.actions}}</dt><dd>{{wims.actions}}</dd></div>
+                    <div><dt class="label">{{label.outputs}}</dt><dd>{{wims.outputs}}</dd></div>
+                  </dl>
+                  <p class="tools"><span class="label">{{label.tools}}</span><span>{{wims.tools}}</span></p>
+                  <p class="ws-note">{{wims.boundary}}</p>
+                </div>
+
+                <div class="ws-evidence" data-reveal style="--reveal-delay: 100ms">
+                  <p class="label ev-label">{{wims.evLabel}}</p>
+                  <figure class="ev-window" data-ev-window data-autoplay aria-labelledby="wims-ev-caption">
+                    <div class="ev-chrome">
+                      <span class="ev-dot" aria-hidden="true"></span>
+                      <span class="ev-url" aria-hidden="true">muhammadfakhri-helmi.github.io/<b>Project-Coordinator-WIMS-Portofolio</b></span>
+                      <button class="ev-tour" type="button" data-ev-tour data-label-pause="{{ev.pause}}" data-label-play="{{ev.play}}" hidden>
+                        <svg class="icon ev-tour-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" /></svg>
+                        <svg class="icon icon--fill ev-tour-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                        <span class="sr-only" data-ev-tour-label>{{ev.pause}}</span>
+                      </button>
+                      <a class="ev-open" href="https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/" target="_blank" rel="noopener">
+                        {{ev.open}}
+                        <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                        <span class="sr-only">{{wims.liveTitle}} {{common.newTab}}</span>
+                      </a>
+                    </div>
+                    <div class="ev-tabs" role="tablist" aria-label="{{wims.tabsLabel}}">
+                      <button class="ev-tab" type="button" role="tab" id="wims-tab-1" aria-controls="wims-panel-1" aria-selected="true">{{wims.t1}}</button>
+                      <button class="ev-tab" type="button" role="tab" id="wims-tab-2" aria-controls="wims-panel-2" aria-selected="false" tabindex="-1">{{wims.t2}}</button>
+                      <button class="ev-tab" type="button" role="tab" id="wims-tab-3" aria-controls="wims-panel-3" aria-selected="false" tabindex="-1">{{wims.t3}}</button>
+                      <button class="ev-tab" type="button" role="tab" id="wims-tab-4" aria-controls="wims-panel-4" aria-selected="false" tabindex="-1">{{wims.t4}}</button>
+                      <button class="ev-tab" type="button" role="tab" id="wims-tab-5" aria-controls="wims-panel-5" aria-selected="false" tabindex="-1">{{wims.t5}}</button>
+                    </div>
+                    <div class="ev-stage">
+                      <div class="ev-panel" role="tabpanel" id="wims-panel-1" aria-labelledby="wims-tab-1">
+                        <div class="ev-shot">
+                          <img
+                            src="/evidence/wims-equipment-800.webp"
+                            srcset="/evidence/wims-equipment-800.webp 800w, /evidence/wims-equipment-1600.webp 1600w"
+                            sizes="(min-width: 1180px) 44rem, (min-width: 900px) 55vw, 92vw"
+                            width="1600"
+                            height="1000"
+                            alt="{{wims.a1}}"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/#equipment" data-live-title="{{wims.liveTitle}}">
+                            <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                          </button>
+                        </div>
+                        <p class="ev-cap">{{wims.c1}}</p>
+                      </div>
+                      <div class="ev-panel" role="tabpanel" id="wims-panel-2" aria-labelledby="wims-tab-2" hidden>
+                        <div class="ev-shot">
+                          <img
+                            src="/evidence/wims-dashboard-800.webp"
+                            srcset="/evidence/wims-dashboard-800.webp 800w, /evidence/wims-dashboard-1600.webp 1600w"
+                            sizes="(min-width: 1180px) 44rem, (min-width: 900px) 55vw, 92vw"
+                            width="1600"
+                            height="1000"
+                            alt="{{wims.a2}}"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/#dashboard" data-live-title="{{wims.liveTitle}}">
+                            <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                          </button>
+                        </div>
+                        <p class="ev-cap">{{wims.c2}}</p>
+                      </div>
+                      <div class="ev-panel" role="tabpanel" id="wims-panel-3" aria-labelledby="wims-tab-3" hidden>
+                        <div class="ev-shot">
+                          <img
+                            src="/evidence/wims-attention-800.webp"
+                            srcset="/evidence/wims-attention-800.webp 800w, /evidence/wims-attention-1600.webp 1600w"
+                            sizes="(min-width: 1180px) 44rem, (min-width: 900px) 55vw, 92vw"
+                            width="1600"
+                            height="1000"
+                            alt="{{wims.a3}}"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/#attention" data-live-title="{{wims.liveTitle}}">
+                            <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                          </button>
+                        </div>
+                        <p class="ev-cap">{{wims.c3}}</p>
+                      </div>
+                      <div class="ev-panel" role="tabpanel" id="wims-panel-4" aria-labelledby="wims-tab-4" hidden>
+                        <div class="ev-shot">
+                          <img
+                            src="/evidence/wims-archive-800.webp"
+                            srcset="/evidence/wims-archive-800.webp 800w, /evidence/wims-archive-1600.webp 1600w"
+                            sizes="(min-width: 1180px) 44rem, (min-width: 900px) 55vw, 92vw"
+                            width="1600"
+                            height="1000"
+                            alt="{{wims.a4}}"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/#archive" data-live-title="{{wims.liveTitle}}">
+                            <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                          </button>
+                        </div>
+                        <p class="ev-cap">{{wims.c4}}</p>
+                      </div>
+                      <div class="ev-panel" role="tabpanel" id="wims-panel-5" aria-labelledby="wims-tab-5" hidden>
+                        <div class="ev-shot">
+                          <img
+                            src="/evidence/wims-planning-800.webp"
+                            srcset="/evidence/wims-planning-800.webp 800w, /evidence/wims-planning-1600.webp 1600w"
+                            sizes="(min-width: 1180px) 44rem, (min-width: 900px) 55vw, 92vw"
+                            width="1600"
+                            height="1000"
+                            alt="{{wims.a5}}"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/#planning" data-live-title="{{wims.liveTitle}}">
+                            <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                          </button>
+                        </div>
+                        <p class="ev-cap">{{wims.c5}}</p>
+                      </div>
+                    </div>
+                    <figcaption class="ev-caption" id="wims-ev-caption">{{wims.evCaption}}</figcaption>
+                  </figure>
+                  <div class="ev-actions">
+                    <a class="link-out" href="https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/" target="_blank" rel="noopener">
+                      {{wims.cta}}
+                      <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                      <span class="sr-only">{{common.newTab}}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Workstream C · INPEX Masela -->
+          <section class="ws ws--inpex" id="inpex" aria-labelledby="inpex-title">
+            <div class="container">
+              <header class="ws-head" data-reveal>
+                <p class="ws-meta"><span class="ws-key" aria-hidden="true">C</span><span class="label">{{inpex.meta}}</span></p>
+                <h4 class="ws-title" id="inpex-title">{{inpex.title}}</h4>
+                <p class="ws-role">{{inpex.role}}</p>
+              </header>
+
+              <div class="kpi-wrap" data-reveal>
+                <table class="kpi-table">
+                  <caption>{{inpex.kpiCaption}}</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">{{inpex.kpiArea}}</th>
+                      <th scope="col">{{inpex.kpiEvidence}}</th>
+                      <th scope="col">{{inpex.kpiResult}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">{{inpex.k1a}}</th>
+                      <td class="kpi-ev">{{inpex.k1e}}</td>
+                      <td class="kpi-res"><b class="num">{{inpex.k1n}}</b> {{inpex.k1t}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">{{inpex.k2a}}</th>
+                      <td class="kpi-ev">{{inpex.k2e}}</td>
+                      <td class="kpi-res"><b class="num">{{inpex.k2n}}</b> {{inpex.k2t}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">{{inpex.k3a}}</th>
+                      <td class="kpi-ev">{{inpex.k3e}}</td>
+                      <td class="kpi-res"><b class="num">{{inpex.k3n}}</b> {{inpex.k3t}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">{{inpex.k4a}}</th>
+                      <td class="kpi-ev">{{inpex.k4e}}</td>
+                      <td class="kpi-res"><b class="num">{{inpex.k4n}}</b> {{inpex.k4t}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">{{inpex.k5a}}</th>
+                      <td class="kpi-ev">{{inpex.k5e}}</td>
+                      <td class="kpi-res"><b class="num">{{inpex.k5n}}</b> {{inpex.k5t}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">{{inpex.k6a}}</th>
+                      <td class="kpi-ev">{{inpex.k6e}}</td>
+                      <td class="kpi-res"><b class="num">{{inpex.k6n}}</b> {{inpex.k6t}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="ws-body ws-body--even">
+                <dl class="story" data-reveal>
+                  <div><dt class="label">{{label.problem}}</dt><dd>{{inpex.problem}}</dd></div>
+                  <div><dt class="label">{{label.contribution}}</dt><dd>{{inpex.contrib}}</dd></div>
+                </dl>
+                <div class="ws-aside" data-reveal style="--reveal-delay: 100ms">
+                  <p class="impact-callout">{{inpex.impact}}</p>
+                  <p class="boundary">{{inpex.boundary}}</p>
+                  <p class="tools"><span class="label">{{label.tools}}</span><span>{{inpex.tools}}</span></p>
+                </div>
+              </div>
+
+              <div class="steps-wrap" data-steps>
+                <div class="steps-visual">
+                  <figure class="ev-window" data-ev-window aria-labelledby="inpex-ev-caption">
+                    <div class="ev-chrome">
+                      <span class="ev-dot" aria-hidden="true"></span>
+                      <span class="ev-url" aria-hidden="true">muhammadfakhri-helmi.github.io/<b>fakhri-experience</b></span>
+                      <a class="ev-open" href="https://muhammadfakhri-helmi.github.io/fakhri-experience/" target="_blank" rel="noopener">
+                        {{ev.open}}
+                        <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                        <span class="sr-only">{{inpex.liveTitle}} {{common.newTab}}</span>
+                      </a>
+                    </div>
+                    <div class="ev-tabs ev-tabs--steps" role="tablist" aria-label="{{inpex.tabsLabel}}">
+                      <button class="ev-tab" type="button" role="tab" id="inpex-tab-1" aria-controls="inpex-panel-1" aria-selected="true"><span class="num">01</span> {{inpex.s1t}}</button>
+                      <button class="ev-tab" type="button" role="tab" id="inpex-tab-2" aria-controls="inpex-panel-2" aria-selected="false" tabindex="-1"><span class="num">02</span> {{inpex.s2t}}</button>
+                      <button class="ev-tab" type="button" role="tab" id="inpex-tab-3" aria-controls="inpex-panel-3" aria-selected="false" tabindex="-1"><span class="num">03</span> {{inpex.s3t}}</button>
+                      <button class="ev-tab" type="button" role="tab" id="inpex-tab-4" aria-controls="inpex-panel-4" aria-selected="false" tabindex="-1"><span class="num">04</span> {{inpex.s4t}}</button>
+                    </div>
+                    <div class="ev-stage">
+                      <div class="ev-panel" role="tabpanel" id="inpex-panel-1" aria-labelledby="inpex-tab-1">
+                        <div class="ev-shot">
+                          <img
+                            src="/evidence/inpex-overview-800.webp"
+                            srcset="/evidence/inpex-overview-800.webp 800w, /evidence/inpex-overview-1600.webp 1600w"
+                            sizes="(min-width: 1180px) 46rem, (min-width: 900px) 56vw, 92vw"
+                            width="1600"
+                            height="1000"
+                            alt="{{inpex.a1}}"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/fakhri-experience/" data-live-title="{{inpex.liveTitle}}">
+                            <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                          </button>
+                        </div>
+                        <p class="ev-cap">{{inpex.c1}}</p>
+                      </div>
+                      <div class="ev-panel" role="tabpanel" id="inpex-panel-2" aria-labelledby="inpex-tab-2" hidden>
+                        <div class="ev-shot">
+                          <img
+                            src="/evidence/inpex-offset-800.webp"
+                            srcset="/evidence/inpex-offset-800.webp 800w, /evidence/inpex-offset-1600.webp 1600w"
+                            sizes="(min-width: 1180px) 46rem, (min-width: 900px) 56vw, 92vw"
+                            width="1600"
+                            height="1000"
+                            alt="{{inpex.a2}}"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/fakhri-experience/" data-live-title="{{inpex.liveTitle}}">
+                            <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                          </button>
+                        </div>
+                        <p class="ev-cap">{{inpex.c2}}</p>
+                      </div>
+                      <div class="ev-panel" role="tabpanel" id="inpex-panel-3" aria-labelledby="inpex-tab-3" hidden>
+                        <div class="ev-shot ev-shot--html">
+                          <div class="tracker">
+                            <p class="label label--accent">{{inpex.trkTitle}}</p>
+                            <ol class="tracker-flow">
+                              <li>{{inpex.trk1}}</li>
+                              <li>{{inpex.trk2}}</li>
+                              <li>{{inpex.trk3}}</li>
+                              <li>{{inpex.trk4}}</li>
+                              <li>{{inpex.trk5}}</li>
+                              <li class="hot">{{inpex.trk6}}</li>
+                            </ol>
+                            <div class="tracker-grid" aria-hidden="true">
+                              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                            </div>
+                            <p class="tracker-count num">{{inpex.trkCount}}</p>
+                          </div>
+                        </div>
+                        <p class="ev-cap">{{inpex.c3}}</p>
+                      </div>
+                      <div class="ev-panel" role="tabpanel" id="inpex-panel-4" aria-labelledby="inpex-tab-4" hidden>
+                        <div class="ev-shot">
+                          <img
+                            src="/evidence/inpex-summary-800.webp"
+                            srcset="/evidence/inpex-summary-800.webp 800w, /evidence/inpex-summary-1600.webp 1600w"
+                            sizes="(min-width: 1180px) 46rem, (min-width: 900px) 56vw, 92vw"
+                            width="1600"
+                            height="1000"
+                            alt="{{inpex.a4}}"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          <span class="ev-badge">{{inpex.trkReport}}</span>
+                          <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/fakhri-experience/" data-live-title="{{inpex.liveTitle}}">
+                            <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                          </button>
+                        </div>
+                        <p class="ev-cap">{{inpex.c4}}</p>
+                      </div>
+                    </div>
+                    <figcaption class="ev-caption" id="inpex-ev-caption">{{inpex.evCaption}}</figcaption>
+                  </figure>
+                </div>
+
+                <div class="steps-text">
+                  <p class="label">{{inpex.stepsLabel}}</p>
+                  <ol class="steps">
+                    <li class="step" data-step="0">
+                      <span class="step-no num" aria-hidden="true">01</span>
+                      <div>
+                        <h5 class="step-title">{{inpex.s1t}}</h5>
+                        <p>{{inpex.s1}}</p>
+                      </div>
+                    </li>
+                    <li class="step" data-step="1">
+                      <span class="step-no num" aria-hidden="true">02</span>
+                      <div>
+                        <h5 class="step-title">{{inpex.s2t}}</h5>
+                        <p>{{inpex.s2}}</p>
+                      </div>
+                    </li>
+                    <li class="step" data-step="2">
+                      <span class="step-no num" aria-hidden="true">03</span>
+                      <div>
+                        <h5 class="step-title">{{inpex.s3t}}</h5>
+                        <p>{{inpex.s3}}</p>
+                      </div>
+                    </li>
+                    <li class="step" data-step="3">
+                      <span class="step-no num" aria-hidden="true">04</span>
+                      <div>
+                        <h5 class="step-title">{{inpex.s4t}}</h5>
+                        <p>{{inpex.s4}}</p>
+                      </div>
+                    </li>
+                  </ol>
+                  <div class="ev-actions">
+                    <a class="link-out" href="https://muhammadfakhri-helmi.github.io/fakhri-experience/" target="_blank" rel="noopener">
+                      {{inpex.cta}}
+                      <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                      <span class="sr-only">{{common.newTab}}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Workstream D · delivery readiness -->
+          <section class="ws" id="readiness" aria-labelledby="readiness-title">
+            <div class="container">
+              <header class="ws-head" data-reveal>
+                <p class="ws-meta"><span class="ws-key" aria-hidden="true">D</span><span class="label">{{rd.meta}}</span></p>
+                <h4 class="ws-title" id="readiness-title">{{rd.title}}</h4>
+              </header>
+
+              <dl class="impact" aria-label="{{rd.impactLabel}}" data-reveal>
+                <div class="impact-item"><dt>{{rd.i1}}</dt><dd class="num">{{rd.i1v}}</dd></div>
+                <div class="impact-item"><dt>{{rd.i2}}</dt><dd class="num">{{rd.i2v}}</dd></div>
+                <div class="impact-item"><dt>{{rd.i3}}</dt><dd class="num">{{rd.i3v}}</dd></div>
+                <div class="impact-item"><dt>{{rd.i4}}</dt><dd class="num">{{rd.i4v}}</dd></div>
+              </dl>
+
+              <p class="ws-lead" data-reveal>{{rd.text}}</p>
+
+              <div class="matrix-wrap" data-reveal>
+                <table class="matrix">
+                  <caption>{{rd.matrixCaption}}</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">{{rd.colCase}}</th>
+                      <th scope="col">{{rd.colPersonnel}}</th>
+                      <th scope="col">{{rd.colEquipment}}</th>
+                      <th scope="col">{{rd.colHse}}</th>
+                      <th scope="col">{{rd.colDocs}}</th>
+                      <th scope="col">{{rd.colClient}}</th>
+                      <th scope="col">{{rd.colMob}}</th>
+                      <th scope="col">{{rd.colStatus}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row"><b>{{rd.r1}}</b><span>{{rd.r1d}}</span></th>
+                      <td class="on" data-label="{{rd.colPersonnel}}">{{rd.r1p}}</td>
+                      <td class="on" data-label="{{rd.colEquipment}}">{{rd.r1e}}</td>
+                      <td class="off" data-label="{{rd.colHse}}"><span class="sr-only">{{rd.none}}</span></td>
+                      <td class="off" data-label="{{rd.colDocs}}"><span class="sr-only">{{rd.none}}</span></td>
+                      <td class="off" data-label="{{rd.colClient}}"><span class="sr-only">{{rd.none}}</span></td>
+                      <td class="off" data-label="{{rd.colMob}}"><span class="sr-only">{{rd.none}}</span></td>
+                      <td class="status" data-label="{{rd.colStatus}}">{{rd.r1s}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><b>{{rd.r2}}</b><span>{{rd.r2d}}</span></th>
+                      <td class="on" data-label="{{rd.colPersonnel}}">{{rd.r2p}}</td>
+                      <td class="on" data-label="{{rd.colEquipment}}">{{rd.r2e}}</td>
+                      <td class="on" data-label="{{rd.colHse}}">{{rd.r2h}}</td>
+                      <td class="on" data-label="{{rd.colDocs}}">{{rd.r2doc}}</td>
+                      <td class="on" data-label="{{rd.colClient}}">{{rd.r2c}}</td>
+                      <td class="on" data-label="{{rd.colMob}}">{{rd.r2m}}</td>
+                      <td class="status" data-label="{{rd.colStatus}}">{{rd.r2s}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><b>{{rd.r3}}</b><span>{{rd.r3d}}</span></th>
+                      <td class="on" data-label="{{rd.colPersonnel}}">{{rd.r3p}}</td>
+                      <td class="off" data-label="{{rd.colEquipment}}"><span class="sr-only">{{rd.none}}</span></td>
+                      <td class="on" data-label="{{rd.colHse}}">{{rd.r3h}}</td>
+                      <td class="on" data-label="{{rd.colDocs}}">{{rd.r3doc}}</td>
+                      <td class="off" data-label="{{rd.colClient}}"><span class="sr-only">{{rd.none}}</span></td>
+                      <td class="on" data-label="{{rd.colMob}}">{{rd.r3m}}</td>
+                      <td class="status" data-label="{{rd.colStatus}}">{{rd.r3s}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="ws-note">{{rd.matrixNote}}</p>
+              <p class="tools"><span class="label">{{label.tools}}</span><span>{{rd.tools}}</span></p>
+            </div>
+          </section>
+        </article>
+
+        <!-- ===== PT Pertamina Drilling Services Indonesia ===== -->
+        <article class="employer employer--pdsi" id="pdsi" aria-labelledby="pdsi-org">
+          <div class="employer-bar">
+            <div class="container employer-bar-inner">
+              <h3 class="employer-org" id="pdsi-org">PT Pertamina Drilling Services Indonesia</h3>
+              <p class="employer-role">{{pdsi.role}}</p>
+              <p class="employer-when">{{pdsi.when}}</p>
+            </div>
+          </div>
+
+          <section class="ws" aria-labelledby="pdsi-title">
+            <div class="container">
+              <header class="ws-head" data-reveal>
+                <p class="ws-meta"><span class="label">{{pdsi.meta}}</span></p>
+                <h4 class="ws-title" id="pdsi-title">{{pdsi.title}}</h4>
+              </header>
+              <div class="ws-body ws-body--even">
+                <p class="ws-lead" data-reveal>{{pdsi.text}}</p>
+                <p class="tools" data-reveal><span class="label">{{label.tools}}</span><span>{{pdsi.tools}}</span></p>
+              </div>
+
+              <p class="label ev-label">{{pdsi.evLabel}}</p>
+              <div class="pdsi-grid">
+                <figure class="pdsi-panel" data-reveal>
+                  <h5 class="ev-card-k"><span class="num">01</span> {{pdsi.p1k}}</h5>
+                  <div class="ddr" aria-hidden="true">
+                    <div class="ddr-bar">
+                      <i class="d" style="--w: 22%"></i><i class="c" style="--w: 4%"></i><i class="d" style="--w: 18%"></i><i class="r" style="--w: 7%"></i
+                      ><i class="t" style="--w: 16%"></i><i class="n" style="--w: 11%"></i><i class="d" style="--w: 22%"></i>
+                    </div>
+                    <div class="ddr-axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+                    <p class="ddr-legend">
+                      <span class="d">{{pdsi.svgDrill}}</span><span class="c">{{pdsi.svgConn}}</span><span class="r">{{pdsi.svgCirc}}</span><span class="t">{{pdsi.svgTrip}}</span
+                      ><span class="n">{{pdsi.svgNpt}}</span>
+                    </p>
+                  </div>
+                  <figcaption class="ev-card-t">{{pdsi.p1t}}</figcaption>
+                </figure>
+
+                <figure class="pdsi-panel" data-reveal style="--reveal-delay: 80ms">
+                  <h5 class="ev-card-k"><span class="num">02</span> {{pdsi.p2k}}</h5>
+                  <div class="ptnpt">
+                    <div class="ptnpt-col">
+                      <p class="ptnpt-name">{{pdsi.pt}}</p>
+                      <p>{{pdsi.ptList}}</p>
+                    </div>
+                    <div class="ptnpt-col ptnpt-col--npt">
+                      <p class="ptnpt-name">{{pdsi.npt}}</p>
+                      <p>{{pdsi.nptList}}</p>
+                    </div>
+                  </div>
+                  <figcaption class="ev-card-t">{{pdsi.p2t}}</figcaption>
+                </figure>
+
+                <figure class="pdsi-panel" data-reveal style="--reveal-delay: 160ms">
+                  <h5 class="ev-card-k"><span class="num">03</span> {{pdsi.p3k}}</h5>
+                  <ol class="bha">
+                    <li class="bha-dp"><i aria-hidden="true"></i>{{pdsi.bha1}}</li>
+                    <li class="bha-hw"><i aria-hidden="true"></i>{{pdsi.bha2}}</li>
+                    <li class="bha-jar"><i aria-hidden="true"></i>{{pdsi.bha3}}</li>
+                    <li class="bha-dc"><i aria-hidden="true"></i>{{pdsi.bha4}}</li>
+                    <li class="bha-stab"><i aria-hidden="true"></i>{{pdsi.bha5}}</li>
+                    <li class="bha-mwd"><i aria-hidden="true"></i>{{pdsi.bha6}}</li>
+                    <li class="bha-motor"><i aria-hidden="true"></i>{{pdsi.bha7}}</li>
+                    <li class="bha-bit"><i aria-hidden="true"></i>{{pdsi.bha8}}</li>
+                  </ol>
+                  <figcaption class="ev-card-t">{{pdsi.p3t}}</figcaption>
+                </figure>
+              </div>
+              <p class="ws-note">{{pdsi.note}}</p>
+            </div>
+          </section>
+        </article>
+      </section>
+
+      <!-- ============ ACADEMIC EXPERIENCE ============ -->
+      <section class="academic" id="academic" aria-labelledby="academic-title">
+        <div class="container section-head section-head--cat" data-reveal>
+          <p class="label">{{acad.label}}</p>
+          <h2 class="section-title" id="academic-title">{{acad.title}}</h2>
+          <p class="section-lead">{{acad.lead}}</p>
+        </div>
+
+        <div class="container">
+          <div class="edu-card" data-reveal>
+            <h3 class="edu-org">Universitas Pertamina</h3>
+            <p class="edu-degree">{{edu.degree}}</p>
+            <p class="edu-meta"><span>{{edu.when}}</span><span>{{edu.gpa}}</span><span>{{edu.place}}</span></p>
+          </div>
+        </div>
+
+        <!-- Drillstring thesis -->
+        <article class="project" id="drillstring" aria-labelledby="ds-title">
+          <div class="container">
+            <header class="ws-head" data-reveal>
+              <p class="ws-meta"><span class="label">{{ds.meta}}</span><span class="label label--accent">{{ds.role}}</span></p>
+              <h3 class="ws-title" id="ds-title">{{ds.title}}</h3>
+            </header>
+
+            <dl class="impact" aria-label="{{ds.impactLabel}}" data-reveal>
+              <div class="impact-item"><dt>{{ds.i1}}</dt><dd class="num">{{ds.i1v}}</dd></div>
+              <div class="impact-item"><dt>{{ds.i2}}</dt><dd class="num">{{ds.i2v}}</dd></div>
+              <div class="impact-item"><dt>{{ds.i3}}</dt><dd class="num">{{ds.i3v}}</dd></div>
+              <div class="impact-item"><dt>{{ds.i4}}</dt><dd class="num">{{ds.i4v}}</dd></div>
+            </dl>
+
+            <div class="ws-body ws-body--card">
+              <dl class="story" data-reveal>
+                <div><dt class="label">{{label.problem}}</dt><dd>{{ds.problem}}</dd></div>
+                <div><dt class="label">{{label.role}}</dt><dd>{{ds.roleText}}</dd></div>
+                <div><dt class="label">{{label.outputs}}</dt><dd>{{ds.outputs}}</dd></div>
+              </dl>
+
+              <div class="ws-evidence" data-reveal style="--reveal-delay: 100ms">
+                <figure class="ev-window ev-window--card" aria-labelledby="ds-ev-caption">
+                  <div class="ev-chrome">
+                    <span class="ev-dot" aria-hidden="true"></span>
+                    <span class="ev-url" aria-hidden="true">muhammadfakhri-helmi.github.io/<b>Fakhri-Tugas-Akhir-Design</b></span>
+                    <a class="ev-open" href="{{ds.href}}" target="_blank" rel="noopener">
+                      {{ev.open}}
+                      <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                      <span class="sr-only">{{ds.liveTitle}} {{common.newTab}}</span>
+                    </a>
+                  </div>
+                  <div class="ev-stage">
+                    <div class="ev-panel">
+                      <div class="ev-shot">
+                        <img
+                          src="/evidence/thesis-top-800.webp"
+                          srcset="/evidence/thesis-top-800.webp 800w, /evidence/thesis-top-1600.webp 1600w"
+                          sizes="(min-width: 1180px) 34rem, (min-width: 900px) 42vw, 92vw"
+                          width="1600"
+                          height="1000"
+                          alt="{{ds.alt}}"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <button class="ev-launch" type="button" data-live="{{ds.href}}" data-live-title="{{ds.liveTitle}}">
+                          <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <figcaption class="ev-caption" id="ds-ev-caption">{{ds.note}}</figcaption>
+                </figure>
+                <div class="ev-actions">
+                  <a class="link-out" href="{{ds.href}}" target="_blank" rel="noopener">
+                    {{ds.cta}}
+                    <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                    <span class="sr-only">{{common.newTab}}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram" data-draw>
+              <div class="diagram-panel">
+                <div class="ds-drawing">
+                  <svg class="ds-svg ds-inset" viewBox="0 0 300 460" aria-hidden="true">
+                    <g stroke="#34486a" stroke-width="1.5">
+                      <path d="M20 70H285" />
+                      <path d="M34 70l-10 12M58 70l-10 12M82 70l-10 12M106 70l-10 12M130 70l-10 12M154 70l-10 12M178 70l-10 12M202 70l-10 12M226 70l-10 12M250 70l-10 12M274 70l-10 12" opacity=".7" />
+                    </g>
+                    <g fill="none" stroke="#9da8ba" stroke-width="2">
+                      <path d="M76 70 90 14l14 56M81 50h18M85 32h10" />
+                      <rect x="84" y="8" width="12" height="6" />
+                    </g>
+                    <path class="draw" d="M90 70V200" pathLength="1" fill="none" stroke="#9da8ba" stroke-width="4" />
+                    <path class="draw d2" d="M90 200A150 150 0 0 0 165 329.9" pathLength="1" fill="none" stroke="#e8622a" stroke-width="4" />
+                    <path class="draw d3" d="M165 329.9 277.6 395" pathLength="1" fill="none" stroke="#f2eee6" stroke-width="4" />
+                    <g class="fade">
+                      <circle cx="277.6" cy="395" r="13" fill="none" stroke="#e8622a" stroke-width="1.5" stroke-dasharray="4 4" />
+                      <circle cx="277.6" cy="395" r="4" fill="#e8622a" />
+                      <path d="M84 200h12" stroke="#f2eee6" stroke-width="2" />
+                      <text x="104" y="204">{{ds.svgKickoff}}</text>
+                      <text x="150" y="262" class="t-accent">{{ds.svgBuild}}</text>
+                      <text x="232" y="344" class="t-strong">{{ds.svgHold}}</text>
+                      <text x="198" y="432">{{ds.svgTarget}}</text>
+                      <text x="20" y="450">{{ds.svgPath}}</text>
+                    </g>
+                  </svg>
+
+                  <div class="pins">
+                    <svg class="ds-svg ds-strip" viewBox="0 0 900 340" aria-hidden="true">
+                      <!-- zones along measured depth: vertical | build | hold -->
+                      <path d="M300 36V272M500 36V272" stroke="#34486a" stroke-width="1.5" stroke-dasharray="5 6" />
+                      <path d="M300 36H500" stroke="#e8622a" stroke-width="3" />
+                      <text x="170" y="26" text-anchor="middle">{{ds.svgVertical}}</text>
+                      <text x="400" y="26" text-anchor="middle" class="t-accent">{{ds.svgBuild}}</text>
+                      <text x="680" y="26" text-anchor="middle" class="t-strong">{{ds.svgHold}}</text>
+
+                      <!-- track 1: tension (zero line dashed) -->
+                      <path d="M40 116H860" stroke="#22324b" stroke-width="1.5" stroke-dasharray="3 5" />
+                      <path class="draw" d="M40 48C230 66 430 90 600 104S730 116 860 128" pathLength="1" fill="none" stroke="#f2eee6" stroke-width="3" />
+                      <text x="852" y="56" text-anchor="end" class="t-strong fade">{{ds.svgTension}}</text>
+
+                      <!-- track 2: torque -->
+                      <path d="M40 196H860" stroke="#22324b" stroke-width="1.5" stroke-dasharray="3 5" />
+                      <path class="draw d2" d="M40 136H300C360 138 440 148 500 158S720 186 860 192" pathLength="1" fill="none" stroke="#9da8ba" stroke-width="3" />
+                      <text x="852" y="146" text-anchor="end" class="fade">{{ds.svgTorque}}</text>
+
+                      <!-- the string, unrolled from surface to bit -->
+                      <rect x="40" y="219" width="560" height="8" fill="#9da8ba" />
+                      <path d="M80 216v14M120 216v14M160 216v14M200 216v14M240 216v14M280 216v14M320 216v14M360 216v14M400 216v14M440 216v14M480 216v14M520 216v14M560 216v14" stroke="#0f1829" stroke-width="3" />
+                      <rect x="600" y="216" width="110" height="14" fill="#c9cfda" />
+                      <rect x="710" y="212" width="130" height="22" fill="#f2eee6" />
+                      <path d="M840 210 860 217v12l-20 7z" fill="#f2eee6" />
+
+                      <!-- buckling in the lower, compressed string -->
+                      <path class="draw d3" d="M600 223q12-11 24 0t24 0 24 0 24 0 24 0 24 0 24 0 24 0 24 0 24 0" pathLength="1" fill="none" stroke="#e8622a" stroke-width="3" />
+
+                      <!-- drag: wall contact resists trips in and out -->
+                      <g class="fade" stroke="#e8622a" stroke-width="2" fill="none">
+                        <path d="M362 252H438M372 246l-10 6 10 6M428 246l10 6-10 6" />
+                        <path d="M592 252H668M602 246l-10 6 10 6M658 246l10 6-10 6" />
+                      </g>
+
+                      <!-- compression bracket -->
+                      <g class="fade">
+                        <path d="M720 292v8H860v-8" fill="none" stroke="#e8622a" stroke-width="1.5" />
+                        <text x="790" y="322" text-anchor="middle" class="t-accent">{{ds.svgCompression}}</text>
+                      </g>
+
+                      <g class="fade">
+                        <text x="40" y="286">{{ds.svgSurface}}</text>
+                        <text x="320" y="286" text-anchor="middle">{{ds.svgDrillpipe}}</text>
+                        <text x="655" y="286" text-anchor="middle">HWDP</text>
+                        <text x="775" y="266" text-anchor="middle" class="t-strong">{{ds.svgCollars}}</text>
+                        <text x="878" y="266" text-anchor="middle">{{ds.svgBit}}</text>
+                      </g>
+                    </svg>
+                    <span class="pin" style="--x: 21%; --y: 17%" aria-hidden="true">1</span>
+                    <span class="pin" style="--x: 28%; --y: 40%" aria-hidden="true">2</span>
+                    <span class="pin" style="--x: 44.4%; --y: 74%" aria-hidden="true">3</span>
+                    <span class="pin" style="--x: 70.7%; --y: 65.6%" aria-hidden="true">4</span>
+                  </div>
+                </div>
+
+                <ol class="legend">
+                  <li><span class="pin" aria-hidden="true">1</span><span><b>{{ds.legend1t}}</b>{{ds.legend1}}</span></li>
+                  <li><span class="pin" aria-hidden="true">2</span><span><b>{{ds.legend2t}}</b>{{ds.legend2}}</span></li>
+                  <li><span class="pin" aria-hidden="true">3</span><span><b>{{ds.legend3t}}</b>{{ds.legend3}}</span></li>
+                  <li><span class="pin" aria-hidden="true">4</span><span><b>{{ds.legend4t}}</b>{{ds.legend4}}</span></li>
+                </ol>
+              </div>
+              <figcaption>{{ds.caption}}</figcaption>
+            </figure>
+
+            <div class="cmp-wrap" data-reveal>
+              <table class="cmp">
+                <caption>{{ds.cmpCaption}}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">{{ds.cmpStage}}</th>
+                    <th scope="col" class="is-picked">{{ds.cmpA}}</th>
+                    <th scope="col">{{ds.cmpB}}</th>
+                    <th scope="col">{{ds.cmpC}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">{{ds.cmpRow1}}</th>
+                    <td class="is-picked" data-label="{{ds.cmpA}}"><span class="mark mark--ok" aria-hidden="true"></span>{{ds.cmpA1}}</td>
+                    <td data-label="{{ds.cmpB}}"><span class="mark mark--no" aria-hidden="true"></span>{{ds.cmpB1}}</td>
+                    <td data-label="{{ds.cmpC}}"><span class="mark mark--no" aria-hidden="true"></span>{{ds.cmpC1}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">{{ds.cmpRow2}}</th>
+                    <td class="is-picked" data-label="{{ds.cmpA}}">{{ds.cmpA2}}</td>
+                    <td data-label="{{ds.cmpB}}"><span class="mark mark--ok" aria-hidden="true"></span>{{ds.cmpB2}}</td>
+                    <td data-label="{{ds.cmpC}}"><span class="mark mark--ok" aria-hidden="true"></span>{{ds.cmpC2}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">{{ds.cmpRow3}}</th>
+                    <td class="is-picked" data-label="{{ds.cmpA}}"><strong>{{ds.cmpA3}}</strong></td>
+                    <td data-label="{{ds.cmpB}}">{{ds.cmpB3}}</td>
+                    <td data-label="{{ds.cmpC}}">{{ds.cmpC3}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="ws-note">{{ds.cmpNote}}</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Field development economics -->
+        <article class="project" id="economics" aria-labelledby="ec-title">
+          <div class="container">
+            <header class="ws-head" data-reveal>
+              <p class="ws-meta"><span class="label">{{ec.meta}}</span><span class="label label--accent">{{ec.role}}</span></p>
+              <h3 class="ws-title" id="ec-title">{{ec.title}}</h3>
+            </header>
+
+            <dl class="impact" aria-label="{{ec.impactLabel}}" data-reveal>
+              <div class="impact-item"><dt>{{ec.i1}}</dt><dd class="num">{{ec.i1v}}</dd></div>
+              <div class="impact-item"><dt>{{ec.i2}}</dt><dd class="num">{{ec.i2v}}</dd></div>
+              <div class="impact-item"><dt>{{ec.i3}}</dt><dd class="num">{{ec.i3v}}</dd></div>
+              <div class="impact-item"><dt>{{ec.i4}}</dt><dd class="num">{{ec.i4v}}</dd></div>
+            </dl>
+
+            <div class="ws-body ws-body--card">
+              <dl class="story" data-reveal>
+                <div><dt class="label">{{label.problem}}</dt><dd>{{ec.problem}}</dd></div>
+                <div><dt class="label">{{label.role}}</dt><dd>{{ec.roleText}}</dd></div>
+                <div><dt class="label">{{label.outputs}}</dt><dd>{{ec.outputs}}</dd></div>
+              </dl>
+
+              <div class="ws-evidence" data-reveal style="--reveal-delay: 100ms">
+                <figure class="ev-window ev-window--card" aria-labelledby="ec-ev-caption">
+                  <div class="ev-chrome">
+                    <span class="ev-dot" aria-hidden="true"></span>
+                    <span class="ev-url" aria-hidden="true">muhammadfakhri-helmi.github.io/<b>Simprug-Economic-Case-Study</b></span>
+                    <a class="ev-open" href="https://muhammadfakhri-helmi.github.io/Simprug-Economic-Case-Study/" target="_blank" rel="noopener">
+                      {{ev.open}}
+                      <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                      <span class="sr-only">{{ec.liveTitle}} {{common.newTab}}</span>
+                    </a>
+                  </div>
+                  <div class="ev-stage">
+                    <div class="ev-panel">
+                      <div class="ev-shot">
+                        <img
+                          src="/evidence/simprug-top-800.webp"
+                          srcset="/evidence/simprug-top-800.webp 800w, /evidence/simprug-top-1600.webp 1600w"
+                          sizes="(min-width: 1180px) 34rem, (min-width: 900px) 42vw, 92vw"
+                          width="1600"
+                          height="1000"
+                          alt="{{ec.alt}}"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/Simprug-Economic-Case-Study/" data-live-title="{{ec.liveTitle}}">
+                          <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <figcaption class="ev-caption" id="ec-ev-caption">{{ec.note}}</figcaption>
+                </figure>
+                <div class="ev-actions">
+                  <a class="link-out" href="https://muhammadfakhri-helmi.github.io/Simprug-Economic-Case-Study/" target="_blank" rel="noopener">
+                    {{ec.cta}}
+                    <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                    <span class="sr-only">{{common.newTab}}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram">
+              <div class="diagram-panel">
+                <div class="chain">
+                  <section class="chain-group chain-group--team" aria-labelledby="chain-team">
+                    <p class="chain-label label" id="chain-team">{{ec.teamLabel}}</p>
+                    <ol class="chain-steps">
+                      <li class="chain-step"><span class="chain-node" aria-hidden="true">1</span><span class="chain-name">{{ec.s1n}}</span><span class="chain-q">{{ec.s1q}}</span></li>
+                      <li class="chain-step"><span class="chain-node" aria-hidden="true">2</span><span class="chain-name">{{ec.s2n}}</span><span class="chain-q">{{ec.s2q}}</span></li>
+                      <li class="chain-step"><span class="chain-node" aria-hidden="true">3</span><span class="chain-name">{{ec.s3n}}</span><span class="chain-q">{{ec.s3q}}</span></li>
+                      <li class="chain-step"><span class="chain-node" aria-hidden="true">4</span><span class="chain-name">{{ec.s4n}}</span><span class="chain-q">{{ec.s4q}}</span></li>
+                    </ol>
+                  </section>
+                  <section class="chain-group chain-group--mine" aria-labelledby="chain-mine">
+                    <p class="chain-label label" id="chain-mine">{{ec.mineLabel}}</p>
+                    <ol class="chain-steps" start="5">
+                      <li class="chain-step"><span class="chain-node" aria-hidden="true">5</span><span class="chain-name">{{ec.s5n}}</span><span class="chain-q">{{ec.s5q}}</span></li>
+                      <li class="chain-step"><span class="chain-node" aria-hidden="true">6</span><span class="chain-name">{{ec.s6n}}</span><span class="chain-q">{{ec.s6q}}</span></li>
+                      <li class="chain-step"><span class="chain-node" aria-hidden="true">7</span><span class="chain-name">{{ec.s7n}}</span><span class="chain-q">{{ec.s7q}}</span></li>
+                      <li class="chain-step"><span class="chain-node" aria-hidden="true">8</span><span class="chain-name">{{ec.s8n}}</span><span class="chain-q">{{ec.s8q}}</span></li>
+                      <li class="chain-step"><span class="chain-node" aria-hidden="true">9</span><span class="chain-name">{{ec.s9n}}</span><span class="chain-q">{{ec.s9q}}</span></li>
+                    </ol>
+                  </section>
+                </div>
+              </div>
+              <figcaption>{{ec.chainCaption}}</figcaption>
+            </figure>
+
+            <div class="fiscal" data-fiscal data-regime="gs" data-reveal>
+              <div class="fiscal-main">
+                <fieldset class="fiscal-switch">
+                  <legend class="label">{{ec.switchLabel}}</legend>
+                  <label class="seg"><input type="radio" name="fiscal-regime" value="gs" checked /><span>{{ec.gs}}</span></label>
+                  <label class="seg"><input type="radio" name="fiscal-regime" value="cr" /><span>{{ec.cr}}</span></label>
+                </fieldset>
+                <div class="fiscal-view" data-regime-view="gs">
+                  <p class="fiscal-name">{{ec.gs}}</p>
+                  <ol class="fiscal-steps">
+                    <li>{{ec.gs1}}</li>
+                    <li>{{ec.gs2}}</li>
+                    <li>{{ec.gs3}}</li>
+                  </ol>
+                  <p class="fiscal-note">{{ec.gsNote}}</p>
+                </div>
+                <div class="fiscal-view" data-regime-view="cr">
+                  <p class="fiscal-name">{{ec.cr}}</p>
+                  <ol class="fiscal-steps">
+                    <li>{{ec.cr1}}</li>
+                    <li>{{ec.cr2}}</li>
+                    <li>{{ec.cr3}}</li>
+                  </ol>
+                  <p class="fiscal-note">{{ec.crNote}}</p>
+                </div>
+              </div>
+
+              <div class="fiscal-side">
+                <div class="fiscal-cmp">
+                  <p class="fiscal-cmp-title">{{ec.cmpTitle}}</p>
+                  <div class="cmp-row">
+                    <p class="cmp-row-l">{{ec.cmpA}}</p>
+                    <div class="cmp-bars" aria-hidden="true">
+                      <i class="b-cr" style="--w: 26%"></i>
+                      <i class="b-gs" style="--w: 58%"></i>
+                    </div>
+                    <p class="cmp-row-v num">{{ec.cmpRatioA}}</p>
+                  </div>
+                  <div class="cmp-row">
+                    <p class="cmp-row-l">{{ec.cmpB}}</p>
+                    <div class="cmp-bars" aria-hidden="true">
+                      <i class="b-cr" style="--w: 35%"></i>
+                      <i class="b-gs" style="--w: 100%"></i>
+                    </div>
+                    <p class="cmp-row-v num">{{ec.cmpRatioB}}</p>
+                  </div>
+                  <p class="cmp-legend" aria-hidden="true"><span class="k-cr">{{ec.cr}}</span><span class="k-gs">{{ec.gs}}</span></p>
+                  <p class="fiscal-note">{{ec.cmpNote}}</p>
+                </div>
+
+                <div class="kpis">
+                  <p class="label">{{ec.cardsTitle}}</p>
+                  <dl class="kpi-grid">
+                    <div><dt>{{ec.k1}}</dt><dd class="num">{{ec.k1v}}</dd></div>
+                    <div><dt>{{ec.k2}}</dt><dd class="num">{{ec.k2v}}</dd></div>
+                    <div><dt>{{ec.k3}}</dt><dd class="num">{{ec.k3v}}</dd></div>
+                    <div><dt>{{ec.k4}}</dt><dd class="num">{{ec.k4v}}</dd></div>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Student leadership (moved from About: academic-era organisations, not employment) -->
+        <article class="project" id="leadership" aria-labelledby="lead-title">
+          <div class="container">
+            <header class="ws-head" data-reveal>
+              <p class="ws-meta"><span class="label">HMTM SPRUDA · LAKSAMANA · PROTECT 2022 · 2021–2023</span></p>
+              <h3 class="ws-title" id="lead-title">{{acad.leadTitle}}</h3>
+              <p class="ws-sub">{{acad.leadNote}}</p>
+            </header>
+            <div class="lead-block" data-reveal>
+              <ol class="lead-list">
+                <li>
+                  <p class="lead-when">{{acad.l1when}}</p>
+                  <div>
+                    <h4 class="lead-org">{{acad.l1org}}</h4>
+                    <p class="lead-role">{{acad.l1role}}</p>
+                    <p class="lead-what">{{acad.l1}}</p>
+                  </div>
+                </li>
+                <li>
+                  <p class="lead-when">{{acad.l2when}}</p>
+                  <div>
+                    <h4 class="lead-org">{{acad.l2org}}</h4>
+                    <p class="lead-role">{{acad.l2role}}</p>
+                    <p class="lead-what">{{acad.l2}}</p>
+                  </div>
+                </li>
+                <li>
+                  <p class="lead-when">{{acad.l3when}}</p>
+                  <div>
+                    <h4 class="lead-org">{{acad.l3org}}</h4>
+                    <p class="lead-role">{{acad.l3role}}</p>
+                    <p class="lead-what">{{acad.l3}}</p>
+                  </div>
+                </li>
+                <li>
+                  <p class="lead-when">{{acad.l4when}}</p>
+                  <div>
+                    <h4 class="lead-org">{{acad.l4org}}</h4>
+                    <p class="lead-role">{{acad.l4role}}</p>
+                    <p class="lead-what">{{acad.l4}}</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ============ PROFESSIONAL AFFILIATION ============ -->
+      <section class="affiliation" id="affiliation" aria-labelledby="affiliation-title">
+        <div class="container section-head section-head--cat" data-reveal>
+          <p class="label">{{aff.label}}</p>
+          <h2 class="section-title" id="affiliation-title">{{aff.title}}</h2>
+          <p class="section-lead">{{aff.lead}}</p>
+        </div>
+
+        <article class="project project--jds" id="alpha05" aria-labelledby="jds-title">
+          <div class="container">
+            <header class="ws-head" data-reveal>
+              <p class="ws-meta"><span class="label">{{jds.when}}</span></p>
+              <h3 class="ws-title" id="jds-title">{{jds.title}}</h3>
+              <p class="ws-role">{{jds.role}}</p>
+            </header>
+
+            <div class="ws-body ws-body--window">
+              <div class="ws-story" data-reveal>
+                <p class="ws-lead">{{jds.text}}</p>
+                <figure class="profile">
+                  <svg class="profile-art" viewBox="0 0 240 300" aria-hidden="true">
+                    <g stroke="#34486a" stroke-width="1.5">
+                      <path d="M8 48H232" />
+                      <path d="M22 48l-8 10M42 48l-8 10M62 48l-8 10M102 48l-8 10M122 48l-8 10M142 48l-8 10M162 48l-8 10M182 48l-8 10M202 48l-8 10M222 48l-8 10" opacity=".7" />
+                    </g>
+                    <g fill="none" stroke="#9da8ba" stroke-width="2">
+                      <path d="M57 48 70 8l13 40M61 34h18M65 22h10" />
+                      <rect x="65" y="3" width="10" height="5" />
+                    </g>
+                    <g fill="none" stroke="#c9cfda" stroke-width="2">
+                      <path d="M56 48v40M84 48v40" />
+                      <path d="M60 48v88M80 48v88" opacity=".85" />
+                      <path d="M64 48v132M76 48v132" opacity=".7" />
+                    </g>
+                    <g fill="#c9cfda">
+                      <path d="M56 88l-5 6h5zM84 88l5 6h-5zM60 136l-5 6h5zM80 136l5 6h-5zM64 180l-5 6h5zM76 180l5 6h-5z" />
+                    </g>
+                    <path d="M70 48V184A110 110 0 0 0 103.2 262.2L140 296" fill="none" stroke="#e8622a" stroke-width="3" />
+                    <text x="96" y="112" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#9da8ba">{{jds.svgCasing}}</text>
+                    <text x="96" y="127" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#9da8ba">{{jds.svgDiameter}}</text>
+                    <text x="148" y="222" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1" fill="#e8622a">{{jds.svgPlan}}</text>
+                  </svg>
+                  <figcaption>{{jds.profileCaption}}</figcaption>
+                </figure>
+                <p class="ws-note">{{jds.note}}</p>
+              </div>
+
+              <div class="ws-evidence" data-reveal style="--reveal-delay: 100ms">
+                <figure class="ev-window" data-ev-window data-autoplay aria-labelledby="jds-ev-caption">
+                  <div class="ev-chrome">
+                    <span class="ev-dot" aria-hidden="true"></span>
+                    <span class="ev-url" aria-hidden="true">muhammadfakhri-helmi.github.io/<b>alpha05-drilling-3d</b></span>
+                    <button class="ev-tour" type="button" data-ev-tour data-label-pause="{{ev.pause}}" data-label-play="{{ev.play}}" hidden>
+                      <svg class="icon ev-tour-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" /></svg>
+                      <svg class="icon icon--fill ev-tour-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                      <span class="sr-only" data-ev-tour-label>{{ev.pause}}</span>
+                    </button>
+                    <a class="ev-open" href="https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/" target="_blank" rel="noopener">
+                      {{ev.open}}
+                      <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                      <span class="sr-only">{{jds.liveTitle}} {{common.newTab}}</span>
+                    </a>
+                  </div>
+                  <div class="ev-tabs" role="tablist" aria-label="{{jds.tabsLabel}}">
+                    <button class="ev-tab" type="button" role="tab" id="jds-tab-1" aria-controls="jds-panel-1" aria-selected="true">{{jds.t1}}</button>
+                    <button class="ev-tab" type="button" role="tab" id="jds-tab-2" aria-controls="jds-panel-2" aria-selected="false" tabindex="-1">{{jds.t2}}</button>
+                    <button class="ev-tab" type="button" role="tab" id="jds-tab-3" aria-controls="jds-panel-3" aria-selected="false" tabindex="-1">{{jds.t3}}</button>
+                    <button class="ev-tab" type="button" role="tab" id="jds-tab-4" aria-controls="jds-panel-4" aria-selected="false" tabindex="-1">{{jds.t4}}</button>
+                  </div>
+                  <div class="ev-stage">
+                    <div class="ev-panel" role="tabpanel" id="jds-panel-1" aria-labelledby="jds-tab-1">
+                      <div class="ev-shot">
+                        <img
+                          src="/evidence/alpha-rig-800.webp"
+                          srcset="/evidence/alpha-rig-800.webp 800w, /evidence/alpha-rig-1600.webp 1600w"
+                          sizes="(min-width: 1180px) 44rem, (min-width: 900px) 55vw, 92vw"
+                          width="1600"
+                          height="1000"
+                          alt="{{jds.a1}}"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/" data-live-title="{{jds.liveTitle}}">
+                          <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                        </button>
+                      </div>
+                      <p class="ev-cap">{{jds.c1}}</p>
+                    </div>
+                    <div class="ev-panel" role="tabpanel" id="jds-panel-2" aria-labelledby="jds-tab-2" hidden>
+                      <div class="ev-shot">
+                        <img
+                          src="/evidence/alpha-bit-800.webp"
+                          srcset="/evidence/alpha-bit-800.webp 800w, /evidence/alpha-bit-1600.webp 1600w"
+                          sizes="(min-width: 1180px) 44rem, (min-width: 900px) 55vw, 92vw"
+                          width="1600"
+                          height="1000"
+                          alt="{{jds.a2}}"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/" data-live-title="{{jds.liveTitle}}">
+                          <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                        </button>
+                      </div>
+                      <p class="ev-cap">{{jds.c2}}</p>
+                    </div>
+                    <div class="ev-panel" role="tabpanel" id="jds-panel-3" aria-labelledby="jds-tab-3" hidden>
+                      <div class="ev-shot">
+                        <img
+                          src="/evidence/alpha-well-800.webp"
+                          srcset="/evidence/alpha-well-800.webp 800w, /evidence/alpha-well-1600.webp 1600w"
+                          sizes="(min-width: 1180px) 44rem, (min-width: 900px) 55vw, 92vw"
+                          width="1600"
+                          height="1000"
+                          alt="{{jds.a3}}"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/" data-live-title="{{jds.liveTitle}}">
+                          <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                        </button>
+                      </div>
+                      <p class="ev-cap">{{jds.c3}}</p>
+                    </div>
+                    <div class="ev-panel" role="tabpanel" id="jds-panel-4" aria-labelledby="jds-tab-4" hidden>
+                      <div class="ev-shot">
+                        <img
+                          src="/evidence/alpha-complete-800.webp"
+                          srcset="/evidence/alpha-complete-800.webp 800w, /evidence/alpha-complete-1600.webp 1600w"
+                          sizes="(min-width: 1180px) 44rem, (min-width: 900px) 55vw, 92vw"
+                          width="1600"
+                          height="1000"
+                          alt="{{jds.a4}}"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/" data-live-title="{{jds.liveTitle}}">
+                          <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                        </button>
+                      </div>
+                      <p class="ev-cap">{{jds.c4}}</p>
+                    </div>
+                  </div>
+                  <figcaption class="ev-caption" id="jds-ev-caption">{{jds.evCaption}}</figcaption>
+                </figure>
+                <div class="ev-actions">
+                  <a class="link-out" href="https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/" target="_blank" rel="noopener">
+                    {{jds.cta}}
+                    <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                    <span class="sr-only">{{common.newTab}}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ============ DIGITAL EVIDENCE ============ -->
+      <section class="section evidence-index" id="evidence" aria-labelledby="evidence-title">
+        <div class="container">
+          <div class="section-head" data-reveal>
+            <p class="label">{{di.label}}</p>
+            <h2 class="section-title" id="evidence-title">{{di.title}}</h2>
+            <p class="section-lead">{{di.lead}}</p>
+          </div>
+
+          <ul class="ev-grid">
+            <li class="ev-item" data-reveal>
+              <div class="ev-item-shot">
+                <img src="/evidence/wims-model-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async" />
+                <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/" data-live-title="{{wims.liveTitle}}">
+                  <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                  <span class="sr-only">— {{di.wt}}</span>
+                </button>
+              </div>
+              <p class="label"><a class="ev-item-ctx" href="#wims">{{di.wk}}</a></p>
+              <h3 class="ev-item-title">{{di.wt}}</h3>
+              <p class="ev-item-text">{{di.wd}}</p>
+              <a class="link-out" href="https://muhammadfakhri-helmi.github.io/Project-Coordinator-WIMS-Portofolio/" target="_blank" rel="noopener">
+                {{ev.open}}
+                <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                <span class="sr-only">{{di.wt}} {{common.newTab}}</span>
+              </a>
+            </li>
+            <li class="ev-item" data-reveal style="--reveal-delay: 60ms">
+              <div class="ev-item-shot">
+                <img src="/evidence/inpex-overview-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async" />
+                <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/fakhri-experience/" data-live-title="{{inpex.liveTitle}}">
+                  <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                  <span class="sr-only">— {{di.it}}</span>
+                </button>
+              </div>
+              <p class="label"><a class="ev-item-ctx" href="#inpex">{{di.ik}}</a></p>
+              <h3 class="ev-item-title">{{di.it}}</h3>
+              <p class="ev-item-text">{{di.id}}</p>
+              <a class="link-out" href="https://muhammadfakhri-helmi.github.io/fakhri-experience/" target="_blank" rel="noopener">
+                {{ev.open}}
+                <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                <span class="sr-only">{{di.it}} {{common.newTab}}</span>
+              </a>
+            </li>
+            <li class="ev-item" data-reveal style="--reveal-delay: 120ms">
+              <div class="ev-item-shot">
+                <img src="/evidence/thesis-top-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async" />
+                <button class="ev-launch" type="button" data-live="{{ds.href}}" data-live-title="{{ds.liveTitle}}">
+                  <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                  <span class="sr-only">— {{di.dt}}</span>
+                </button>
+              </div>
+              <p class="label"><a class="ev-item-ctx" href="#drillstring">{{di.dk}}</a></p>
+              <h3 class="ev-item-title">{{di.dt}}</h3>
+              <p class="ev-item-text">{{di.dd}}</p>
+              <a class="link-out" href="{{ds.href}}" target="_blank" rel="noopener">
+                {{ev.open}}
+                <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                <span class="sr-only">{{di.dt}} {{common.newTab}}</span>
+              </a>
+            </li>
+            <li class="ev-item" data-reveal>
+              <div class="ev-item-shot">
+                <img src="/evidence/simprug-top-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async" />
+                <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/Simprug-Economic-Case-Study/" data-live-title="{{ec.liveTitle}}">
+                  <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                  <span class="sr-only">— {{di.st}}</span>
+                </button>
+              </div>
+              <p class="label"><a class="ev-item-ctx" href="#economics">{{di.sk}}</a></p>
+              <h3 class="ev-item-title">{{di.st}}</h3>
+              <p class="ev-item-text">{{di.sd}}</p>
+              <a class="link-out" href="https://muhammadfakhri-helmi.github.io/Simprug-Economic-Case-Study/" target="_blank" rel="noopener">
+                {{ev.open}}
+                <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                <span class="sr-only">{{di.st}} {{common.newTab}}</span>
+              </a>
+            </li>
+            <li class="ev-item" data-reveal style="--reveal-delay: 60ms">
+              <div class="ev-item-shot">
+                <img src="/evidence/alpha-rig-800.webp" width="800" height="500" alt="" loading="lazy" decoding="async" />
+                <button class="ev-launch" type="button" data-live="https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/" data-live-title="{{jds.liveTitle}}">
+                  <svg class="icon icon--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>{{ev.launch}}
+                  <span class="sr-only">— {{di.at}}</span>
+                </button>
+              </div>
+              <p class="label"><a class="ev-item-ctx" href="#alpha05">{{di.ak}}</a></p>
+              <h3 class="ev-item-title">{{di.at}}</h3>
+              <p class="ev-item-text">{{di.ad}}</p>
+              <a class="link-out" href="https://muhammadfakhri-helmi.github.io/alpha05-drilling-3d/" target="_blank" rel="noopener">
+                {{ev.open}}
+                <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                <span class="sr-only">{{di.at}} {{common.newTab}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ ABOUT ============ -->
+      <section class="section about" id="about" aria-labelledby="about-title">
+        <div class="container">
+          <div class="about-head" data-reveal>
+            <p class="label">{{about.label}}</p>
+            <h2 class="section-title" id="about-title">{{about.title}}</h2>
+          </div>
+
+          <div class="about-grid">
+            <div class="about-main">
+              <div class="about-voice" data-reveal>
+                <p class="about-pull">{{about.pull}}</p>
+                <p class="about-next">{{about.next}}</p>
+              </div>
+            </div>
+
+            <div class="about-side">
+              <div class="cap-group" data-reveal>
+                <h3 class="sub-title">{{about.compTitle}}</h3>
+                <ul class="comp-list">
+                  <li>{{about.comp1}}</li>
+                  <li>{{about.comp2}}</li>
+                  <li>{{about.comp3}}</li>
+                  <li>{{about.comp4}}</li>
+                  <li>{{about.comp5}}</li>
+                  <li>{{about.comp6}}</li>
+                  <li>{{about.comp7}}</li>
+                  <li>{{about.comp8}}</li>
+                </ul>
+              </div>
+
+              <div class="cap-group" data-reveal>
+                <h3 class="sub-title">{{about.skillsTitle}}</h3>
+                <dl class="skills">
+                  <div>
+                    <dt class="label">{{about.skEng}}</dt>
+                    <dd>{{about.skEngV}}</dd>
+                  </div>
+                  <div>
+                    <dt class="label">{{about.skDig}}</dt>
+                    <dd>{{about.skDigV}}</dd>
+                  </div>
+                </dl>
+              </div>
+
+              <div class="cap-group" data-reveal>
+                <h3 class="sub-title">{{about.trainTitle}}</h3>
+                <ul class="chips">
+                  <li>{{about.tr1}}</li>
+                  <li>{{about.tr2}}</li>
+                  <li>{{about.tr3}}</li>
+                  <li>{{about.tr4}}</li>
+                  <li>{{about.tr5}}</li>
+                </ul>
+              </div>
+
+              <div class="cap-group" data-reveal>
+                <h3 class="sub-title">{{about.langTitle}}</h3>
+                <ul class="comp-list">
+                  <li>{{about.lang1}}</li>
+                  <li>{{about.lang2}}</li>
+                  <li>{{about.mob}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CONTACT ============ -->
+      <section class="contact" id="contact" aria-labelledby="contact-title">
+        <div class="container contact-inner">
+          <div class="contact-main" data-reveal>
+            <p class="label">{{contact.label}}</p>
+            <h2 class="contact-title" id="contact-title">{{contact.title}}</h2>
+            <p class="contact-text">{{contact.text}}</p>
+            <div class="contact-actions">
+              <a class="btn btn--primary" href="mailto:muhammadfakhrihelmi@gmail.com">
+                {{contact.email}}
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z" /><path d="m4 7 8 6 8-6" /></svg>
+              </a>
+              <a class="btn btn--ghost" href="https://wa.me/6285261505740" target="_blank" rel="noopener">
+                {{contact.whatsapp}}
+                <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                <span class="sr-only">{{common.newTab}}</span>
+              </a>
+              <a class="btn btn--ghost" href="https://www.linkedin.com/in/fakhri-helmi" target="_blank" rel="me noopener">
+                {{contact.linkedin}}
+                <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                <span class="sr-only">{{common.newTab}}</span>
+              </a>
+              <a class="btn btn--ghost" href="{{page.cv}}" download>
+                {{common.cv}}
+                <svg class="icon icon--dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>
+                <span class="sr-only">{{common.cvMeta}}</span>
+              </a>
+            </div>
+          </div>
+
+          <dl class="contact-card" data-reveal style="--reveal-delay: 120ms">
+            <div class="contact-row">
+              <dt class="label">{{contact.rowEmail}}</dt>
+              <dd class="contact-email"><a href="mailto:muhammadfakhrihelmi@gmail.com">muhammadfakhrihelmi@gmail.com</a></dd>
+            </div>
+            <div class="contact-row">
+              <dt class="label">{{contact.rowWhatsapp}}</dt>
+              <dd>
+                <a href="https://wa.me/6285261505740" target="_blank" rel="noopener">
+                  +62 852-6150-5740
+                  <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  <span class="sr-only">{{common.newTab}}</span>
+                </a>
+              </dd>
+            </div>
+            <div class="contact-row">
+              <dt class="label">{{contact.rowLinkedin}}</dt>
+              <dd>
+                <a href="https://www.linkedin.com/in/fakhri-helmi" target="_blank" rel="me noopener">
+                  in/fakhri-helmi
+                  <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  <span class="sr-only">{{common.newTab}}</span>
+                </a>
+              </dd>
+            </div>
+            <div class="contact-row">
+              <dt class="label">{{contact.rowCv}}</dt>
+              <dd>
+                <a href="{{page.cv}}" download>
+                  {{contact.rowCvValue}}
+                  <svg class="icon icon--dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>
+                  <span class="sr-only">{{common.cvMeta}}</span>
+                </a>
+              </dd>
+            </div>
+            <div class="contact-row">
+              <dt class="label">{{contact.rowBased}}</dt>
+              <dd>{{contact.rowBasedValue}}</dd>
+            </div>
+            <div class="contact-row">
+              <dt class="label">{{contact.rowOpen}}</dt>
+              <dd>{{contact.rowOpenValue}}</dd>
+            </div>
+            <div class="contact-row contact-row--text">
+              <dt class="label">{{contact.rowLooking}}</dt>
+              <dd>{{contact.rowLookingValue}}</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <p>© 2026 Muhammad Fakhri Helmi</p>
+        <p>{{footer.note}}</p>
+        <a class="footer-top" href="#top">
+          {{footer.top}}
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" /></svg>
+        </a>
+      </div>
+    </footer>
+
+    <!-- One dialog serves every "Explore live" button; the iframe exists only while it is open. -->
+    <dialog class="live-dialog" aria-labelledby="live-title" data-live-dialog>
+      <div class="live-inner">
+        <div class="live-bar">
+          <div class="live-heading">
+            <p class="label label--accent">{{ev.liveLabel}}</p>
+            <p class="live-title" id="live-title" data-live-name></p>
+          </div>
+          <a class="btn btn--ghost btn--sm" href="https://muhammadfakhri-helmi.github.io/" target="_blank" rel="noopener" data-live-open>
+            {{ev.newTab}}
+            <svg class="icon icon--out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+            <span class="sr-only">{{common.newTab}}</span>
+          </a>
+          <button class="btn btn--primary btn--sm" type="button" data-live-close autofocus>
+            {{ev.close}}
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+          </button>
+        </div>
+        <div class="live-frame" data-live-frame></div>
+        <p class="live-note">{{ev.liveNote}}</p>
+      </div>
+    </dialog>
+  </body>
+</html>
