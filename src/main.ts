@@ -12,7 +12,9 @@ import { initHeader } from "./lib/header";
 import { initLiveDialog } from "./lib/live-dialog";
 import { initReveal } from "./lib/reveal";
 import { initSteps } from "./lib/steps";
+import { initTheme } from "./lib/theme";
 
+initTheme();
 defineCharacterSequence();
 initHeader();
 initReveal();

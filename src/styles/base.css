@@ -95,7 +95,7 @@ a {
 
 ::selection {
   background: var(--hivis);
-  color: var(--deep);
+  color: var(--on-hivis);
 }
 
 .sr-only {
@@ -223,11 +223,11 @@ a {
 
 .btn--primary {
   background: var(--hivis);
-  color: var(--deep);
+  color: var(--on-hivis);
 }
 
 .btn--primary:hover {
-  background: #f07a45;
+  background: var(--hivis-hover);
 }
 
 .btn--primary:hover .icon--down {
@@ -237,7 +237,7 @@ a {
 .btn--ghost {
   border-color: var(--rule-strong);
   color: var(--vellum);
-  background: rgb(10 17 29 / 0.55);
+  background: color-mix(in srgb, var(--deep) 55%, transparent);
 }
 
 .btn--ghost:hover {
@@ -272,7 +272,7 @@ a {
 }
 
 .link-out:hover {
-  color: #fff;
+  color: var(--vellum-max);
   background-size: 100% 2px;
 }
 
@@ -291,14 +291,14 @@ a {
 
 .site-header.is-scrolled,
 .site-header.is-open {
-  background: rgb(10 17 29 / 0.9);
+  background: color-mix(in srgb, var(--deep) 90%, transparent);
   border-bottom-color: var(--rule);
 }
 
 @supports (backdrop-filter: blur(1px)) {
   .site-header.is-scrolled,
   .site-header.is-open {
-    background: rgb(10 17 29 / 0.72);
+    background: color-mix(in srgb, var(--deep) 72%, transparent);
     backdrop-filter: blur(14px) saturate(1.2);
   }
 }
@@ -375,7 +375,7 @@ a {
   padding: 3px;
   border: 1px solid var(--rule-strong);
   border-radius: 999px;
-  background: rgb(10 17 29 / 0.55);
+  background: color-mix(in srgb, var(--deep) 55%, transparent);
 }
 
 .lang-switch a {
@@ -404,6 +404,44 @@ a {
   cursor: default;
 }
 
+/* Light / dark switch: shows the theme it switches to (src/lib/theme.ts). */
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--rule-strong);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--deep) 55%, transparent);
+  color: var(--steel);
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition:
+    border-color var(--t-micro) var(--ease-out),
+    color var(--t-micro) var(--ease-out);
+}
+
+.theme-toggle:hover {
+  border-color: var(--vellum);
+  color: var(--vellum);
+}
+
+.theme-toggle .icon {
+  grid-area: 1 / 1;
+}
+
+:root[data-theme="light"] .icon--sun,
+:root:not([data-theme="light"]) .icon--moon {
+  display: none;
+}
+
+/* Without JavaScript the page stays in the default dark theme. */
+:root:not(.js) .theme-toggle {
+  display: none;
+}
+
 .menu-toggle {
   display: none;
 }
@@ -419,7 +457,7 @@ a {
     padding: 0 0.9rem;
     border: 1px solid var(--rule-strong);
     border-radius: 999px;
-    background: rgb(10 17 29 / 0.6);
+    background: color-mix(in srgb, var(--deep) 60%, transparent);
     color: var(--vellum);
     font: 500 0.9375rem/1 var(--font-body);
     cursor: pointer;
@@ -473,7 +511,7 @@ a {
     padding: var(--s1) var(--gutter) var(--s3);
     background: var(--deep);
     border-bottom: 1px solid var(--rule);
-    box-shadow: 0 24px 48px rgb(0 0 0 / 0.45);
+    box-shadow: 0 24px 48px color-mix(in srgb, var(--shadow) 45%, transparent);
   }
 
   .is-open .nav-list {
