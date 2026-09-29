@@ -48,6 +48,8 @@ export const en = {
   "nav.about": "About",
   "nav.contact": "Contact",
   "nav.langLabel": "Language",
+  "nav.themeToLight": "Switch to light theme",
+  "nav.themeToDark": "Switch to dark theme",
 
   // ---------- hero ----------
   "hero.eyebrow": "Petroleum engineer · Jakarta, Indonesia",

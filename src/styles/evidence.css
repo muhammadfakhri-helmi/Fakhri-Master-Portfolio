@@ -9,7 +9,7 @@
   background: var(--hull);
   border: 1px solid var(--rule-strong);
   border-radius: 6px;
-  box-shadow: 0 32px 64px -32px rgb(0 0 0 / 0.75);
+  box-shadow: 0 32px 64px -32px color-mix(in srgb, var(--shadow) 75%, transparent);
 }
 
 .ev-chrome {
@@ -18,7 +18,7 @@
   gap: 0.6rem;
   min-height: 2.9rem;
   padding: 0.3rem 0.4rem 0.3rem 0.85rem;
-  background: #0c1422;
+  background: var(--chrome);
   border-bottom: 1px solid var(--rule);
 }
 
@@ -213,7 +213,7 @@ html:not(.js) .ev-tabs {
   position: relative;
   aspect-ratio: 16 / 10;
   overflow: hidden;
-  background: #070d17;
+  background: var(--well);
 }
 
 .ev-shot img {
@@ -228,7 +228,7 @@ html:not(.js) .ev-tabs {
   place-items: center;
   background:
     linear-gradient(var(--rule) 1px, transparent 1px) 0 0 / 100% 36px,
-    #0b1321;
+    var(--chrome);
 }
 
 .ev-cap {
@@ -236,13 +236,13 @@ html:not(.js) .ev-tabs {
   border-top: 1px solid var(--rule);
   font-size: 0.875rem;
   line-height: 1.45;
-  color: rgb(242 238 230 / 0.9);
+  color: color-mix(in srgb, var(--vellum) 90%, transparent);
 }
 
 .ev-caption {
   padding: 0.6rem 0.95rem 0.75rem;
   border-top: 1px solid var(--rule);
-  background: #0c1422;
+  background: var(--chrome);
   font-size: 0.75rem;
   line-height: 1.45;
   color: var(--steel);
@@ -255,7 +255,7 @@ html:not(.js) .ev-tabs {
   padding: 0.4rem 0.75rem;
   border: 1px solid var(--hivis);
   border-radius: 999px;
-  background: rgb(10 17 29 / 0.88);
+  background: color-mix(in srgb, var(--deep) 88%, transparent);
   font: 500 0.75rem/1.2 var(--font-mono);
   letter-spacing: 0.04em;
   color: var(--vellum);
@@ -274,9 +274,9 @@ html:not(.js) .ev-tabs {
   border: 0;
   border-radius: 999px;
   background: var(--hivis);
-  color: var(--deep);
+  color: var(--on-hivis);
   font: 600 0.875rem/1 var(--font-body);
-  box-shadow: 0 10px 28px rgb(0 0 0 / 0.5);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--shadow) 50%, transparent);
   cursor: pointer;
   transition:
     background-color var(--t-micro) var(--ease-out),
@@ -288,7 +288,7 @@ html:not(.js) .ev-tabs {
 }
 
 .ev-launch:hover {
-  background: #f07a45;
+  background: var(--hivis-hover);
 }
 
 .ev-launch:active {
@@ -389,7 +389,7 @@ html:not(.js) .ev-tabs {
   aspect-ratio: 16 / 10;
   margin-bottom: 0.4rem;
   overflow: hidden;
-  background: #070d17;
+  background: var(--well);
   border: 1px solid var(--rule-strong);
   border-radius: 6px;
 }
@@ -425,7 +425,7 @@ html:not(.js) .ev-tabs {
 .ev-item-text {
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: rgb(242 238 230 / 0.86);
+  color: color-mix(in srgb, var(--vellum) 86%, transparent);
 }
 
 .ev-item .link-out {
@@ -449,7 +449,7 @@ html:not(.js) .ev-tabs {
 }
 
 .live-dialog::backdrop {
-  background: rgb(5 9 16 / 0.84);
+  background: var(--backdrop);
 }
 
 @supports (backdrop-filter: blur(2px)) {
@@ -498,7 +498,7 @@ html:has(.live-dialog[open]) {
 .live-frame {
   flex: 1;
   min-height: 0;
-  background: #070d17;
+  background: var(--well);
 }
 
 .live-frame iframe {

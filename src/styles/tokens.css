@@ -1,5 +1,11 @@
 /* Design tokens — see docs/DESIGN_SYSTEM.md for the reasoning behind each role. */
 
+/* Two themes, one set of roles. Dark is the default (and what a visitor sees
+   without JavaScript); the light "paper" theme swaps the same roles on
+   <html data-theme="light">, which the inline script in src/page.html sets
+   before first paint (see src/lib/theme.ts). The role names come from the dark
+   theme: --deep is always the page background, --vellum always the main text. */
+
 :root {
   color-scheme: dark;
 
@@ -7,13 +13,22 @@
   --deep: #0a111d; /* page background: deep water */
   --hull: #0f1829; /* raised surfaces */
   --hull-2: #131f33; /* hover / nested surface */
+  --chrome: #0c1422; /* evidence-window chrome and captions */
+  --well: #070d17; /* behind screenshots while they load */
   --rule: #22324b; /* hairlines, borders, diagram strokes */
   --rule-strong: #34486a;
   --vellum: #f2eee6; /* primary text, warm white */
+  --vellum-max: #fff; /* link hover: one step brighter than the text */
+  --mist: #c9cfda; /* light neutral fills in drawings and bars */
   --steel: #9da8ba; /* secondary text, labels */
+  --slate: #5b6b86; /* dim neutral fill */
   --hivis: #e8622a; /* the one accent: action, live figures, callout lines, focus */
+  --hivis-hover: #f07a45;
   --hivis-soft: rgb(232 98 42 / 0.14);
+  --on-hivis: #0a111d; /* text on an --hivis fill */
   --rim: #2c4f7f; /* the photo's blue rim light, only inside the halo */
+  --shadow: #000;
+  --backdrop: rgb(5 9 16 / 0.84);
 
   /* Type */
   --font-display: "Sofia Sans Extra Condensed", "Arial Narrow", "Roboto Condensed", sans-serif-condensed, "Helvetica Neue",
@@ -55,6 +70,32 @@
   --z-copy: 2;
   --z-header: 30;
   --z-skip: 50;
+}
+
+/* Light theme: warm drafting paper, navy ink, a deeper hi-vis orange so the
+   accent still reads as text (4.8:1 on the page, 5.2:1 on raised surfaces). */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --deep: #f4f0e7;
+  --hull: #fbf9f4;
+  --hull-2: #efe9de;
+  --chrome: #ece6da;
+  --well: #e4ddcf;
+  --rule: #dcd4c4;
+  --rule-strong: #b3aa96;
+  --vellum: #131e30;
+  --vellum-max: #000;
+  --mist: #39455a;
+  --steel: #4e596b;
+  --slate: #8a93a5;
+  --hivis: #b8431a;
+  --hivis-hover: #9f3712;
+  --hivis-soft: rgb(184 67 26 / 0.14);
+  --on-hivis: #fbf9f4;
+  --rim: #7fa3d1;
+  --shadow: rgb(58 44 20 / 0.32);
+  --backdrop: rgb(19 30 48 / 0.6);
 }
 
 @media (min-width: 760px) {

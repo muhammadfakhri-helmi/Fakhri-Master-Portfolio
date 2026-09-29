@@ -50,6 +50,8 @@ export const id: Dict = {
   "nav.about": "Tentang",
   "nav.contact": "Kontak",
   "nav.langLabel": "Bahasa",
+  "nav.themeToLight": "Ganti ke tema terang",
+  "nav.themeToDark": "Ganti ke tema gelap",
 
   // ---------- hero ----------
   "hero.eyebrow": "Petroleum engineer · Jakarta, Indonesia",

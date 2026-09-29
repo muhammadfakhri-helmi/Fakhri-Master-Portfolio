@@ -60,6 +60,32 @@ neutral (pruned during the polish pass).
 
 Contrast rules: body text ≥ 4.5:1, focus ring 2 px `--hivis` with 3 px offset.
 
+### 3.1 Light theme (added 29 Sep 2026)
+
+The same roles, redrawn as warm drafting paper with navy ink. `src/styles/tokens.css`
+defines both; every colour in the CSS and in the inline drawings goes through a token
+(translucent tints use `color-mix()` on the token), so no hex value lives outside that file
+apart from the `theme-color` meta values and the favicon.
+
+| Token | Dark | Light | Light-theme role |
+| --- | --- | --- | --- |
+| `--deep` | `#0A111D` | `#F4F0E7` | Page background: warm paper. |
+| `--hull` | `#0F1829` | `#FBF9F4` | Raised surfaces sit *lighter* than the page. |
+| `--vellum` | `#F2EEE6` | `#131E30` | Primary text: navy ink (14.7:1). |
+| `--steel` | `#9DA8BA` | `#4E596B` | Secondary text (6.2:1). |
+| `--hivis` | `#E8622A` | `#B8431A` | Deeper hi-vis so the accent still works as text (4.8:1 on the page, 5.2:1 on `--hull`); text on it is `--on-hivis` (paper, 5.2:1). |
+| `--rim` | `#2C4F7F` | `#7FA3D1` | Paler blue halo behind the cutout. |
+
+Screenshots of the case-study sites stay as captured (they are dark sites); on paper they
+read as windows onto another page.
+
+**Which theme a visitor sees:** a choice made with the header sun/moon button
+(`localStorage` key `fmp-theme`, shared by both languages) → otherwise the device's
+light/dark setting, followed live. Choosing the theme the device already asks for clears the
+stored choice, so the page follows the device again. An inline script in the `<head>` sets
+`<html data-theme>` before first paint (no flash); `src/lib/theme.ts` wires the button.
+Without JavaScript the page stays dark.
+
 ## 4. Typography
 
 | Role | Face | Why |

@@ -275,7 +275,7 @@
 
 .story dd {
   max-width: 40rem;
-  color: rgb(242 238 230 / 0.92);
+  color: color-mix(in srgb, var(--vellum) 92%, transparent);
 }
 
 .ws-lead {
@@ -403,7 +403,7 @@
 
 .kpi-ev {
   width: 38%;
-  color: rgb(242 238 230 / 0.86);
+  color: color-mix(in srgb, var(--vellum) 86%, transparent);
 }
 
 .kpi-res {
@@ -426,7 +426,7 @@
 
 @media (min-width: 900px) {
   .kpi-table tbody tr:hover {
-    background: rgb(15 24 41 / 0.7);
+    background: color-mix(in srgb, var(--hull) 70%, transparent);
   }
 }
 
@@ -532,7 +532,7 @@
   margin-top: auto;
   font-size: 0.875rem;
   line-height: 1.45;
-  color: rgb(242 238 230 / 0.86);
+  color: color-mix(in srgb, var(--vellum) 86%, transparent);
 }
 
 /* chips joined by short hi-vis connectors */
@@ -622,7 +622,7 @@
   content: "";
   position: absolute;
   inset: 0 30% 0 0;
-  background: rgb(242 238 230 / 0.28);
+  background: color-mix(in srgb, var(--vellum) 28%, transparent);
   border-radius: 999px 0 0 999px;
 }
 
@@ -865,7 +865,7 @@
   }
 
   .matrix tbody tr:hover {
-    background: rgb(15 24 41 / 0.7);
+    background: color-mix(in srgb, var(--hull) 70%, transparent);
   }
 }
 
@@ -967,7 +967,7 @@
 }
 
 .ddr .c {
-  --c: #c9cfda;
+  --c: var(--mist);
 }
 
 .ddr .r {
@@ -975,7 +975,7 @@
 }
 
 .ddr .t {
-  --c: #5b6b86;
+  --c: var(--slate);
 }
 
 .ddr .n {
@@ -1040,7 +1040,7 @@
 .ptnpt-col p:not(.ptnpt-name) {
   font-size: 0.8125rem;
   line-height: 1.45;
-  color: rgb(242 238 230 / 0.86);
+  color: color-mix(in srgb, var(--vellum) 86%, transparent);
 }
 
 /* The BHA drawn as a string from drillpipe (top) to bit (bottom). */
@@ -1079,7 +1079,7 @@
 
 .bha-jar i {
   width: 1.9rem;
-  background: #c9cfda;
+  background: var(--mist);
 }
 
 .bha-dc i {
@@ -1101,7 +1101,7 @@
 
 .bha-motor i {
   width: 2.3rem;
-  background: #c9cfda;
+  background: var(--mist);
 }
 
 .bha-bit i {
@@ -1169,7 +1169,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgb(15 24 41 / 0.2), rgb(15 24 41 / 0.86));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--hull) 20%, transparent), color-mix(in srgb, var(--hull) 86%, transparent));
   pointer-events: none;
 }
 
@@ -1235,7 +1235,7 @@
     height: 1.25rem;
     margin: -0.625rem 0 0 -0.625rem;
     font-size: 0.6875rem;
-    box-shadow: 0 0 0 3px rgb(10 17 29 / 0.85);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--deep) 85%, transparent);
   }
 }
 
@@ -1250,9 +1250,9 @@
   margin: -0.8125rem 0 0 -0.8125rem;
   border-radius: 50%;
   background: var(--hivis);
-  color: var(--deep);
+  color: var(--on-hivis);
   font: 600 0.75rem/1 var(--font-mono);
-  box-shadow: 0 0 0 4px rgb(10 17 29 / 0.85);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--deep) 85%, transparent);
 }
 
 .legend {
@@ -1524,7 +1524,7 @@
 }
 
 .cmp td.is-picked {
-  background: rgb(232 98 42 / 0.07);
+  background: color-mix(in srgb, var(--hivis) 7%, transparent);
 }
 
 .cmp strong {
@@ -1819,7 +1819,7 @@
   padding: var(--s2);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
-  background: rgb(10 17 29 / 0.5);
+  background: color-mix(in srgb, var(--deep) 50%, transparent);
 }
 
 .kpi-grid dd {
@@ -1894,7 +1894,7 @@
 
 .step p {
   margin-top: 0.5rem;
-  color: rgb(242 238 230 / 0.9);
+  color: color-mix(in srgb, var(--vellum) 90%, transparent);
 }
 
 .steps-text .ev-actions {
