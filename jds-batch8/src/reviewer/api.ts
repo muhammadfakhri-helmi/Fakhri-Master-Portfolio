@@ -1,5 +1,5 @@
 // Talks to reviewer/server.mjs on 127.0.0.1. Only reviewer scores, notes and
-// statuses are sent — never decrypted answers or the private key.
+// statuses are sent — never the answer files themselves.
 
 import type { Review } from "../lib/scoring.ts";
 

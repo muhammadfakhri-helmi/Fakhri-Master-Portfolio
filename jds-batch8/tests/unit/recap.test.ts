@@ -1,8 +1,7 @@
-import { beforeAll, describe, expect, it } from "vitest";
-import { base64ToBytes, exportPublicKeyBase64, generateRecipientKeyPair, keyIdFromSpki } from "../../src/lib/crypto.ts";
+import { describe, expect, it } from "vitest";
 import { csvCell, toCsv } from "../../src/lib/csv.ts";
 import { emptyIntake, intakeFile, possibleRepeatSubmissions } from "../../src/lib/intake.ts";
-import { createEncryptedAssessment, buildPayload, type RecipientKey } from "../../src/lib/payload.ts";
+import { buildPayload, createAnswerFile } from "../../src/lib/payload.ts";
 import { aggregateKpi, externalCompaniesCsv, externalKpiCsv, internalStrategyCsv, RECAP_HEADER, recapCsv, type Candidate } from "../../src/lib/recap.ts";
 import type { Review } from "../../src/lib/scoring.ts";
 import { completeExternalAnswers, completeInternalAnswers } from "../fixtures.ts";
@@ -63,43 +62,27 @@ describe("CSV", () => {
 });
 
 describe("reviewer intake", () => {
-  let recipient: RecipientKey;
-  let key: { key: CryptoKey; keyId: string };
-  let wrongKey: { key: CryptoKey; keyId: string };
-  beforeAll(async () => {
-    const [pair, otherPair] = await Promise.all([generateRecipientKeyPair(2048), generateRecipientKeyPair(2048)]);
-    const spki = await exportPublicKeyBase64(pair.publicKey);
-    const keyId = await keyIdFromSpki(base64ToBytes(spki));
-    recipient = { configured: true, keyId, spki };
-    key = { key: pair.privateKey, keyId };
-    wrongKey = { key: otherPair.privateKey, keyId: await keyIdFromSpki(base64ToBytes(await exportPublicKeyBase64(otherPair.publicKey))) };
-  });
-
-  it("loads many files, ignores a re-loaded file and flags submission-ID conflicts", async () => {
-    const a = await createEncryptedAssessment(completeInternalAnswers("Satu"), recipient);
-    const b = await createEncryptedAssessment(completeExternalAnswers("Dua"), recipient);
+  it("loads many files, ignores a re-loaded file and flags submission-ID conflicts", () => {
+    const a = createAnswerFile(completeInternalAnswers("Satu"));
+    const b = createAnswerFile(completeExternalAnswers("Dua"));
     let state = emptyIntake();
-    for (const f of [a, b]) state = (await intakeFile(state, f.fileName, f.content, key)).state;
+    for (const f of [a, b]) state = intakeFile(state, f.fileName, f.content).state;
     expect(state.candidates.map((c) => c.payload.personal.fullName)).toEqual(["Satu", "Dua"]);
 
-    const again = await intakeFile(state, a.fileName, a.content, key);
+    const again = intakeFile(state, a.fileName, a.content);
     expect(again.result.status).toBe("duplicate_file");
     expect(again.state.candidates).toHaveLength(2);
 
     // A different submission that happens to carry the same ID.
-    const c = await createEncryptedAssessment(completeInternalAnswers("Tiga"), recipient);
+    const c = createAnswerFile(completeInternalAnswers("Tiga"));
     const collided = c.content.split(c.submissionId).join(a.submissionId);
-    const conflict = await intakeFile(state, "collision.md", collided, key);
+    const conflict = intakeFile(state, "collision.md", collided);
     expect(conflict.result.status).toBe("id_conflict");
     expect(conflict.state.conflicts).toEqual([a.submissionId]);
   });
 
-  it("reports wrong keys, tampered and foreign files", async () => {
-    const a = await createEncryptedAssessment(completeInternalAnswers(), recipient);
-    expect((await intakeFile(emptyIntake(), "a.md", a.content, wrongKey)).result.status).toBe("wrong_key");
-    const tampered = a.content.replace(/"ciphertext": "(.)/, (_m, ch: string) => `"ciphertext": "${ch === "A" ? "B" : "A"}`);
-    expect((await intakeFile(emptyIntake(), "t.md", tampered, key)).result.status).toBe("tampered");
-    expect((await intakeFile(emptyIntake(), "x.md", "# catatan biasa", key)).result.status).toBe("invalid_format");
+  it("reports files that are not answer files", () => {
+    expect(intakeFile(emptyIntake(), "x.md", "# catatan biasa").result.status).toBe("invalid_format");
   });
 
   it("detects the same person submitting twice under different IDs", () => {

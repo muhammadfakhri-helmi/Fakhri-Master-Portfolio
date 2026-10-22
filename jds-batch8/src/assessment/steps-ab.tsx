@@ -52,7 +52,7 @@ export function PersonalStep({ answers, update, errors }: StepProps) {
         />
       </QuestionBlock>
 
-      <QuestionBlock number="Q3" title="Kontak" intro={<p>Data kontak bersifat pribadi. Data ini ikut dienkripsi dan hanya dapat dibuka oleh panitia penilai.</p>}>
+      <QuestionBlock number="Q3" title="Kontak" intro={<p>Data kontak bersifat pribadi dan hanya digunakan panitia untuk keperluan seleksi.</p>}>
         <div className="grid gap-5 sm:grid-cols-2">
           <TextField
             name="personal.email"

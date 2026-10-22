@@ -11,7 +11,7 @@ export const SECTIONS: { id: SectionId; label: string; sub: string; icon: Lucide
   { id: "B", label: "Pilihan Tim", sub: "Internal · External · Flexible", icon: UsersRound },
   { id: "C", label: "Studi Kasus", sub: "Strategi & target nyata", icon: Compass },
   { id: "D", label: "Komitmen", sub: "Reward, peran, akuntabilitas", icon: Flag },
-  { id: "Review", label: "Review & Unduh", sub: "Periksa lalu enkripsi", icon: ClipboardCheck },
+  { id: "Review", label: "Review & Unduh", sub: "Periksa lalu unduh .md", icon: ClipboardCheck },
 ];
 
 interface ShellProps {

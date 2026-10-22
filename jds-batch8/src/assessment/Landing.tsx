@@ -2,17 +2,16 @@ import {
   ArrowRight,
   Building2,
   CalendarCheck,
+  FileText,
   ChartLine,
   Clock,
   Compass,
   Gauge,
   Handshake,
-  KeyRound,
   LayoutDashboard,
   Leaf,
   ListChecks,
-  Lock,
-  ShieldCheck,
+  Send,
   Shuffle,
   Target,
   UsersRound,
@@ -79,7 +78,7 @@ const FLOW = [
   { code: "B", title: "Team Preference", text: "Pilihan tim & kontribusi bersama", minutes: "3 mnt" },
   { code: "C", title: "Strategic Case Assessment", text: "Studi kasus Internal atau External", minutes: "10–15 mnt" },
   { code: "D", title: "Leadership & Commitment", text: "Reward KPI, peran koordinator, komitmen", minutes: "4 mnt" },
-  { code: "R", title: "Review & Download", text: "Periksa jawaban lalu unduh file terenkripsi", minutes: "1 mnt" },
+  { code: "R", title: "Review & Download", text: "Periksa jawaban lalu unduh file .md", minutes: "1 mnt" },
 ];
 
 function CardTitle({ icon: Icon = Leaf, children, id }: { icon?: LucideIcon; children: string; id: string }) {
@@ -91,7 +90,7 @@ function CardTitle({ icon: Icon = Leaf, children, id }: { icon?: LucideIcon; chi
   );
 }
 
-export function Landing({ onStart, keyReady, keyId }: { onStart: () => void; keyReady: boolean; keyId: string }) {
+export function Landing({ onStart }: { onStart: () => void }) {
   return (
     <main className="mx-auto max-w-6xl space-y-6 px-4 py-5 sm:px-8 sm:py-8">
       <SceneBanner>
@@ -104,7 +103,7 @@ export function Landing({ onStart, keyReady, keyId }: { onStart: () => void; key
               Selamat datang! Asesmen ini memetakan cara kamu menyusun strategi, menetapkan target, dan berkontribusi nyata untuk mencapai 300 peserta JDS Batch 8.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
-              <button type="button" className="btn-accent px-6 py-3 text-base" onClick={onStart} disabled={!keyReady}>
+              <button type="button" className="btn-accent px-6 py-3 text-base" onClick={onStart}>
                 Mulai asesmen
                 <ArrowRight className="size-4.5" aria-hidden="true" />
               </button>
@@ -113,16 +112,11 @@ export function Landing({ onStart, keyReady, keyId }: { onStart: () => void; key
                 Estimasi waktu pengerjaan: 15–25 menit
               </span>
             </div>
-            {!keyReady && (
-              <p role="status" className="mt-5 max-w-lg rounded-2xl border border-amber-300 bg-amber-50/95 px-4 py-3 text-sm text-amber-900">
-                Asesmen belum dibuka: kunci enkripsi belum dipasang. Silakan kembali setelah panitia mengumumkan bahwa asesmen telah dibuka.
-              </p>
-            )}
           </div>
           <dl className="hidden w-60 shrink-0 space-y-3 rounded-2xl bg-cream-50/90 p-4 text-sm shadow-[var(--shadow-card)] ring-1 ring-cream-300/70 backdrop-blur md:block">
             {[
               { icon: ListChecks, term: "Struktur", desc: "4 bagian + review" },
-              { icon: Lock, term: "Jawaban", desc: "Terenkripsi di perangkatmu" },
+              { icon: FileText, term: "Hasil", desc: "File jawaban .md" },
               { icon: WifiOff, term: "Akun", desc: "Tanpa login & tanpa server" },
             ].map(({ icon: Icon, term, desc }) => (
               <div key={term} className="flex items-center gap-3">
@@ -293,15 +287,15 @@ export function Landing({ onStart, keyReady, keyId }: { onStart: () => void; key
         </section>
 
         <section aria-labelledby="privacy" className="card p-5 sm:p-6">
-          <CardTitle id="privacy" icon={ShieldCheck}>
-            Privasi & keamanan jawaban
+          <CardTitle id="privacy" icon={FileText}>
+            Jawaban & pengiriman
           </CardTitle>
           <ul className="mt-4 space-y-3 text-[14px] leading-relaxed text-[#5b5544]">
             {[
-              { icon: Lock, text: "Jawaban dienkripsi di perangkatmu (AES-256-GCM + RSA-OAEP SHA-256) sebelum diunduh." },
-              { icon: WifiOff, text: "Tidak ada server, database, login, analytics, atau pihak ketiga — halaman ini tidak dapat mengirim data." },
+              { icon: FileText, text: "Semua jawaban direkam ke satu file .md yang bisa kamu baca dan simpan sendiri." },
+              { icon: WifiOff, text: "Tidak ada login, server, database, atau analytics — halaman ini tidak mengirim data ke mana pun." },
               { icon: Clock, text: "Jawaban hanya ada di tab ini. Jangan menutup atau me-refresh halaman sebelum mengunduh file." },
-              { icon: KeyRound, text: `Hanya panitia penilai yang dapat membuka file.${keyReady && keyId ? ` ID kunci: ${keyId}.` : ""}` },
+              { icon: Send, text: "Data kontak dan jawabanmu hanya digunakan panitia untuk seleksi kepanitiaan." },
             ].map(({ icon: Icon, text }) => (
               <li key={text} className="flex gap-3">
                 <Icon className="mt-0.5 size-4.5 shrink-0 text-leaf-600" aria-hidden="true" />

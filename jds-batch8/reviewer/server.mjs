@@ -5,8 +5,8 @@
 // - Listens on 127.0.0.1 only; rejects any other Host header (DNS-rebinding guard).
 // - Serves the static reviewer app from reviewer/dist/ (never deployed).
 // - Stores reviewer scores, notes and statuses in a local JSON file outside the
-//   repository (default ~/JDS-B8-Reviewer/reviews.json). Decrypted answers and the
-//   private key never reach this server: decryption happens in the browser tab.
+//   repository (default ~/JDS-B8-Reviewer/reviews.json). Answer files are read in
+//   the browser tab and never sent to this server.
 // - Every API call needs the per-run session value embedded in the served page,
 //   so other websites open in the same browser cannot read or change reviews.
 
@@ -161,7 +161,7 @@ JDS B8 Private Reviewer berjalan (hanya di komputer ini):
   http://127.0.0.1:${port}/
 
   Data review (skor, catatan, status): ${dataFile}
-  Kunci privat & jawaban yang didekripsi tidak pernah disimpan oleh server ini.
+  File jawaban dibaca di browser dan tidak pernah dikirim ke server ini.
   Tekan Ctrl+C untuk berhenti.
 `);
 });

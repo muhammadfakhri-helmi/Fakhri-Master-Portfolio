@@ -1,18 +1,12 @@
-import { base64ToBytes, encryptJson, importPublicKey, keyIdFromSpki, randomHex } from "./crypto.ts";
 import { assessmentTrack, createInitialAnswers } from "./initial.ts";
-import { assessmentFileName, buildEncryptedMarkdown } from "./markdown.ts";
+import { assessmentFileName, buildAnswerMarkdown } from "./markdown.ts";
 import type { Answers, SubmissionPayload } from "./types.ts";
 
-export interface RecipientKey {
-  configured: boolean;
-  keyId: string;
-  spki: string;
-  createdAt?: string;
-  owner?: string;
-}
-
 /** Random 6-character submission ID, e.g. 7F29A3. */
-export const newSubmissionId = () => randomHex(3);
+export function newSubmissionId(): string {
+  const bytes = globalThis.crypto.getRandomValues(new Uint8Array(3));
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("").toUpperCase();
+}
 
 function trimDeep<T>(value: T): T {
   if (typeof value === "string") return value.trim() as T;
@@ -52,19 +46,15 @@ export function buildPayload(answers: Answers, submissionId: string, submittedAt
   };
 }
 
-export interface EncryptedFile {
+export interface AnswerFile {
   fileName: string;
   content: string;
   submissionId: string;
 }
 
-export async function createEncryptedAssessment(answers: Answers, recipient: RecipientKey): Promise<EncryptedFile> {
-  if (!recipient.configured || !recipient.spki) throw new Error("Kunci enkripsi panitia belum dikonfigurasi.");
-  const publicKey = await importPublicKey(recipient.spki);
-  const keyId = await keyIdFromSpki(base64ToBytes(recipient.spki));
-  if (recipient.keyId && recipient.keyId !== keyId) throw new Error("ID kunci publik tidak sesuai dengan isi kunci. Hubungi panitia.");
+/** The downloaded .md: readable answers plus a data block the reviewer app reads. */
+export function createAnswerFile(answers: Answers): AnswerFile {
   const submissionId = newSubmissionId();
   const payload = buildPayload(answers, submissionId);
-  const envelope = await encryptJson(payload, publicKey, { keyId, submissionId, createdAt: payload.submittedAt });
-  return { fileName: assessmentFileName(submissionId), content: buildEncryptedMarkdown(envelope), submissionId };
+  return { fileName: assessmentFileName(submissionId), content: buildAnswerMarkdown(payload), submissionId };
 }

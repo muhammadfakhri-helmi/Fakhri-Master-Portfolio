@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { cspPlugin, readRecipientKey } from "./build/shared.ts";
+import { cspPlugin } from "./build/shared.ts";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 
@@ -30,9 +30,6 @@ export default defineConfig({
       ].join("; "),
     ),
   ],
-  define: {
-    __RECIPIENT_KEY__: JSON.stringify(readRecipientKey(root)),
-  },
   build: {
     outDir: "dist",
     emptyOutDir: true,
