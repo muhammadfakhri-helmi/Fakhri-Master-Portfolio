@@ -9,8 +9,7 @@ playwright-report/
 # NEVER commit private keys or decrypted/review data
 *.pem
 *.key
-*private-key*
-*PRIVATE-KEY*
+jds-b8-private-key-*
 .keys/
 reviewer-data/
 reviews*.json
