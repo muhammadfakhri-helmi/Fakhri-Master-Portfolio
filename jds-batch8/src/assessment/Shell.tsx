@@ -9,7 +9,7 @@ export type NavState = "done" | "current" | "open" | "locked";
 export const SECTIONS: { id: SectionId; label: string; sub: string; icon: LucideIcon }[] = [
   { id: "A", label: "Personal", sub: "Latar belakang & waktu", icon: UserRound },
   { id: "B", label: "Pilihan Tim", sub: "Internal · External · Flexible", icon: UsersRound },
-  { id: "C", label: "Studi Kasus", sub: "Strategi & target nyata", icon: Compass },
+  { id: "C", label: "Objective Tim", sub: "5 pertanyaan sesuai tim", icon: Compass },
   { id: "D", label: "Komitmen", sub: "Reward, peran, akuntabilitas", icon: Flag },
   { id: "Review", label: "Review & Unduh", sub: "Periksa lalu unduh .md", icon: ClipboardCheck },
 ];

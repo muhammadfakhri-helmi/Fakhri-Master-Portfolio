@@ -38,10 +38,10 @@ describe("CSV", () => {
     ]);
     expect(rowExt).toContain(`"Kandidat External","External"`);
     expect(rowExt).toContain(`"20","14","6"`);
-    expect(rowExt).toContain("Operator Satu; Geo Dua");
+    expect(rowExt).toContain("Operator Satu; Geo Dua; Service Tiga");
     expect(rowExt).toContain(`"85","Kuat di mapping","Interview","Strong Candidate"`);
     expect(rowExt).toContain("Ya — External");
-    expect(rowInt).toContain("Strategi: strategy.mainStrategy");
+    expect(rowInt).toContain("Strategi: internal.strategy");
     expect(csv).not.toContain("Nominee Rahasia");
     expect(csv).not.toContain("Prospek Bernama Rahasia");
   });
@@ -49,10 +49,10 @@ describe("CSV", () => {
   it("exports External companies, KPI projections and Internal strategy summaries", () => {
     const candidates = [candidate(completeExternalAnswers("E1"), "AAAAAA"), candidate(completeInternalAnswers("I1"), "BBBBBB")];
     const companies = externalCompaniesCsv(candidates);
-    expect(companies.trim().split("\r\n")).toHaveLength(6);
-    expect(companies).toContain(`"E1","AAAAAA","Geo Dua","Geothermal"`);
+    expect(companies.trim().split("\r\n")).toHaveLength(4);
+    expect(companies).toContain(`"E1","AAAAAA","Geo Dua","Drilling engineer`);
     const kpi = externalKpiCsv(candidates);
-    expect(kpi).toContain(`"E1","AAAAAA","20","14","6","18","2","3","3","4","15","20","7","Ya"`);
+    expect(kpi).toContain(`"E1","AAAAAA","20","14","6","Ya","Alasan KPI`);
     expect(kpi).not.toContain("I1");
     const strategy = internalStrategyCsv(candidates);
     expect(strategy).toContain(`"I1","BBBBBB"`);

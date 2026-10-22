@@ -63,7 +63,6 @@ export function Detail({
             <h3 className="font-bold text-forest-900">Indikator otomatis KPI (bukan nilai)</h3>
             <p>
               Konsistensi angka: {Object.keys(kpi.errors).length === 0 ? <span className="font-semibold text-emerald-700">konsisten</span> : <span className="font-semibold text-red-700">tidak konsisten</span>}
-              {kpi.weeksNeeded ? ` · estimasi ±${kpi.weeksNeeded} minggu untuk mencapai target pada volume & konversi yang dinyatakan` : ""}
             </p>
             {[...Object.values(kpi.errors), ...kpi.warnings].map((m) => (
               <p key={m} className="text-amber-800">
@@ -75,7 +74,7 @@ export function Detail({
 
         {restrictedCount > 0 && (
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">
-            <span>{restrictedCount} entri berisi nama pihak ketiga (calon peserta / kandidat rekomendasi). Data terbatas — tidak masuk rekap umum.</span>
+            <span>{restrictedCount} entri berisi data kandidat rekomendasi (pihak ketiga). Data terbatas — tidak masuk rekap umum.</span>
             <button type="button" className="btn-ghost py-1.5" onClick={() => setShowRestricted((v) => !v)}>
               {showRestricted ? "Sembunyikan data terbatas" : "Tampilkan data terbatas"}
             </button>

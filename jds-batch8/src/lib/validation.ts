@@ -1,7 +1,7 @@
 // Step-by-step validation. Every error is keyed by a field path (e.g.
 // "external.companies.2.name") so the form can show it next to the field.
 
-import { assessmentTrack, MIN_COMPANIES, MIN_DELIVERABLES, MIN_PROSPECTS } from "./initial.ts";
+import { assessmentTrack, MIN_COMPANIES } from "./initial.ts";
 import type { Answers, PersonalKpi, Team } from "./types.ts";
 
 export type Errors = Record<string, string>;
@@ -10,33 +10,17 @@ export const LIMITS = {
   short: 160,
   medium: 600,
   essay: 4000,
-  /** Minimum characters for each sub-question of a case study. */
-  partMin: 40,
-  /** Minimum characters for main essay answers. */
-  essayMin: 80,
-  outreachMin: 150,
+  /** Minimum characters for short answers ("jawaban singkat"). */
+  partMin: 20,
+  /** Minimum characters for main answers. */
+  essayMin: 30,
 } as const;
 
-export type StepId =
-  | "personal"
-  | "skills"
-  | "team"
-  | "internal-strategy"
-  | "internal-execution"
-  | "internal-recovery"
-  | "internal-deliverables"
-  | "external-companies"
-  | "external-prospects"
-  | "external-kpi"
-  | "external-outreach"
-  | "external-first30"
-  | "reward-leadership"
-  | "commitment"
-  | "review";
+export type StepId = "personal" | "skills" | "team" | "internal-objective" | "external-objective" | "reward-leadership" | "commitment" | "review";
 
 export const TRACK_STEPS: Record<Team, StepId[]> = {
-  internal: ["internal-strategy", "internal-execution", "internal-recovery", "internal-deliverables"],
-  external: ["external-companies", "external-prospects", "external-kpi", "external-outreach", "external-first30"],
+  internal: ["internal-objective"],
+  external: ["external-objective"],
 };
 
 export function stepsFor(answers: Answers): StepId[] {
@@ -79,52 +63,26 @@ export function parseCount(value: string): number | null {
   return Number(trimmed);
 }
 
-export function parsePercent(value: string): number | null {
-  const trimmed = value.trim().replace(",", ".");
-  if (!/^\d{1,3}(?:\.\d{1,2})?$/.test(trimmed)) return null;
-  return Number(trimmed);
-}
-
 // ---------- KPI ----------
 
 export interface KpiNumbers {
   total: number;
   offline: number;
   online: number;
-  experienced: number;
-  freshGraduate: number;
-  operator: number;
-  seniorService: number;
-  networking: number;
-  weeklyProspects: number;
-  conversionRate: number;
 }
 
 export interface KpiCheck {
   errors: Errors;
   warnings: string[];
   numbers: Partial<KpiNumbers>;
-  /** Weeks needed to reach the total at the stated prospect volume and conversion rate. */
-  weeksNeeded: number | null;
 }
-
-const KPI_COUNT_FIELDS = [
-  "total",
-  "offline",
-  "online",
-  "experienced",
-  "freshGraduate",
-  "operator",
-  "seniorService",
-  "networking",
-] as const;
 
 export function checkKpi(kpi: PersonalKpi, prefix = "external.kpi"): KpiCheck {
   const errors: Errors = {};
   const warnings: string[] = [];
   const n: Partial<KpiNumbers> = {};
 
-  for (const field of KPI_COUNT_FIELDS) {
+  for (const field of ["total", "offline", "online"] as const) {
     const value = kpi[field];
     if (!value.trim()) {
       errors[`${prefix}.${field}`] = "Wajib diisi (isi 0 bila tidak ada).";
@@ -136,52 +94,15 @@ export function checkKpi(kpi: PersonalKpi, prefix = "external.kpi"): KpiCheck {
   }
 
   if (n.total !== undefined) {
-    if (n.total < 1) errors[`${prefix}.total`] = "Target total minimal 1 peserta terkonfirmasi.";
+    if (n.total < 1) errors[`${prefix}.total`] = "Target minimal 1 peserta terkonfirmasi.";
     else if (n.total > 300) errors[`${prefix}.total`] = "Target individu tidak boleh melebihi target acara (300 peserta).";
-    else if (n.total > 40) warnings.push(`Target ${n.total} peserta jauh di atas contoh 20 per anggota. Pastikan angka ini realistis dan dapat kamu pertanggungjawabkan.`);
+    else if (n.total > 40) warnings.push(`Target ${n.total} peserta jauh di atas contoh 20 per anggota. Pastikan angka ini realistis.`);
   }
-
-  const { total, offline, online, experienced, freshGraduate, operator, seniorService, networking } = n;
+  const { total, offline, online } = n;
   if (total !== undefined && offline !== undefined && online !== undefined && offline + online !== total) {
     errors[`${prefix}.online`] = `Offline + online harus sama dengan target total (${offline} + ${online} = ${offline + online}, target ${total}).`;
   }
-  if (total !== undefined && experienced !== undefined && freshGraduate !== undefined && experienced + freshGraduate !== total) {
-    errors[`${prefix}.freshGraduate`] = `Experienced + fresh graduate harus sama dengan target total (${experienced} + ${freshGraduate} = ${experienced + freshGraduate}, target ${total}).`;
-  }
-  if (experienced !== undefined && operator !== undefined && seniorService !== undefined && operator + seniorService > experienced) {
-    errors[`${prefix}.seniorService`] = `Operator + senior service company (${operator + seniorService}) adalah bagian dari experienced, jadi tidak boleh melebihi ${experienced}.`;
-  }
-  if (total !== undefined && networking !== undefined && networking > total) {
-    errors[`${prefix}.networking`] = `Peserta dengan kontribusi networking adalah bagian dari total, jadi tidak boleh melebihi ${total}.`;
-  }
-  if (freshGraduate !== undefined && freshGraduate > 20) {
-    warnings.push("Target fresh graduate individumu melebihi kuota acara (20). Pertimbangkan memprioritaskan peserta experienced.");
-  }
-
-  if (!kpi.weeklyProspects.trim()) errors[`${prefix}.weeklyProspects`] = "Wajib diisi.";
-  else {
-    const weekly = parseCount(kpi.weeklyProspects);
-    if (weekly === null || weekly < 1 || weekly > 500) errors[`${prefix}.weeklyProspects`] = "Masukkan bilangan bulat 1–500.";
-    else n.weeklyProspects = weekly;
-  }
-  if (!kpi.conversionRate.trim()) errors[`${prefix}.conversionRate`] = "Wajib diisi.";
-  else {
-    const rate = parsePercent(kpi.conversionRate);
-    if (rate === null || rate <= 0 || rate > 100) errors[`${prefix}.conversionRate`] = "Masukkan persentase lebih dari 0 hingga 100.";
-    else n.conversionRate = rate;
-  }
-
-  let weeksNeeded: number | null = null;
-  if (n.total && n.weeklyProspects && n.conversionRate) {
-    const perWeek = (n.weeklyProspects * n.conversionRate) / 100;
-    weeksNeeded = Math.ceil(n.total / perWeek);
-  }
-
-  text(errors, `${prefix}.prospectSources`, kpi.prospectSources, 20);
-  text(errors, `${prefix}.halfKpiPlan`, kpi.halfKpiPlan, LIMITS.partMin);
-  text(errors, `${prefix}.accountableCommitment`, kpi.accountableCommitment, LIMITS.partMin);
-
-  return { errors, warnings, numbers: n, weeksNeeded };
+  return { errors, warnings, numbers: n };
 }
 
 // ---------- steps ----------
@@ -211,86 +132,37 @@ export function validateStep(step: StepId, answers: Answers): Errors {
     case "skills": {
       if (p.skills.length === 0) errors["personal.skills"] = "Pilih minimal satu keahlian.";
       if (p.skills.includes("Other")) text(errors, "personal.skillsOther", p.skillsOther, 2);
-      text(errors, "personal.readiestSkill", p.readiestSkill, 20);
+      text(errors, "personal.readiestSkill", p.readiestSkill, 10);
       choice(errors, "personal.weeklyHours", p.weeklyHours);
       text(errors, "personal.availableTimes", p.availableTimes, 5);
       break;
     }
     case "team": {
       choice(errors, "team.preference", team.preference);
-      if (team.preference === "flexible") choice(errors, "team.flexibleTrack", team.flexibleTrack, "Pilih studi kasus yang ingin kamu kerjakan.");
+      if (team.preference === "flexible") choice(errors, "team.flexibleTrack", team.flexibleTrack, "Pilih set pertanyaan yang ingin kamu jawab.");
       text(errors, "team.reason", team.reason, LIMITS.essayMin);
       text(errors, "team.sharedContribution", team.sharedContribution, LIMITS.essayMin);
       break;
     }
-    case "internal-strategy": {
-      for (const [field, value] of Object.entries(internal.strategy)) text(errors, `internal.strategy.${field}`, value, LIMITS.partMin);
+    case "internal-objective": {
+      for (const [field, value] of Object.entries(internal)) text(errors, `internal.${field}`, value as string, LIMITS.partMin);
       break;
     }
-    case "internal-execution": {
-      for (const [field, value] of Object.entries(internal.execution)) text(errors, `internal.execution.${field}`, value, LIMITS.partMin);
-      break;
-    }
-    case "internal-recovery": {
-      for (const [field, value] of Object.entries(internal.recovery)) text(errors, `internal.recovery.${field}`, value, LIMITS.partMin);
-      break;
-    }
-    case "internal-deliverables": {
-      if (internal.deliverables.length < MIN_DELIVERABLES) errors["internal.deliverables"] = `Isi minimal ${MIN_DELIVERABLES} deliverable.`;
-      internal.deliverables.forEach((d, i) => {
-        const k = `internal.deliverables.${i}`;
-        text(errors, `${k}.title`, d.title, 5);
-        text(errors, `${k}.deadline`, d.deadline, 3);
-        text(errors, `${k}.indicator`, d.indicator, 15);
-        text(errors, `${k}.impact`, d.impact, 20);
+    case "external-objective": {
+      const filled = external.companies.map((c) => c.trim()).filter(Boolean);
+      if (filled.length < MIN_COMPANIES) errors["external.companies"] = `Sebutkan minimal ${MIN_COMPANIES} perusahaan.`;
+      const seen = new Set<string>();
+      external.companies.forEach((name, i) => {
+        const normalized = name.trim().toLowerCase();
+        if (!normalized) return;
+        if (seen.has(normalized)) errors[`external.companies.${i}`] = "Perusahaan ini sudah disebutkan.";
+        seen.add(normalized);
+        noContact(errors, `external.companies.${i}`, name);
       });
-      break;
-    }
-    case "external-companies": {
-      if (external.companies.length < MIN_COMPANIES) errors["external.companies"] = `Isi minimal ${MIN_COMPANIES} perusahaan target.`;
-      const seen = new Map<string, number>();
-      external.companies.forEach((c, i) => {
-        const k = `external.companies.${i}`;
-        text(errors, `${k}.name`, c.name, 2);
-        const normalized = c.name.trim().toLowerCase();
-        if (normalized) {
-          if (seen.has(normalized)) errors[`${k}.name`] = `Perusahaan ini sudah ada di entri #${seen.get(normalized)! + 1}.`;
-          else seen.set(normalized, i);
-        }
-        choice(errors, `${k}.industry`, c.industry);
-        if (c.industry === "other") text(errors, `${k}.industryOther`, c.industryOther, 2);
-        text(errors, `${k}.targetProfile`, c.targetProfile, 5);
-        text(errors, `${k}.reason`, c.reason, 20);
-        choice(errors, `${k}.approach`, c.approach);
-        if (c.approach === "other") text(errors, `${k}.approachOther`, c.approachOther, 2);
-        for (const field of ["name", "targetProfile", "reason", "industryOther", "approachOther"] as const) noContact(errors, `${k}.${field}`, c[field]);
-      });
-      break;
-    }
-    case "external-prospects": {
-      if (external.prospects.length < MIN_PROSPECTS) errors["external.prospects"] = `Isi minimal ${MIN_PROSPECTS} calon target.`;
-      external.prospects.forEach((t, i) => {
-        const k = `external.prospects.${i}`;
-        text(errors, `${k}.profile`, t.profile, 5);
-        text(errors, `${k}.companyOrIndustry`, t.companyOrIndustry, 2);
-        text(errors, `${k}.experience`, t.experience, 1);
-        text(errors, `${k}.relevance`, t.relevance, 20);
-        choice(errors, `${k}.relationship`, t.relationship);
-        text(errors, `${k}.approachPlan`, t.approachPlan, 20);
-        for (const field of ["name", "profile", "companyOrIndustry", "experience", "relevance", "approachPlan"] as const) noContact(errors, `${k}.${field}`, t[field]);
-      });
-      break;
-    }
-    case "external-kpi": {
+      text(errors, "external.targetProfile", external.targetProfile, LIMITS.partMin);
       Object.assign(errors, checkKpi(external.kpi).errors);
-      break;
-    }
-    case "external-outreach": {
-      text(errors, "external.outreachMessage", external.outreachMessage, LIMITS.outreachMin, "Pesan");
-      break;
-    }
-    case "external-first30": {
-      for (const [field, value] of Object.entries(external.first30)) text(errors, `external.first30.${field}`, value, 20);
+      for (const field of ["kpiReason", "approach", "conversion", "reporting"] as const) text(errors, `external.${field}`, external[field], LIMITS.partMin);
+      noContact(errors, "external.targetProfile", external.targetProfile);
       break;
     }
     case "reward-leadership": {
@@ -298,14 +170,14 @@ export function validateStep(step: StepId, answers: Answers): Errors {
       choice(errors, "final.reward.plan", reward.plan);
       if (reward.plan === "yes") {
         text(errors, "final.reward.nomineeBackground", reward.nomineeBackground, 10);
-        text(errors, "final.reward.nomineeReason", reward.nomineeReason, 30);
+        text(errors, "final.reward.nomineeReason", reward.nomineeReason, 20);
         if (!reward.transparencyAck) errors["final.reward.transparencyAck"] = "Centang untuk menyatakan pengajuan dilakukan secara transparan.";
         for (const field of ["nomineeName", "nomineeBackground", "nomineeReason", "nomineeContext"] as const) noContact(errors, `final.reward.${field}`, reward[field]);
       }
       choice(errors, "final.leadership.interest", leadership.interest);
       if (leadership.interest && leadership.interest !== "member_only") {
         text(errors, "final.leadership.readiness", leadership.readiness, LIMITS.essayMin);
-        leadership.actions.forEach((action, i) => text(errors, `final.leadership.actions.${i}`, action, 15));
+        leadership.actions.forEach((action, i) => text(errors, `final.leadership.actions.${i}`, action, 10));
       }
       break;
     }

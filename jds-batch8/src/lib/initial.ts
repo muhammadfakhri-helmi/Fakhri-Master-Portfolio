@@ -1,33 +1,7 @@
-import type { Answers, InternalDeliverable, ProspectTarget, Team, TargetCompany } from "./types.ts";
+import type { Answers, Team } from "./types.ts";
 
-export const emptyCompany = (): TargetCompany => ({
-  name: "",
-  industry: "",
-  industryOther: "",
-  targetProfile: "",
-  reason: "",
-  approach: "",
-  approachOther: "",
-});
-
-export const emptyProspect = (): ProspectTarget => ({
-  name: "",
-  profile: "",
-  companyOrIndustry: "",
-  experience: "",
-  relevance: "",
-  relationship: "",
-  approachPlan: "",
-});
-
-export const emptyDeliverable = (): InternalDeliverable => ({ title: "", deadline: "", indicator: "", impact: "" });
-
-export const MIN_COMPANIES = 5;
-export const MAX_COMPANIES = 15;
-export const MIN_PROSPECTS = 3;
-export const MAX_PROSPECTS = 20;
-export const MIN_DELIVERABLES = 2;
-export const MAX_DELIVERABLES = 5;
+export const MIN_COMPANIES = 3;
+export const MAX_COMPANIES = 10;
 
 export function createInitialAnswers(): Answers {
   return {
@@ -48,46 +22,15 @@ export function createInitialAnswers(): Answers {
       scheduleConstraints: "",
     },
     team: { preference: "", flexibleTrack: "", reason: "", sharedContribution: "" },
-    internal: {
-      strategy: {
-        mainStrategy: "",
-        operatorPlan: "",
-        seniorServicePlan: "",
-        freshGraduatePlan: "",
-        networkingPlan: "",
-        firstThreeSteps: "",
-      },
-      execution: { priorities: "", externalSupport: "", effectivenessMeasure: "", workloadSplit: "" },
-      recovery: { priorities: "", outreachChanges: "", externalCoordination: "", recoveryKpi: "", risks: "" },
-      deliverables: [emptyDeliverable(), emptyDeliverable()],
-    },
+    internal: { strategy: "", tracking: "", externalSupport: "", recovery: "", composition: "" },
     external: {
-      companies: Array.from({ length: MIN_COMPANIES }, emptyCompany),
-      prospects: Array.from({ length: MIN_PROSPECTS }, emptyProspect),
-      kpi: {
-        total: "",
-        offline: "",
-        online: "",
-        experienced: "",
-        freshGraduate: "",
-        operator: "",
-        seniorService: "",
-        networking: "",
-        weeklyProspects: "",
-        conversionRate: "",
-        prospectSources: "",
-        halfKpiPlan: "",
-        accountableCommitment: "",
-      },
-      outreachMessage: "",
-      first30: {
-        targetCompanies: "",
-        prospectCount: "",
-        weeklyActivities: "",
-        followUp: "",
-        conversionTarget: "",
-        reporting: "",
-      },
+      companies: Array.from({ length: MIN_COMPANIES }, () => ""),
+      targetProfile: "",
+      kpi: { total: "", offline: "", online: "" },
+      kpiReason: "",
+      approach: "",
+      conversion: "",
+      reporting: "",
     },
     final: {
       reward: {

@@ -191,11 +191,11 @@ export function TeamStep({ answers, update, errors }: StepProps) {
           <div className="step-enter">
             <RadioCards
               name="team.flexibleTrack"
-              legend="Studi kasus mana yang ingin kamu kerjakan?"
-              help="Kamu cukup mengerjakan satu studi kasus. Pilihan ini tidak mengurangi peluangmu ditempatkan di tim mana pun."
+              legend="Pertanyaan tim mana yang ingin kamu jawab?"
+              help="Kamu cukup menjawab satu set pertanyaan. Pilihan ini tidak mengurangi peluangmu ditempatkan di tim mana pun."
               options={[
-                { value: "internal", label: "Studi kasus Internal", hint: "Strategi mencapai 300 peserta, koordinasi, dan pemulihan target." },
-                { value: "external", label: "Studi kasus External", hint: "Pemetaan perusahaan & calon peserta, KPI pribadi, dan simulasi outreach." },
+                { value: "internal", label: "Pertanyaan Internal", hint: "Strategi 300 peserta, mengukur kemajuan, dan membantu External." },
+                { value: "external", label: "Pertanyaan External", hint: "Perusahaan sasaran, target peserta, dan cara mengajak mereka bergabung." },
               ]}
               value={t.flexibleTrack}
               columns={2}

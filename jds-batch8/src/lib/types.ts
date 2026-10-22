@@ -5,9 +5,6 @@ export type Team = "internal" | "external";
 export type TeamPreference = Team | "flexible";
 export type CandidateStatus = "mahasiswa" | "fresh_graduate" | "working_professional";
 export type WeeklyHours = "lt3" | "3to5" | "6to10" | "gt10";
-export type CompanyIndustry = "operator_oil_gas" | "geothermal" | "service_company" | "engineering" | "other";
-export type ApproachChannel = "linkedin" | "referral" | "personal_network" | "community" | "other";
-export type RelationshipStatus = "professional_contact" | "indirect_connection" | "no_connection" | "identifying";
 export type RewardPlan = "yes" | "maybe" | "no";
 export type LeadershipInterest = "lead_internal" | "lead_external" | "lead_either" | "member_only";
 export type PlacementAnswer = "yes" | "conditional" | "no";
@@ -37,56 +34,18 @@ export interface TeamPreferenceAnswers {
   sharedContribution: string;
 }
 
-export interface InternalDeliverable {
-  title: string;
-  deadline: string;
-  indicator: string;
-  impact: string;
-}
-
+/** Section C for Internal: five questions on the Internal Team objective. */
 export interface InternalAssessment {
-  strategy: {
-    mainStrategy: string;
-    operatorPlan: string;
-    seniorServicePlan: string;
-    freshGraduatePlan: string;
-    networkingPlan: string;
-    firstThreeSteps: string;
-  };
-  execution: {
-    priorities: string;
-    externalSupport: string;
-    effectivenessMeasure: string;
-    workloadSplit: string;
-  };
-  recovery: {
-    priorities: string;
-    outreachChanges: string;
-    externalCoordination: string;
-    recoveryKpi: string;
-    risks: string;
-  };
-  deliverables: InternalDeliverable[];
-}
-
-export interface TargetCompany {
-  name: string;
-  industry: CompanyIndustry | "";
-  industryOther: string;
-  targetProfile: string;
-  reason: string;
-  approach: ApproachChannel | "";
-  approachOther: string;
-}
-
-export interface ProspectTarget {
-  name: string;
-  profile: string;
-  companyOrIndustry: string;
-  experience: string;
-  relevance: string;
-  relationship: RelationshipStatus | "";
-  approachPlan: string;
+  /** How the 300-participant target (200 offline / 100 online) will be reached. */
+  strategy: string;
+  /** How targets are divided and progress is measured each week. */
+  tracking: string;
+  /** Concrete support for the External Team to reach its KPI. */
+  externalSupport: string;
+  /** What to do when registrations fall short two weeks before closing. */
+  recovery: string;
+  /** Keeping 20 fresh graduates and 280 experienced professionals in balance. */
+  composition: string;
 }
 
 /** Numbers are kept as strings while typing; validation turns them into integers. */
@@ -94,31 +53,23 @@ export interface PersonalKpi {
   total: string;
   offline: string;
   online: string;
-  experienced: string;
-  freshGraduate: string;
-  operator: string;
-  seniorService: string;
-  networking: string;
-  weeklyProspects: string;
-  conversionRate: string;
-  prospectSources: string;
-  halfKpiPlan: string;
-  accountableCommitment: string;
 }
 
+/** Section C for External: five questions on the External Team objective. */
 export interface ExternalAssessment {
-  companies: TargetCompany[];
-  prospects: ProspectTarget[];
+  /** Companies the candidate plans to approach (a sourcing plan, not proof of access). */
+  companies: string[];
+  /** Positions or professional profiles to reach in those companies. */
+  targetProfile: string;
   kpi: PersonalKpi;
-  outreachMessage: string;
-  first30: {
-    targetCompanies: string;
-    prospectCount: string;
-    weeklyActivities: string;
-    followUp: string;
-    conversionTarget: string;
-    reporting: string;
-  };
+  /** Why the KPI is realistic. */
+  kpiReason: string;
+  /** How prospects will be contacted. */
+  approach: string;
+  /** How prospects are converted into confirmed participants (follow-up). */
+  conversion: string;
+  /** How activity and obstacles are reported to the team. */
+  reporting: string;
 }
 
 export interface FinalSection {

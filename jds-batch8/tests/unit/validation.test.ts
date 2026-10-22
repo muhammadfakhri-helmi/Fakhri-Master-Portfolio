@@ -9,17 +9,15 @@ describe("assessment path (branching)", () => {
     const a = createInitialAnswers();
     expect(stepsFor(a)).toEqual(["personal", "skills", "team", "reward-leadership", "commitment", "review"]);
     a.team.preference = "internal";
-    expect(stepsFor(a).filter((s) => s.startsWith("internal-"))).toHaveLength(4);
-    expect(stepsFor(a).some((s) => s.startsWith("external-"))).toBe(false);
+    expect(stepsFor(a)).toEqual(["personal", "skills", "team", "internal-objective", "reward-leadership", "commitment", "review"]);
     a.team.preference = "external";
-    expect(stepsFor(a).filter((s) => s.startsWith("external-"))).toHaveLength(5);
-    expect(stepsFor(a).some((s) => s.startsWith("internal-"))).toBe(false);
+    expect(stepsFor(a)).toEqual(["personal", "skills", "team", "external-objective", "reward-leadership", "commitment", "review"]);
     a.team.preference = "flexible";
     expect(stepsFor(a).some((s) => s.startsWith("internal-") || s.startsWith("external-"))).toBe(false);
     expect(validateStep("team", a)["team.flexibleTrack"]).toBeTruthy();
     a.team.flexibleTrack = "external";
-    expect(stepsFor(a)).toContain("external-kpi");
-    expect(stepsFor(a)).not.toContain("internal-strategy");
+    expect(stepsFor(a)).toContain("external-objective");
+    expect(stepsFor(a)).not.toContain("internal-objective");
   });
 
   it("accepts complete answer sets for both tracks", () => {
@@ -44,79 +42,58 @@ describe("assessment path (branching)", () => {
     expect(errors["personal.graduationYear"]).toBeTruthy();
   });
 
-  it("requires concrete essays (minimum length)", () => {
+  it("asks five short Internal questions, each needing a real (but short) answer", () => {
+    const empty = validateStep("internal-objective", createInitialAnswers());
+    expect(Object.keys(empty).sort()).toEqual(["internal.composition", "internal.externalSupport", "internal.recovery", "internal.strategy", "internal.tracking"]);
     const a = completeInternalAnswers();
-    a.internal.strategy.mainStrategy = "Promosi.";
-    expect(validateStep("internal-strategy", a)["internal.strategy.mainStrategy"]).toMatch(/minimal/);
+    a.internal.strategy = "Promosi.";
+    expect(validateStep("internal-objective", a)["internal.strategy"]).toMatch(/minimal 20/);
+    a.internal.strategy = "Promosi lewat alumni dan LinkedIn.";
+    expect(validateStep("internal-objective", a)).toEqual({});
   });
 });
 
-describe("External KPI validation", () => {
+describe("External questions", () => {
   const kpi = () => completeExternalAnswers().external.kpi;
 
-  it("passes a consistent KPI and estimates the weeks needed", () => {
-    const check = checkKpi(kpi());
-    expect(check.errors).toEqual({});
-    expect(check.weeksNeeded).toBe(7); // 20 / (15 × 20%) = 6.67 → 7
+  it("asks for companies, target professionals, KPI and three outreach answers", () => {
+    const empty = validateStep("external-objective", createInitialAnswers());
+    for (const key of ["external.companies", "external.targetProfile", "external.kpi.total", "external.kpiReason", "external.approach", "external.conversion", "external.reporting"]) {
+      expect(empty[key], key).toBeTruthy();
+    }
   });
 
-  it("requires offline + online = total", () => {
-    const k = { ...kpi(), online: "5" };
-    expect(checkKpi(k).errors["external.kpi.online"]).toMatch(/Offline \+ online/);
-  });
-
-  it("requires experienced + fresh graduate = total", () => {
-    const k = { ...kpi(), freshGraduate: "5" };
-    expect(checkKpi(k).errors["external.kpi.freshGraduate"]).toMatch(/Experienced \+ fresh graduate/);
-  });
-
-  it("does not count overlapping sub-categories as unique participants", () => {
-    // networking overlaps with experienced: 18 + 2 = 20 total while networking 10 is fine
-    expect(checkKpi({ ...kpi(), networking: "10" }).errors).toEqual({});
-    expect(checkKpi({ ...kpi(), networking: "21" }).errors["external.kpi.networking"]).toBeTruthy();
-    expect(checkKpi({ ...kpi(), operator: "10", seniorService: "10" }).errors["external.kpi.seniorService"]).toBeTruthy();
-  });
-
-  it("rejects non-numbers, zero total, totals above 300 and impossible conversion rates", () => {
+  it("requires offline + online = total and a total between 1 and 300", () => {
+    expect(checkKpi(kpi()).errors).toEqual({});
+    expect(checkKpi({ ...kpi(), online: "5" }).errors["external.kpi.online"]).toMatch(/Offline \+ online/);
     expect(checkKpi({ ...kpi(), total: "dua" }).errors["external.kpi.total"]).toBeTruthy();
-    expect(checkKpi({ ...kpi(), total: "0", offline: "0", online: "0", experienced: "0", freshGraduate: "0", operator: "0", seniorService: "0", networking: "0" }).errors["external.kpi.total"]).toBeTruthy();
+    expect(checkKpi({ total: "0", offline: "0", online: "0" }).errors["external.kpi.total"]).toBeTruthy();
     expect(checkKpi({ ...kpi(), total: "301" }).errors["external.kpi.total"]).toMatch(/300/);
-    expect(checkKpi({ ...kpi(), conversionRate: "150" }).errors["external.kpi.conversionRate"]).toBeTruthy();
-    expect(checkKpi({ ...kpi(), weeklyProspects: "0" }).errors["external.kpi.weeklyProspects"]).toBeTruthy();
-    expect(checkKpi({ ...kpi(), conversionRate: "12,5" }).errors).toEqual({});
   });
 
   it("warns (without blocking) about very high personal targets", () => {
-    const k = { ...kpi(), total: "60", offline: "40", online: "20", experienced: "58" };
-    const check = checkKpi(k);
+    const check = checkKpi({ total: "60", offline: "40", online: "20" });
     expect(check.errors).toEqual({});
     expect(check.warnings.join(" ")).toMatch(/realistis/);
   });
-});
 
-describe("dynamic forms", () => {
-  it("needs at least five target companies and three prospects", () => {
+  it("needs at least three companies, ignores empty rows and flags duplicates", () => {
     const a = completeExternalAnswers();
-    a.external.companies.pop();
-    expect(validateStep("external-companies", a)["external.companies"]).toMatch(/minimal 5/);
-    a.external.prospects.pop();
-    expect(validateStep("external-prospects", a)["external.prospects"]).toMatch(/minimal 3/);
+    a.external.companies = ["Operator Satu", "Geo Dua", ""];
+    expect(validateStep("external-objective", a)["external.companies"]).toMatch(/minimal 3/);
+    a.external.companies = ["Operator Satu", "Geo Dua", "", "operator satu"];
+    expect(validateStep("external-objective", a)["external.companies.3"]).toMatch(/sudah disebutkan/);
+    a.external.companies = ["Operator Satu", "", "Geo Dua", "Service Tiga"];
+    expect(validateStep("external-objective", a)).toEqual({});
+    expect(buildPayload(a, "ABC123").external?.companies).toEqual(["Operator Satu", "Geo Dua", "Service Tiga"]);
   });
 
-  it("keeps the prospect name optional but blocks third-party contact details", () => {
+  it("blocks contact details of third parties", () => {
     const a = completeExternalAnswers();
-    a.external.prospects[1]!.name = "";
-    expect(validateStep("external-prospects", a)).toEqual({});
-    a.external.prospects[1]!.approachPlan = `Hubungi langsung di ${["0", "812-3456-7890"].join("")} minggu depan`;
-    expect(validateStep("external-prospects", a)["external.prospects.1.approachPlan"]).toMatch(/pihak ketiga/);
+    a.external.targetProfile = `Pak Budi ${["0", "812-3456-7890"].join("")}`;
+    expect(validateStep("external-objective", a)["external.targetProfile"]).toMatch(/pihak ketiga/);
     expect(containsContactDetails(["seseorang", "kantor.co.id"].join("@"))).toBe(true);
     expect(containsContactDetails("pengalaman 3 tahun di 2 perusahaan")).toBe(false);
-  });
-
-  it("flags duplicate company names", () => {
-    const a = completeExternalAnswers();
-    a.external.companies[4]!.name = "operator satu";
-    expect(validateStep("external-companies", a)["external.companies.4.name"]).toMatch(/sudah ada/);
   });
 });
 
@@ -167,7 +144,7 @@ describe("Section D conditional questions", () => {
 describe("payload", () => {
   it("contains only the completed track and drops stale conditional answers", () => {
     const a = completeExternalAnswers();
-    a.internal.strategy.mainStrategy = "draf lama yang tidak boleh terkirim";
+    a.internal.strategy = "draf lama yang tidak boleh terkirim";
     a.final.reward = { plan: "maybe", nomineeName: "Nama Lama", nomineeBackground: "x", nomineeReason: "y", nomineeContext: "z", transparencyAck: true };
     a.final.leadership = { interest: "member_only", readiness: "teks lama", actions: ["a", "b", "c"] };
     const p = buildPayload(a, "ABC123");

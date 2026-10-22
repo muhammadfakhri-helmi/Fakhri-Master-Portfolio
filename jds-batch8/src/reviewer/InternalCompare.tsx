@@ -1,18 +1,16 @@
 import type { Candidate } from "../lib/recap.ts";
 
 const FIELDS = [
-  { label: "Strategi utama (Q9a)", get: (c: Candidate) => c.payload.internal!.strategy.mainStrategy },
-  { label: "Tiga langkah pertama (Q9f)", get: (c: Candidate) => c.payload.internal!.strategy.firstThreeSteps },
-  { label: "Operator & senior service (Q9b–c)", get: (c: Candidate) => `${c.payload.internal!.strategy.operatorPlan}\n\n${c.payload.internal!.strategy.seniorServicePlan}` },
-  { label: "Prioritas Internal (Q10a)", get: (c: Candidate) => c.payload.internal!.execution.priorities },
-  { label: "Ukuran efektivitas (Q10c)", get: (c: Candidate) => c.payload.internal!.execution.effectivenessMeasure },
-  { label: "Pemulihan 7 hari (Q11)", get: (c: Candidate) => `${c.payload.internal!.recovery.priorities}\n\nKPI: ${c.payload.internal!.recovery.recoveryKpi}` },
-  { label: "Deliverable 30 hari (Q12)", get: (c: Candidate) => c.payload.internal!.deliverables.map((d, i) => `${i + 1}. ${d.title} (${d.deadline})`).join("\n") },
+  { label: "Strategi 300 peserta (Q9)", get: (c: Candidate) => c.payload.internal!.strategy },
+  { label: "Membagi target & mengukur kemajuan (Q10)", get: (c: Candidate) => c.payload.internal!.tracking },
+  { label: "Dukungan untuk External (Q11)", get: (c: Candidate) => c.payload.internal!.externalSupport },
+  { label: "Jika pendaftaran kurang (Q12)", get: (c: Candidate) => c.payload.internal!.recovery },
+  { label: "Komposisi peserta (Q13)", get: (c: Candidate) => c.payload.internal!.composition },
 ];
 
 export function InternalCompare({ candidates, onOpen }: { candidates: Candidate[]; onOpen: (sid: string) => void }) {
   const internal = candidates.filter((c) => c.payload.internal);
-  if (internal.length === 0) return <p className="card p-6 text-sm text-stone-500">Belum ada kandidat yang mengerjakan studi kasus Internal.</p>;
+  if (internal.length === 0) return <p className="card p-6 text-sm text-stone-500">Belum ada kandidat yang menjawab pertanyaan Internal.</p>;
   return (
     <section className="space-y-3">
       <p className="text-sm text-stone-500">Bandingkan ide strategi antarcalon panitia Internal. Geser ke samping bila kandidat lebih dari tiga.</p>
