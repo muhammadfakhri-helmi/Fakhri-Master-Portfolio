@@ -1,0 +1,21 @@
+# dependencies and build output (public site and local reviewer)
+node_modules/
+dist/
+reviewer/dist/
+test-results/
+playwright-report/
+.e2e/
+
+# NEVER commit private keys or decrypted/review data
+*.pem
+*.key
+*private-key*
+*PRIVATE-KEY*
+.keys/
+reviewer-data/
+reviews*.json
+*.md.dec
+decrypted/
+
+# downloaded assessment files from candidates
+JDS_B8_ASSESSMENT_*.md

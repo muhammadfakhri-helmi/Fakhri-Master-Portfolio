@@ -185,6 +185,16 @@ sub-path or at the root — verified by serving it under `/Fakhri-Master-Portfol
 For any other host, upload `dist/` as static files and set `VITE_SITE_URL` in `.env`
 before building.
 
+## JDS Batch 8 recruitment assessment
+
+`jds-batch8/` is a separate, self-contained project (React + TypeScript + Vite + Tailwind): the
+encrypted recruitment-committee assessment for Jakarta Drilling Society Batch 8 and its private
+local reviewer. The Pages workflow builds and verifies it and publishes it at `/jds-batch8/`
+(https://muhammadfakhri-helmi.github.io/Fakhri-Master-Portfolio/jds-batch8/). See
+[`jds-batch8/README.md`](jds-batch8/README.md) and
+[`jds-batch8/DEPLOYMENT.md`](jds-batch8/DEPLOYMENT.md) — the public key must be generated before
+the assessment accepts answers.
+
 ## Contact methods
 
 Published at Fakhri's request (28 Sep 2026): e-mail `muhammadfakhrihelmi@gmail.com`,
