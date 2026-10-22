@@ -13,19 +13,19 @@ describe("answer file (.md)", () => {
     expect(md).toContain(`| Submission ID | \`${file.submissionId}\` |`);
     expect(md).toContain("| Nama | Rina \\| Kandidat |");
     expect(md).toContain("| Pilihan tim | External Team |");
-    for (const heading of ["## A · Personal Background", "## B · Team Preference & Commitment", "## C · Q9 Target Company Mapping", "## C · Q11 Personal Recruitment KPI", "## D · Reward & Leadership"]) {
+    for (const heading of ["## A · Personal Background", "## B · Team Preference & Commitment", "## C · External Team — Objective & Outreach", "## D · Reward & Leadership"]) {
       expect(md).toContain(heading);
     }
     expect(md).toContain("**Q3 Email**\n\n> " + TEST_EMAIL);
-    expect(md).toContain("**Perusahaan 1: Operator Satu**");
-    expect(md).toContain("- Industri: Operator Oil & Gas");
-    expect(md).toContain("> " + answers.external.outreachMessage.slice(0, 40));
-    expect(md).not.toContain("## C · Q9 Achieving 300 Participants");
+    expect(md).toContain("**Q9 Perusahaan sasaran**\n\n- Operator Satu\n- Geo Dua\n- Service Tiga");
+    expect(md).toContain("**Q10 Target peserta terkonfirmasi**\n\n> 20 orang (offline 14, online 6)");
+    expect(md).toContain("> " + answers.external.conversion);
+    expect(md).not.toContain("Internal Team — Objective");
   });
 
   it("keeps multi-line answers inside their quote", () => {
     const answers = completeInternalAnswers();
-    answers.internal.strategy.firstThreeSteps = "1. Petakan target\n2. Siapkan materi\n3. Bagi tugas";
+    answers.internal.strategy = "1. Petakan target\n2. Siapkan materi\n3. Bagi tugas";
     const md = buildAnswerMarkdown(buildPayload(answers, "ABC123"));
     expect(md).toContain("> 1. Petakan target\n> 2. Siapkan materi\n> 3. Bagi tugas");
   });

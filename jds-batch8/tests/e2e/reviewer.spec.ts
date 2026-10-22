@@ -59,9 +59,7 @@ test("reviewer: reads many answer files, detects duplicates, scores, saves local
   await page.getByRole("button", { name: "Bima External" }).first().click();
   await expect(page.getByRole("heading", { name: "Bima External", level: 2 })).toBeVisible();
   await expect(page.getByText(/Kemungkinan pengiriman ganda/)).toBeVisible();
-  await expect(page.getByText("Nama: Prospek Bernama Rahasia")).toHaveCount(0);
-  await page.getByRole("button", { name: "Tampilkan data terbatas" }).click();
-  await expect(page.getByText("Nama: Prospek Bernama Rahasia")).toBeVisible();
+  await expect(page.getByText("Operator Satu")).toBeVisible();
   const scores: [string, number][] = [
     ["Target Company & Candidate Mapping", 5],
     ["Recruitment KPI Feasibility", 4],
@@ -102,12 +100,11 @@ test("reviewer: reads many answer files, detects duplicates, scores, saves local
   expect(recap.startsWith('﻿"Name","Team Preference","Weekly Availability"')).toBe(true);
   expect(recap).toContain(`"Bima External","External"`);
   expect(recap).toContain(`"85","Pemetaan perusahaan kuat","Interview","Strong Candidate"`);
-  expect(recap).not.toContain("Prospek Bernama Rahasia");
   await page.getByLabel("Pemisah CSV").selectOption(";");
   const companies = await exportCsv("Perusahaan target External");
   expect(companies).toContain(`"Bima External";"${external.submissionId}";"Operator Satu"`);
   const kpi = await exportCsv("Proyeksi KPI External");
-  expect(kpi).toContain(`"20";"14";"6"`);
+  expect(kpi).toContain(`"20";"14";"6";"Ya"`);
   const strategy = await exportCsv("Ringkasan strategi Internal");
   expect(strategy).toContain("Ayu Internal");
 });

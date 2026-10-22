@@ -41,7 +41,7 @@ export function buildPayload(answers: Answers, submissionId: string, submittedAt
     personal: { ...a.personal, skillsOther: a.personal.skills.includes("Other") ? a.personal.skillsOther : "" },
     team: { ...a.team, flexibleTrack: a.team.preference === "flexible" ? a.team.flexibleTrack : "" },
     internal: track === "internal" ? a.internal : null,
-    external: track === "external" ? a.external : null,
+    external: track === "external" ? { ...a.external, companies: a.external.companies.filter(Boolean) } : null,
     final: { ...a.final, reward, leadership },
   };
 }

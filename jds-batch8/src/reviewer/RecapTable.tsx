@@ -90,7 +90,7 @@ export function RecapTable({
                   <td className="px-3 py-2.5">{labelOf(WEEKLY_HOURS_OPTIONS, p.personal.weeklyHours)}</td>
                   <td className="px-3 py-2.5">{p.final.leadership.interest ? LEADERSHIP_SHORT[p.final.leadership.interest] : "—"}</td>
                   <td className="px-3 py-2.5 tabular-nums">{ext ? `${ext.kpi.total} (${ext.kpi.offline}/${ext.kpi.online})` : "—"}</td>
-                  <td className="max-w-56 px-3 py-2.5">{ext ? ext.companies.map((co) => co.name).join(", ") : "—"}</td>
+                  <td className="max-w-56 px-3 py-2.5">{ext ? ext.companies.join(", ") : "—"}</td>
                   <td className="px-3 py-2.5">{kpiOk === null ? "—" : kpiOk ? "Konsisten" : <span className="text-red-700">Tidak konsisten</span>}</td>
                   <td className="px-3 py-2.5">{p.final.reward.plan ? REWARD_SHORT[p.final.reward.plan] : "—"}</td>
                   <td className="px-3 py-2.5 font-semibold tabular-nums">{result.score ?? (result.scored ? `${result.scored}/${result.total}` : "—")}</td>

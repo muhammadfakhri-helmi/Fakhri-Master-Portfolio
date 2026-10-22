@@ -1,18 +1,14 @@
 // Labels shared by the assessment and the reviewer, plus the recruitment targets.
 
 import type {
-  ApproachChannel,
   CandidateStatus,
-  CompanyIndustry,
   LeadershipInterest,
   PlacementAnswer,
-  RelationshipStatus,
   RewardPlan,
   Team,
   TeamPreference,
   WeeklyHours,
 } from "./types.ts";
-
 
 export const TARGETS = {
   total: 300,
@@ -76,7 +72,7 @@ export const TEAM_OPTIONS: Option<TeamPreference>[] = [
   {
     value: "flexible",
     label: "Flexible / Bersedia ditempatkan di keduanya",
-    hint: "Kamu cukup mengerjakan satu studi kasus (Internal atau External) yang kamu pilih.",
+    hint: "Kamu cukup menjawab satu set pertanyaan (Internal atau External) yang kamu pilih.",
   },
 ];
 
@@ -86,29 +82,6 @@ export const PREFERENCE_LABEL: Record<TeamPreference, string> = {
   external: "External",
   flexible: "Flexible",
 };
-
-export const INDUSTRY_OPTIONS: Option<CompanyIndustry>[] = [
-  { value: "operator_oil_gas", label: "Operator Oil & Gas" },
-  { value: "geothermal", label: "Geothermal" },
-  { value: "service_company", label: "Service Company" },
-  { value: "engineering", label: "Engineering" },
-  { value: "other", label: "Other" },
-];
-
-export const APPROACH_OPTIONS: Option<ApproachChannel>[] = [
-  { value: "linkedin", label: "LinkedIn" },
-  { value: "referral", label: "Referral" },
-  { value: "personal_network", label: "Personal Network" },
-  { value: "community", label: "Community" },
-  { value: "other", label: "Other" },
-];
-
-export const RELATIONSHIP_OPTIONS: Option<RelationshipStatus>[] = [
-  { value: "professional_contact", label: "Sudah memiliki komunikasi profesional" },
-  { value: "indirect_connection", label: "Memiliki koneksi tidak langsung" },
-  { value: "no_connection", label: "Belum memiliki koneksi" },
-  { value: "identifying", label: "Masih dalam tahap identifikasi" },
-];
 
 export const REWARD_OPTIONS: Option<RewardPlan>[] = [
   { value: "yes", label: "Ya, sudah memiliki kandidat rekomendasi." },
@@ -145,4 +118,30 @@ export const REWARD_SHORT: Record<RewardPlan, string> = {
   yes: "Ya, sudah ada kandidat",
   maybe: "Mungkin",
   no: "Tidak",
+};
+
+/** What each team is for — shown above the team's questions in Section C. */
+export const TEAM_OBJECTIVES: Record<Team, { title: string; summary: string; points: string[] }> = {
+  internal: {
+    title: "Objective Internal Team",
+    summary: "Memimpin perencanaan dan evaluasi agar target 300 peserta tercapai.",
+    points: [
+      "Menyusun strategi untuk mencapai 300 peserta",
+      "Membagi target dan mengukur kemajuan",
+      "Membantu External mencapai KPI",
+      "Mengatasi kekurangan pendaftaran",
+      "Menjaga komposisi 20 fresh graduate dan 280 experienced",
+    ],
+  },
+  external: {
+    title: "Objective External Team",
+    summary: "Menjalankan outreach dan mengonversi calon peserta menjadi peserta terkonfirmasi.",
+    points: [
+      "Menentukan perusahaan dan profesional sasaran",
+      "Menetapkan jumlah peserta yang sanggup dikontribusikan",
+      "Menghubungi calon peserta secara langsung",
+      "Memastikan calon peserta benar-benar bergabung",
+      "Melaporkan aktivitas dan hambatan",
+    ],
+  },
 };

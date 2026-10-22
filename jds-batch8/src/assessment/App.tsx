@@ -10,23 +10,15 @@ import { Landing } from "./Landing.tsx";
 import { SECTIONS, Shell, type NavState, type SectionId } from "./Shell.tsx";
 import { CommitmentStep, RewardLeadershipStep } from "./steps-d.tsx";
 import { PersonalStep, SkillsStep, TeamStep } from "./steps-ab.tsx";
-import { ExternalCompaniesStep, ExternalFirst30Step, ExternalKpiStep, ExternalOutreachStep, ExternalProspectsStep } from "./steps-external.tsx";
-import { InternalDeliverablesStep, InternalExecutionStep, InternalRecoveryStep, InternalStrategyStep } from "./steps-internal.tsx";
+import { ExternalObjectiveStep, InternalObjectiveStep } from "./steps-c.tsx";
 import type { StepProps, Update } from "./types.ts";
 
 const STEP_META: Record<StepId, { section: SectionId; title: string; render?: (props: StepProps) => ReactNode }> = {
   personal: { section: "A", title: "Personal Background", render: (p) => <PersonalStep {...p} /> },
   skills: { section: "A", title: "Keahlian & Ketersediaan Waktu", render: (p) => <SkillsStep {...p} /> },
   team: { section: "B", title: "Team Preference & Commitment", render: (p) => <TeamStep {...p} /> },
-  "internal-strategy": { section: "C", title: "Internal · Main Recruitment Strategy", render: (p) => <InternalStrategyStep {...p} /> },
-  "internal-execution": { section: "C", title: "Internal · Execution & Coordination", render: (p) => <InternalExecutionStep {...p} /> },
-  "internal-recovery": { section: "C", title: "Internal · Recovery Strategy", render: (p) => <InternalRecoveryStep {...p} /> },
-  "internal-deliverables": { section: "C", title: "Internal · Personal Contribution", render: (p) => <InternalDeliverablesStep {...p} /> },
-  "external-companies": { section: "C", title: "External · Target Company Mapping", render: (p) => <ExternalCompaniesStep {...p} /> },
-  "external-prospects": { section: "C", title: "External · Personal Candidate Target", render: (p) => <ExternalProspectsStep {...p} /> },
-  "external-kpi": { section: "C", title: "External · Personal Recruitment KPI", render: (p) => <ExternalKpiStep {...p} /> },
-  "external-outreach": { section: "C", title: "External · Outreach Simulation", render: (p) => <ExternalOutreachStep {...p} /> },
-  "external-first30": { section: "C", title: "External · First 30 Days", render: (p) => <ExternalFirst30Step {...p} /> },
+  "internal-objective": { section: "C", title: "Internal Team · Objective & Strategi", render: (p) => <InternalObjectiveStep {...p} /> },
+  "external-objective": { section: "C", title: "External Team · Objective & Outreach", render: (p) => <ExternalObjectiveStep {...p} /> },
   "reward-leadership": { section: "D", title: "Reward & Leadership", render: (p) => <RewardLeadershipStep {...p} /> },
   commitment: { section: "D", title: "Accountability & Final Commitment", render: (p) => <CommitmentStep {...p} /> },
   review: { section: "Review", title: "Review & Download" },
@@ -35,7 +27,7 @@ const STEP_META: Record<StepId, { section: SectionId; title: string; render?: (p
 const SECTION_INTRO: Record<SectionId, string> = {
   A: "Ceritakan latar belakang, kontak, keahlian, dan waktu yang realistis untuk JDS Batch 8.",
   B: "Pilih tim yang paling sesuai dan jelaskan kontribusi nyatamu untuk target bersama.",
-  C: "Studi kasus — jawab dengan langkah nyata, angka, dan prioritas.",
+  C: "Lima pertanyaan singkat sesuai objective tim pilihanmu.",
   D: "Reward KPI, minat menjadi koordinator, akuntabilitas, dan komitmen akhir.",
   Review: "Periksa kembali jawabanmu, lalu unduh file jawaban (.md).",
 };

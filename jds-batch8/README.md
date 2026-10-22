@@ -23,15 +23,14 @@ Dokumen lain: [DEPLOYMENT.md](DEPLOYMENT.md) · [SECURITY.md](SECURITY.md) · [R
 | --- | --- |
 | A · Personal Background | Q1 nama, Q2 pendidikan & pekerjaan, Q3 kontak, Q4 keahlian, Q5 ketersediaan waktu |
 | B · Team Preference | Q6 Internal / External / Flexible, Q7 alasan, Q8 kontribusi nyata untuk target bersama |
-| C · Strategic Case | **Internal:** Q9 strategi 300 peserta (a–f), Q10 eksekusi & koordinasi, Q11 recovery 7 hari, Q12 deliverable 30 hari. **External:** Q9 pemetaan ≥5 perusahaan (form dinamis), Q10 calon peserta (form dinamis), Q11 KPI pribadi tervalidasi, Q12 simulasi pesan outreach, Q13 eksekusi 30 hari. **Flexible** memilih salah satu studi kasus saja. |
+| C · Objective Tim | Satu halaman, 5 pertanyaan singkat sesuai objective tim. **Internal:** Q9 strategi 300 peserta, Q10 membagi target & mengukur kemajuan, Q11 dukungan untuk External, Q12 jika pendaftaran masih kurang, Q13 komposisi fresh graduate & experienced. **External:** Q9 perusahaan sasaran (min. 3) & profesional yang diajak, Q10 target peserta terkonfirmasi (total/offline/online) & alasannya, Q11 cara menghubungi, Q12 memastikan bergabung, Q13 pelaporan. **Flexible** memilih salah satu set pertanyaan. |
 | D · Leadership & Commitment | Q14 reward rekomendasi satu nama (opsional, tidak dinilai), Q15 minat koordinator (pertanyaan lanjutan hanya bila "Ya"), Q16 akuntabilitas, Q17 komitmen, Q18 fleksibilitas penempatan, persetujuan data |
 | Review | Seluruh jawaban + tombol "Ubah", validasi semua field wajib, **Download Assessment (.md)** |
 
 Tidak ada pertanyaan tentang pengalaman organisasi/kepanitiaan sebelumnya.
 
-Validasi KPI External: offline + online = total; experienced + fresh graduate = total;
-operator + senior service ≤ experienced; networking ≤ total (subkategori yang tumpang tindih tidak
-dijumlahkan sebagai peserta unik); estimasi minggu dari prospek/minggu × konversi.
+Validasi KPI External: target 1–300 peserta dan offline + online = total. Jawaban teks cukup
+singkat (minimal 20–30 karakter).
 
 ## File jawaban (.md)
 

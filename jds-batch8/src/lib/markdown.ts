@@ -30,7 +30,7 @@ export function buildAnswerMarkdown(payload: SubmissionPayload): string {
     : submitted.toLocaleString("id-ID", { dateStyle: "long", timeStyle: "short", timeZone: "Asia/Jakarta" }) + " WIB";
   const team =
     payload.team.preference === "flexible"
-      ? `Flexible (studi kasus ${TRACK_LABEL[payload.track]})`
+      ? `Flexible (menjawab pertanyaan ${TRACK_LABEL[payload.track]})`
       : labelOf(TEAM_OPTIONS, payload.team.preference);
 
   const lines = [

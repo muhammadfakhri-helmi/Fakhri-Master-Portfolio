@@ -51,7 +51,7 @@ const ROLES: { icon: LucideIcon; tint: string; title: string; quota: string; tex
     quota: `${TEAM_SIZE.internal} orang`,
     text: "Memimpin perencanaan dan evaluasi. Bukan tim administratif pasif — ikut bertanggung jawab atas hasil akhir.",
     focus: ["Strategi mencapai 300 peserta", "Membagi target & mengukur kemajuan", "Membantu External mencapai KPI"],
-    caseStudy: "Strategi 300 peserta, koordinasi tim, pemulihan target dalam 7 hari, dan deliverable 30 hari.",
+    caseStudy: "5 pertanyaan singkat: strategi 300 peserta, mengukur kemajuan, dukungan External, saat target kurang, komposisi peserta.",
   },
   {
     icon: Handshake,
@@ -60,24 +60,24 @@ const ROLES: { icon: LucideIcon; tint: string; title: string; quota: string; tex
     quota: "Sesuai kebutuhan",
     text: "Memimpin pelaksanaan outreach: mendekati profesional industri dan mengonversi calon peserta menjadi peserta terkonfirmasi.",
     focus: ["Perusahaan & profesional sasaran", "Kontribusi peserta terkonfirmasi", "Laporan aktivitas & hambatan"],
-    caseStudy: "Pemetaan perusahaan, calon peserta, KPI pribadi, simulasi pesan outreach, dan rencana 30 hari.",
+    caseStudy: "5 pertanyaan singkat: perusahaan sasaran, target peserta, cara menghubungi, memastikan bergabung, pelaporan.",
   },
   {
     icon: Shuffle,
     tint: "bg-[#e2ebe8] text-[#3f6b63]",
     title: "Flexible",
     quota: "Keduanya",
-    text: "Bersedia ditempatkan di Internal maupun External. Kamu cukup memilih dan mengerjakan satu studi kasus.",
-    focus: ["Pilih studi kasus Internal atau External", "Durasi pengerjaan tetap sama", "Penempatan sesuai kebutuhan tim"],
-    caseStudy: "Sesuai studi kasus yang kamu pilih.",
+    text: "Bersedia ditempatkan di Internal maupun External. Kamu cukup memilih salah satu set pertanyaan.",
+    focus: ["Pilih pertanyaan Internal atau External", "Durasi pengerjaan tetap sama", "Penempatan sesuai kebutuhan tim"],
+    caseStudy: "Sesuai set pertanyaan yang kamu pilih.",
   },
 ];
 
 const FLOW = [
-  { code: "A", title: "Personal Background", text: "Pendidikan, kontak, keahlian, waktu", minutes: "3 mnt" },
-  { code: "B", title: "Team Preference", text: "Pilihan tim & kontribusi bersama", minutes: "3 mnt" },
-  { code: "C", title: "Strategic Case Assessment", text: "Studi kasus Internal atau External", minutes: "10–15 mnt" },
-  { code: "D", title: "Leadership & Commitment", text: "Reward KPI, peran koordinator, komitmen", minutes: "4 mnt" },
+  { code: "A", title: "Personal Background", text: "Pendidikan, kontak, keahlian, waktu", minutes: "2 mnt" },
+  { code: "B", title: "Team Preference", text: "Pilihan tim & kontribusi bersama", minutes: "2 mnt" },
+  { code: "C", title: "Objective Tim", text: "5 pertanyaan sesuai tim pilihanmu", minutes: "5 mnt" },
+  { code: "D", title: "Leadership & Commitment", text: "Reward KPI, peran koordinator, komitmen", minutes: "3 mnt" },
   { code: "R", title: "Review & Download", text: "Periksa jawaban lalu unduh file .md", minutes: "1 mnt" },
 ];
 
@@ -109,7 +109,7 @@ export function Landing({ onStart }: { onStart: () => void }) {
               </button>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-cream-50/90 px-3.5 py-2 text-sm font-medium text-forest-800 ring-1 ring-cream-300">
                 <Clock className="size-4 text-leaf-600" aria-hidden="true" />
-                Estimasi waktu pengerjaan: 15–25 menit
+                Estimasi waktu pengerjaan: 10–15 menit
               </span>
             </div>
           </div>
@@ -238,7 +238,7 @@ export function Landing({ onStart }: { onStart: () => void }) {
                 ))}
               </ul>
               <p className="mt-auto pt-4 text-[12.5px] leading-relaxed text-[#857d68]">
-                <span className="font-semibold text-forest-800">Studi kasus: </span>
+                <span className="font-semibold text-forest-800">Pertanyaan: </span>
                 {role.caseStudy}
               </p>
             </article>

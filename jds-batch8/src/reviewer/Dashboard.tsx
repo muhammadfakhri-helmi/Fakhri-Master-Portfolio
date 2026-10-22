@@ -7,11 +7,6 @@ const ROWS = [
   { key: "total", label: "Total peserta", target: TARGETS.total },
   { key: "offline", label: "Offline", target: TARGETS.offline },
   { key: "online", label: "Online", target: TARGETS.online },
-  { key: "experienced", label: "Experienced", target: TARGETS.experienced },
-  { key: "freshGraduate", label: "Fresh graduate", target: TARGETS.freshGraduate },
-  { key: "operator", label: "Operator migas/geothermal (min.)", target: TARGETS.operator },
-  { key: "seniorService", label: "Senior service company (min.)", target: TARGETS.seniorService },
-  { key: "networking", label: "Networking/sponsorship (min.)", target: TARGETS.networking },
 ] as const;
 
 export function Dashboard({ candidates, reviews }: { candidates: Candidate[]; reviews: Record<string, Review> }) {
@@ -36,7 +31,7 @@ export function Dashboard({ candidates, reviews }: { candidates: Candidate[]; re
           <div>
             <h2 className="font-bold text-forest-900">Shared target · proyeksi KPI External vs target JDS Batch 8</h2>
             <p className="text-sm text-stone-500">
-              {sum.candidates} kandidat External dihitung. Subkategori boleh tumpang tindih; hanya “Total” yang mewakili peserta unik. Asumsi perencanaan: {TEAM_SIZE.externalAssumption} ×{" "}
+              {sum.candidates} kandidat External dihitung. Asumsi perencanaan: {TEAM_SIZE.externalAssumption} ×{" "}
               {TEAM_SIZE.examplePerExternalMember} = {TEAM_SIZE.externalAssumption * TEAM_SIZE.examplePerExternalMember}.
             </p>
           </div>

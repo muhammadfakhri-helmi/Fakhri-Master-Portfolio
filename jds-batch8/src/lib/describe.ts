@@ -3,12 +3,9 @@
 // so the reviewer can keep them behind an explicit "show" action.
 
 import {
-  APPROACH_OPTIONS,
-  INDUSTRY_OPTIONS,
   labelOf,
   LEADERSHIP_OPTIONS,
   PLACEMENT_OPTIONS,
-  RELATIONSHIP_OPTIONS,
   REWARD_OPTIONS,
   STATUS_OPTIONS,
   TEAM_OPTIONS,
@@ -61,7 +58,7 @@ export function describeSubmission(p: SubmissionPayload): Section[] {
       title: "B · Team Preference & Commitment",
       items: [
         { label: "Q6 Pilihan tim", value: labelOf(TEAM_OPTIONS, p.team.preference) },
-        ...(p.team.preference === "flexible" ? [{ label: "Studi kasus yang dikerjakan", value: p.team.flexibleTrack === "internal" ? "Internal" : "External" }] : []),
+        ...(p.team.preference === "flexible" ? [{ label: "Pertanyaan tim yang dijawab", value: p.team.flexibleTrack === "internal" ? "Internal" : "External" }] : []),
         { label: "Q7 Alasan & kontribusi", value: p.team.reason },
         { label: "Q8 Kontribusi nyata untuk target bersama", value: p.team.sharedContribution },
       ],
@@ -70,112 +67,34 @@ export function describeSubmission(p: SubmissionPayload): Section[] {
 
   if (p.internal) {
     const i = p.internal;
-    sections.push(
-      {
-        step: "internal-strategy",
-        title: "C · Q9 Achieving 300 Participants",
-        items: [
-          { label: "a. Strategi utama", value: i.strategy.mainStrategy },
-          { label: "b. 10 profesional operator (2–3 tahun)", value: i.strategy.operatorPlan },
-          { label: "c. 10 senior service company (5+ tahun)", value: i.strategy.seniorServicePlan },
-          { label: "d. 20 fresh graduate", value: i.strategy.freshGraduatePlan },
-          { label: "e. 20 peserta networking & sponsorship", value: i.strategy.networkingPlan },
-          { label: "f. Tiga langkah pertama", value: i.strategy.firstThreeSteps },
-        ],
-      },
-      {
-        step: "internal-execution",
-        title: "C · Q10 Execution & Coordination",
-        items: [
-          { label: "a. Tiga prioritas Internal", value: i.execution.priorities },
-          { label: "b. Dukungan untuk External", value: i.execution.externalSupport },
-          { label: "c. Ukuran efektivitas", value: i.execution.effectivenessMeasure },
-          { label: "d. Pembagian beban kerja", value: i.execution.workloadSplit },
-        ],
-      },
-      {
-        step: "internal-recovery",
-        title: "C · Q11 Recovery Strategy (7 hari)",
-        items: [
-          { label: "Prioritas tindakan", value: i.recovery.priorities },
-          { label: "Perubahan promosi/outreach", value: i.recovery.outreachChanges },
-          { label: "Koordinasi dengan External", value: i.recovery.externalCoordination },
-          { label: "KPI pemulihan", value: i.recovery.recoveryKpi },
-          { label: "Risiko & antisipasi", value: i.recovery.risks },
-        ],
-      },
-      {
-        step: "internal-deliverables",
-        title: "C · Q12 Deliverable 30 hari",
-        items: i.deliverables.map((d, n) => ({
-          label: `Deliverable ${n + 1}`,
-          value: [`${d.title} — deadline: ${d.deadline}`, `Indikator: ${d.indicator}`, `Dampak ke jumlah peserta: ${d.impact}`],
-        })),
-      },
-    );
+    sections.push({
+      step: "internal-objective",
+      title: "C · Internal Team — Objective & Strategi",
+      items: [
+        { label: "Q9 Strategi mencapai 300 peserta", value: i.strategy },
+        { label: "Q10 Membagi target & mengukur kemajuan", value: i.tracking },
+        { label: "Q11 Dukungan untuk External", value: i.externalSupport },
+        { label: "Q12 Jika pendaftaran masih kurang", value: i.recovery },
+        { label: "Q13 Menjaga komposisi fresh graduate & experienced", value: i.composition },
+      ],
+    });
   }
 
   if (p.external) {
     const e = p.external;
-    sections.push(
-      {
-        step: "external-companies",
-        title: "C · Q9 Target Company Mapping",
-        items: e.companies.map((c, n) => ({
-          label: `Perusahaan ${n + 1}: ${c.name}`,
-          value: [
-            `Industri: ${c.industry === "other" ? `Other — ${c.industryOther}` : labelOf(INDUSTRY_OPTIONS, c.industry)}`,
-            `Target profesional: ${c.targetProfile}`,
-            `Alasan: ${c.reason}`,
-            `Jalur: ${c.approach === "other" ? `Other — ${c.approachOther}` : labelOf(APPROACH_OPTIONS, c.approach)}`,
-          ],
-        })),
-      },
-      {
-        step: "external-prospects",
-        title: "C · Q10 Personal Candidate Target",
-        items: e.prospects.map((t, n) => ({
-          label: `Calon peserta ${n + 1}: ${t.profile}`,
-          sensitive: !!t.name,
-          value: [
-            ...(t.name ? [`Nama: ${t.name}`] : []),
-            `Perusahaan/industri: ${t.companyOrIndustry}`,
-            `Pengalaman: ${t.experience}`,
-            `Relevansi: ${t.relevance}`,
-            `Hubungan: ${labelOf(RELATIONSHIP_OPTIONS, t.relationship)}`,
-            `Rencana pendekatan: ${t.approachPlan}`,
-          ],
-        })),
-      },
-      {
-        step: "external-kpi",
-        title: "C · Q11 Personal Recruitment KPI",
-        items: [
-          { label: "Target total terkonfirmasi", value: e.kpi.total },
-          { label: "Offline / online", value: `${e.kpi.offline} / ${e.kpi.online}` },
-          { label: "Experienced / fresh graduate", value: `${e.kpi.experienced} / ${e.kpi.freshGraduate}` },
-          { label: "Operator / senior service / networking", value: `${e.kpi.operator} / ${e.kpi.seniorService} / ${e.kpi.networking}` },
-          { label: "a. Prospek per minggu", value: e.kpi.weeklyProspects },
-          { label: "b. Conversion rate", value: `${e.kpi.conversionRate}%` },
-          { label: "c. Sumber prospek", value: e.kpi.prospectSources },
-          { label: "d. Rencana jika 50% KPI", value: e.kpi.halfKpiPlan },
-          { label: "e. Komitmen yang dipertanggungjawabkan", value: e.kpi.accountableCommitment },
-        ],
-      },
-      { step: "external-outreach", title: "C · Q12 Real Outreach Simulation", items: [{ label: "Pesan outreach", value: e.outreachMessage }] },
-      {
-        step: "external-first30",
-        title: "C · Q13 First 30 Days Execution",
-        items: [
-          { label: "Target perusahaan", value: e.first30.targetCompanies },
-          { label: "Jumlah prospek", value: e.first30.prospectCount },
-          { label: "Aktivitas mingguan", value: e.first30.weeklyActivities },
-          { label: "Follow-up", value: e.first30.followUp },
-          { label: "Target konversi", value: e.first30.conversionTarget },
-          { label: "Pelaporan progres", value: e.first30.reporting },
-        ],
-      },
-    );
+    sections.push({
+      step: "external-objective",
+      title: "C · External Team — Objective & Outreach",
+      items: [
+        { label: "Q9 Perusahaan sasaran", value: e.companies },
+        { label: "Profesional yang ingin diajak", value: e.targetProfile },
+        { label: "Q10 Target peserta terkonfirmasi", value: `${e.kpi.total} orang (offline ${e.kpi.offline}, online ${e.kpi.online})` },
+        { label: "Alasan target realistis", value: e.kpiReason },
+        { label: "Q11 Cara menghubungi calon peserta", value: e.approach },
+        { label: "Q12 Memastikan calon peserta bergabung", value: e.conversion },
+        { label: "Q13 Pelaporan aktivitas & hambatan", value: e.reporting },
+      ],
+    });
   }
 
   const { reward, leadership } = p.final;

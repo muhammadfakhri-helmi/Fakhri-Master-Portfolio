@@ -106,89 +106,59 @@ async function sectionDAndDownload(page: Page, opts: { leadership: string; rewar
 }
 
 
-test("Internal path: case study, coordinator questions, answer file download", async ({ page }) => {
+test("Internal path: five Internal objective questions, coordinator questions, answer file download", async ({ page }) => {
   const problems = watch(page);
   const name = `Internal E2E ${test.info().project.name}`;
   await sectionAB(page, name, "internal");
-  await next(page, "Internal · Main Recruitment Strategy");
-  await expect(page.getByText("Achieving 300 Participants")).toBeVisible();
-  await fillAll(page, 'textarea[name^="internal.strategy."]', LONG);
-  await next(page, "Internal · Execution & Coordination");
-  await fillAll(page, 'textarea[name^="internal.execution."]', LONG);
-  await next(page, "Internal · Recovery Strategy");
-  await expect(page.getByText(/Dua minggu sebelum pendaftaran ditutup/)).toBeVisible();
-  await expect(page.getByText("Online", { exact: true })).toBeVisible();
-  await page.screenshot({ path: join(shots, `${test.info().project.name}-internal-recovery.png`), fullPage: true });
-  await fillAll(page, 'textarea[name^="internal.recovery."]', LONG);
-  await next(page, "Internal · Personal Contribution");
-  await page.getByRole("button", { name: "+ Tambah deliverable" }).click();
-  for (const i of [0, 1, 2]) {
-    await fill(page, `internal.deliverables.${i}.title`, `Deliverable ${i + 1}`);
-    await fill(page, `internal.deliverables.${i}.deadline`, `Hari ke-${(i + 1) * 10}`);
-    await fill(page, `internal.deliverables.${i}.indicator`, "Dipakai di weekly meeting");
-    await fill(page, `internal.deliverables.${i}.impact`, "Membantu fokus outreach ke kategori yang tertinggal.");
-  }
+  await next(page, "Internal Team · Objective & Strategi");
+  await expect(page.getByText("Objective Internal Team")).toBeVisible();
+  await expect(page.locator('textarea[name^="internal."]')).toHaveCount(5);
+  await expect(page.locator('[name^="external."]')).toHaveCount(0);
+  await page.screenshot({ path: join(shots, `${test.info().project.name}-internal-objective.png`), fullPage: true });
+  await fillAll(page, 'textarea[name^="internal."]', LONG);
   await next(page, "Reward & Leadership");
   const content = await sectionDAndDownload(page, { leadership: "lead_internal", reward: "maybe" });
 
   // Readable answers, recorded by section.
-  for (const text of [`| Nama | ${name} |`, `> ${EMAIL}`, "## C · Q9 Achieving 300 Participants", "Deliverable 1 — deadline: Hari ke-10", `> ${LONG}`]) expect(content).toContain(text);
+  for (const text of [`| Nama | ${name} |`, `> ${EMAIL}`, "## C · Internal Team — Objective & Strategi", "**Q12 Jika pendaftaran masih kurang**", `> ${LONG}`]) expect(content).toContain(text);
   const payload = parseAnswerMarkdown(content);
   expect(payload).toMatchObject({ track: "internal", external: null, personal: { fullName: name, email: EMAIL } });
-  expect(payload.internal?.deliverables).toHaveLength(3);
+  expect(payload.internal?.composition).toBe(LONG);
   expect(payload.final.leadership.interest).toBe("lead_internal");
   expect(payload.final.leadership.actions[2]).toContain("nomor 3");
   expect(payload.final.reward).toMatchObject({ plan: "maybe", nomineeName: "" });
   expect(problems).toEqual([]);
 });
 
-test("Flexible → External path: dynamic forms, KPI validation, answer file download", async ({ page }) => {
+test("Flexible → External path: five External objective questions, KPI check, answer file download", async ({ page }) => {
   const problems = watch(page);
   const name = `External E2E ${test.info().project.name}`;
   await sectionAB(page, name, "flexible", "external");
-  await next(page, "External · Target Company Mapping");
-  await page.getByRole("button", { name: "+ Add Company" }).click();
-  for (let i = 0; i < 6; i++) {
-    await fill(page, `external.companies.${i}.name`, `Target Co ${i + 1}`);
-    await page.locator(`[name="external.companies.${i}.industry"]`).selectOption(i === 5 ? "other" : "operator_oil_gas");
-    if (i === 5) await fill(page, `external.companies.${i}.industryOther`, "Mining");
-    await fill(page, `external.companies.${i}.targetProfile`, "Engineer 2–3 tahun");
-    await fill(page, `external.companies.${i}.reason`, "Banyak engineer muda yang relevan dengan JDS.");
-    await page.locator(`[name="external.companies.${i}.approach"]`).selectOption("community");
-  }
-  await next(page, "External · Personal Candidate Target");
-  for (let i = 0; i < 3; i++) {
-    if (i === 0) await fill(page, `external.prospects.${i}.name`, "Nama Prospek E2E");
-    await fill(page, `external.prospects.${i}.profile`, "Drilling engineer");
-    await fill(page, `external.prospects.${i}.companyOrIndustry`, "Operator migas");
-    await fill(page, `external.prospects.${i}.experience`, "2 tahun");
-    await fill(page, `external.prospects.${i}.relevance`, "Sesuai target operator 2–3 tahun.");
-    await page.locator(`[name="external.prospects.${i}.relationship"]`).selectOption("professional_contact");
-    await fill(page, `external.prospects.${i}.approachPlan`, "Ajak diskusi santai lalu kirim info resmi.");
-  }
-  await next(page, "External · Personal Recruitment KPI");
-  const kpi: Record<string, string> = { total: "25", offline: "20", online: "6", experienced: "23", freshGraduate: "2", operator: "4", seniorService: "4", networking: "5", weeklyProspects: "20", conversionRate: "15" };
-  for (const [k, v] of Object.entries(kpi)) await fill(page, `external.kpi.${k}`, v);
-  await fill(page, "external.kpi.prospectSources", "Komunitas alumni dan LinkedIn");
-  await fill(page, "external.kpi.halfKpiPlan", LONG);
-  await fill(page, "external.kpi.accountableCommitment", LONG);
+  await next(page, "External Team · Objective & Outreach");
+  await expect(page.getByText("Objective External Team")).toBeVisible();
+  await expect(page.locator('[name^="internal."]')).toHaveCount(0);
+  await page.getByRole("button", { name: "+ Tambah perusahaan" }).click();
+  for (let i = 0; i < 4; i++) await fill(page, `external.companies.${i}`, `Target Co ${i + 1}`);
+  await fill(page, "external.targetProfile", "Drilling engineer 2–3 tahun di operator");
+  await fill(page, "external.kpi.total", "25");
+  await fill(page, "external.kpi.offline", "20");
+  await fill(page, "external.kpi.online", "6");
+  for (const field of ["kpiReason", "approach", "conversion", "reporting"]) await fill(page, `external.${field}`, LONG);
   await page.getByRole("button", { name: "Next", exact: true }).click();
   await expect(page.getByText(/Offline \+ online harus sama dengan target total \(20 \+ 6 = 26, target 25\)/)).toBeVisible();
   await fill(page, "external.kpi.offline", "19");
-  await expect(page.getByText(/sekitar 9 minggu/)).toBeVisible();
-  await page.screenshot({ path: join(shots, `${test.info().project.name}-external-kpi.png`), fullPage: true });
-  await next(page, "External · Outreach Simulation");
-  await fill(page, "external.outreachMessage", `${LONG} ${LONG}`);
-  await next(page, "External · First 30 Days");
-  await fillAll(page, 'textarea[name^="external.first30."]', LONG);
+  await expect(page.getByText(/sesuai target total/)).toBeVisible();
+  await page.screenshot({ path: join(shots, `${test.info().project.name}-external-objective.png`), fullPage: true });
   await next(page, "Reward & Leadership");
   const content = await sectionDAndDownload(page, { leadership: "member_only", reward: "yes" });
 
-  for (const text of [`| Nama | ${name} |`, "| Pilihan tim | Flexible (studi kasus External) |", "**Perusahaan 1: Target Co 1**", "Nama: Nama Prospek E2E", "> 25"]) expect(content).toContain(text);
+  for (const text of [`| Nama | ${name} |`, "| Pilihan tim | Flexible (menjawab pertanyaan External) |", "- Target Co 4", "> 25 orang (offline 19, online 6)", "Latar belakang: Production engineer 4 tahun"]) {
+    expect(content).toContain(text);
+  }
   const payload = parseAnswerMarkdown(content);
   expect(payload).toMatchObject({ track: "external", internal: null, team: { preference: "flexible", flexibleTrack: "external" } });
-  expect(payload.external?.companies).toHaveLength(6);
-  expect(payload.external?.kpi).toMatchObject({ total: "25", offline: "19", online: "6" });
+  expect(payload.external?.companies).toHaveLength(4);
+  expect(payload.external?.kpi).toEqual({ total: "25", offline: "19", online: "6" });
   expect(payload.final.reward).toMatchObject({ plan: "yes", nomineeBackground: "Production engineer 4 tahun", transparencyAck: true });
   expect(problems).toEqual([]);
 });

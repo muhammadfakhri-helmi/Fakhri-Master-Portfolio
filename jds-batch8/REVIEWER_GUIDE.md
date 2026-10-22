@@ -33,14 +33,12 @@ dari penyimpanan lokal.
 ## 3. Tampilan
 
 - **Rekap kandidat:** filter pilihan tim, urut skor/nama/status, indikator konsistensi KPI.
-- **Dashboard target:** jumlah proyeksi KPI seluruh kandidat External (atau hanya yang berstatus
-  "Terpilih — External") dibandingkan target 300 / 200 offline / 100 online / 280 experienced /
-  20 fresh graduate / ≥10 operator / ≥10 senior service / ≥20 networking. Subkategori boleh
-  tumpang tindih; hanya "Total" yang mewakili peserta unik.
-- **Bandingkan strategi Internal:** kartu berdampingan berisi strategi utama, tiga langkah pertama,
-  prioritas, pemulihan 7 hari, dan deliverable 30 hari setiap kandidat Internal.
+- **Dashboard target:** jumlah target peserta seluruh kandidat External (atau hanya yang berstatus
+  "Terpilih — External") dibandingkan target 300 / 200 offline / 100 online.
+- **Bandingkan strategi Internal:** kartu berdampingan berisi jawaban Q9–Q13 setiap kandidat
+  Internal.
 - **Detail:** seluruh jawaban, indikator otomatis KPI (bukan nilai), dan panel penilaian.
-  Nama calon peserta & kandidat rekomendasi tersembunyi sampai *Tampilkan data terbatas* diklik.
+  Data kandidat rekomendasi tersembunyi sampai *Tampilkan data terbatas* diklik.
 
 ## 4. Penilaian
 
@@ -48,11 +46,11 @@ Setiap kriteria diberi skor 0–5. Skor akhir = Σ (skor / 5 × bobot), skala 0�
 
 | Internal | Bobot | External | Bobot |
 | --- | ---: | --- | ---: |
-| Recruitment Strategy & Target Achievement (Q9) | 35% | Target Company & Candidate Mapping (Q9–Q10) | 30% |
-| Execution Planning (Q10, Q12) | 25% | Recruitment KPI Feasibility (Q11) | 25% |
-| Problem Solving (Q11) | 20% | Outreach & Conversion Strategy (Q12–Q13) | 20% |
-| Collaboration & Accountability (Q8, Q10b, Q16) | 10% | Collaboration & Accountability (Q8, Q13, Q16) | 15% |
-| Realistic Commitment (Q5, Q12, Q17) | 10% | Commitment (Q5, Q11e, Q17) | 10% |
+| Recruitment Strategy & Target Achievement (Q9, Q13) | 35% | Target Company & Candidate Mapping (Q9) | 30% |
+| Execution Planning (Q10, Q11) | 25% | Recruitment KPI Feasibility (Q10) | 25% |
+| Problem Solving (Q12) | 20% | Outreach & Conversion Strategy (Q11–Q12) | 20% |
+| Collaboration & Accountability (Q8, Q11, Q16) | 10% | Collaboration & Accountability (Q8, Q13, Q16) | 15% |
+| Realistic Commitment (Q5, Q17) | 10% | Commitment (Q5, Q17) | 10% |
 
 Kandidat **Flexible** dinilai dengan kriteria studi kasus yang mereka kerjakan.
 
@@ -68,12 +66,10 @@ Kandidat **Flexible** dinilai dengan kriteria studi kasus yang mereka kerjakan.
 | 5 | Lengkap, terukur, realistis terhadap waktu tersedia, mengantisipasi risiko, memperkuat kerja Internal–External |
 
 Petunjuk khusus:
-- **Mapping (External):** nilai relevansi perusahaan dan rencana pendekatan, **bukan** seberapa
-  tinggi jabatan orang yang dikenal kandidat. Q9 adalah rencana sourcing, bukan bukti koneksi.
-- **KPI feasibility:** bandingkan target dengan ketersediaan waktu (Q5), prospek/minggu,
-  konversi, dan estimasi minggu yang ditampilkan; nilai rencana jika hanya 50%.
-- **Outreach:** pesan tidak boleh menjanjikan pekerjaan, sertifikat, sponsor, atau manfaat yang
-  belum resmi.
+- **Mapping (External):** nilai relevansi perusahaan dan profesional sasaran, **bukan** seberapa
+  tinggi jabatan orang yang dikenal kandidat. Q9 adalah rencana sasaran, bukan bukti koneksi.
+- **KPI feasibility:** bandingkan target (Q10) dan alasannya dengan ketersediaan waktu (Q5).
+- Pertanyaan dibuat singkat; nilai kejelasan dan kenyataan langkahnya, bukan panjang jawaban.
 
 ### Klasifikasi
 
@@ -96,9 +92,9 @@ Pilih pemisah: koma, atau titik koma untuk Excel dengan regional Indonesia.
 | Tombol | Isi |
 | --- | --- |
 | Rekap kandidat | Name, Team Preference, Weekly Availability, Leadership Interest, Target Participants, Offline/Online Target, Target Companies, KPI Plan, Internal Strategy Summary, Reward Nomination Plan, Reviewer Score, Reviewer Notes, Selection Status (+ Classification, Assessment Track, Submission ID) |
-| Perusahaan target External | Satu baris per perusahaan per kandidat |
-| Proyeksi KPI External | Target, komposisi, prospek/minggu, konversi, estimasi minggu, konsistensi |
-| Ringkasan strategi Internal | Strategi a–f, prioritas, dukungan External, recovery, deliverable |
+| Perusahaan target External | Satu baris per perusahaan per kandidat, dengan profesional sasaran |
+| Proyeksi KPI External | Target total/offline/online, konsistensi, alasan, cara menghubungi, konversi, pelaporan |
+| Ringkasan strategi Internal | Jawaban Q9–Q13 kandidat Internal |
 
-Nama calon peserta dan kandidat rekomendasi **tidak** pernah ada di ekspor. File CSV berisi data
+Data kandidat rekomendasi **tidak** pernah ada di ekspor. File CSV berisi data
 pribadi kandidat: simpan di perangkat pribadi dan hapus setelah seleksi.

@@ -42,14 +42,7 @@ export function completeInternalAnswers(name?: string): Answers {
   const a = createInitialAnswers();
   basePersonal(a, name);
   a.team.preference = "internal";
-  for (const group of ["strategy", "execution", "recovery"] as const) {
-    const section = a.internal[group] as Record<string, string>;
-    for (const key of Object.keys(section)) section[key] = long(`${group}.${key}`);
-  }
-  a.internal.deliverables = [
-    { title: "Dashboard progres pendaftaran", deadline: "Hari ke-10", indicator: "Dashboard dipakai di rapat mingguan", impact: "Kategori yang tertinggal terlihat lebih awal sehingga outreach difokuskan." },
-    { title: "Kit materi outreach", deadline: "Hari ke-20", indicator: "Dipakai seluruh anggota External", impact: "Pesan lebih konsisten sehingga konversi prospek meningkat." },
-  ];
+  for (const key of Object.keys(a.internal) as (keyof typeof a.internal)[]) a.internal[key] = long(`internal.${key}`);
   return a;
 }
 
@@ -57,41 +50,12 @@ export function completeExternalAnswers(name?: string): Answers {
   const a = createInitialAnswers();
   basePersonal(a, name);
   a.team.preference = "external";
-  a.external.companies = ["Operator Satu", "Geo Dua", "Service Tiga", "Engineering Empat", "Service Lima"].map((company, i) => ({
-    name: company,
-    industry: (["operator_oil_gas", "geothermal", "service_company", "engineering", "service_company"] as const)[i]!,
-    industryOther: "",
-    targetProfile: "Drilling engineer 2–3 tahun",
-    reason: "Banyak engineer muda yang membutuhkan jejaring drilling lintas perusahaan.",
-    approach: "linkedin",
-    approachOther: "",
-  }));
-  a.external.prospects = [0, 1, 2].map((i) => ({
-    name: i === 0 ? "Prospek Bernama Rahasia" : "",
-    profile: `Well engineer ${i + 1}`,
-    companyOrIndustry: "Operator geothermal",
-    experience: "3 tahun",
-    relevance: "Relevan dengan target operator berpengalaman 2–3 tahun.",
-    relationship: "indirect_connection",
-    approachPlan: "Perkenalan melalui alumni lalu undangan sesi informasi.",
-  }));
-  Object.assign(a.external.kpi, {
-    total: "20",
-    offline: "14",
-    online: "6",
-    experienced: "18",
-    freshGraduate: "2",
-    operator: "3",
-    seniorService: "3",
-    networking: "4",
-    weeklyProspects: "15",
-    conversionRate: "20",
-    prospectSources: "LinkedIn alumni, komunitas drilling, referral rekan kerja",
-    halfKpiPlan: long("Rencana 50%"),
-    accountableCommitment: long("Komitmen KPI"),
-  });
-  a.external.outreachMessage =
-    "Halo Mas, terima kasih atas pertanyaannya. Dengan pengalaman tujuh tahun, JDS dapat menjadi ruang untuk berbagi praktik terbaik, memperluas jejaring lintas operator dan service company, serta membimbing engineer muda. Saya bisa kirimkan jadwal dan detail program resminya bila Mas berkenan.";
-  for (const key of Object.keys(a.external.first30) as (keyof typeof a.external.first30)[]) a.external.first30[key] = long(`first30.${key}`);
+  a.external.companies = ["Operator Satu", "Geo Dua", "Service Tiga"];
+  a.external.targetProfile = "Drilling engineer 2–3 tahun dan senior engineer service company.";
+  a.external.kpi = { total: "20", offline: "14", online: "6" };
+  a.external.kpiReason = long("Alasan KPI");
+  a.external.approach = long("Cara menghubungi");
+  a.external.conversion = long("Konversi");
+  a.external.reporting = long("Pelaporan");
   return a;
 }
