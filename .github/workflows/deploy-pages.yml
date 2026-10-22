@@ -25,6 +25,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            jds-batch8/package-lock.json
       - id: pages
         uses: actions/configure-pages@v5
       - run: npm ci
@@ -33,6 +36,16 @@ jobs:
         env:
           # absolute Open Graph image URL for link previews
           VITE_SITE_URL: ${{ steps.pages.outputs.base_url }}/
+      # JDS Batch 8 recruitment assessment, published at <site>/jds-batch8/.
+      # typecheck → unit/UI tests → build → public-build gate (no private key, CSP, relative paths)
+      - run: npm ci
+        working-directory: jds-batch8
+      - run: npm run verify
+        working-directory: jds-batch8
+      - name: Add the assessment to the site
+        run: cp -r jds-batch8/dist dist/jds-batch8
+      # privacy check again on the combined site
+      - run: npm run check:dist
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
