@@ -59,7 +59,7 @@ export interface EncryptedFile {
 }
 
 export async function createEncryptedAssessment(answers: Answers, recipient: RecipientKey): Promise<EncryptedFile> {
-  if (!recipient.configured || !recipient.spki) throw new Error("Kunci publik Ketua Rekrutmen belum dikonfigurasi.");
+  if (!recipient.configured || !recipient.spki) throw new Error("Kunci enkripsi panitia belum dikonfigurasi.");
   const publicKey = await importPublicKey(recipient.spki);
   const keyId = await keyIdFromSpki(base64ToBytes(recipient.spki));
   if (recipient.keyId && recipient.keyId !== keyId) throw new Error("ID kunci publik tidak sesuai dengan isi kunci. Hubungi panitia.");

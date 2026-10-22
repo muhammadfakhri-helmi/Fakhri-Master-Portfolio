@@ -24,7 +24,7 @@ function PartArea<G extends Group>({
       name={name}
       label={
         <>
-          <span className="mr-1.5 text-accent-700">{letter}.</span>
+          <span className="mr-1.5 text-leaf-700">{letter}.</span>
           {label}
         </>
       }
@@ -49,7 +49,7 @@ export function InternalStrategyStep(props: StepProps) {
             Sebagai bagian dari {TEAM_SIZE.internal} orang Internal Team, kamu ditantang membantu mencapai {TARGETS.total} peserta JDS Batch 8, terdiri dari {TARGETS.offline} offline
             dan {TARGETS.online} online, dengan komposisi {TARGETS.experienced} experienced dan {TARGETS.freshGraduate} fresh graduate.
           </p>
-          <p className="font-medium text-navy-800">Jawaban harus menyertakan langkah nyata dan prioritas.</p>
+          <p className="font-medium text-forest-800">Jawaban harus menyertakan langkah nyata dan prioritas.</p>
         </>
       }
     >
@@ -105,20 +105,20 @@ export function InternalRecoveryStep(props: StepProps) {
         {RECOVERY_STATUS.map((row) => {
           const pct = Math.round((row.now / row.target) * 100);
           return (
-            <div key={row.label} className="rounded-xl border border-slate-200 bg-navy-50 p-3">
-              <p className="text-xs font-medium text-slate-500">{row.label}</p>
-              <p className="mt-0.5 text-lg font-bold text-navy-900 tabular-nums">
+            <div key={row.label} className="rounded-xl border border-stone-200 bg-forest-50 p-3">
+              <p className="text-xs font-medium text-stone-500">{row.label}</p>
+              <p className="mt-0.5 text-lg font-bold text-forest-900 tabular-nums">
                 {row.now}
-                <span className="text-sm font-medium text-slate-400">/{row.target}</span>
+                <span className="text-sm font-medium text-stone-400">/{row.target}</span>
               </p>
-              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-200" aria-hidden="true">
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-stone-200" aria-hidden="true">
                 <div className={`h-full rounded-full ${pct < 50 ? "bg-red-500" : "bg-amber-500"}`} style={{ width: `${pct}%` }} />
               </div>
             </div>
           );
         })}
       </div>
-      <Callout tone="navy">
+      <Callout tone="dark">
         <p className="font-semibold">Jika kamu bertanggung jawab terhadap strategi, bagaimana kamu memperbaiki situasi ini dalam tujuh hari?</p>
       </Callout>
       <PartArea {...props} group="recovery" field="priorities" letter="a" label="Prioritas tindakan" help="Kategori mana yang ditangani lebih dulu dan mengapa." />

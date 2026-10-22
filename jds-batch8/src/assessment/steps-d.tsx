@@ -29,8 +29,8 @@ export function RewardLeadershipStep({ answers, update, errors }: StepProps) {
           onChange={(v) => update((d) => void (d.final.reward.plan = v))}
         />
         {reward.plan === "yes" && (
-          <div className="step-enter space-y-4 rounded-2xl border border-slate-200 bg-navy-50/60 p-4 sm:p-5">
-            <p className="text-sm text-slate-600">Jangan mencantumkan detail kontak pribadi kandidat rekomendasi.</p>
+          <div className="step-enter space-y-4 rounded-2xl border border-stone-200 bg-forest-50/60 p-4 sm:p-5">
+            <p className="text-sm text-stone-600">Jangan mencantumkan detail kontak pribadi kandidat rekomendasi.</p>
             <TextField
               name="final.reward.nomineeName"
               label="Nama kandidat rekomendasi"
@@ -77,17 +77,17 @@ export function RewardLeadershipStep({ answers, update, errors }: StepProps) {
             </Checkbox>
           </div>
         )}
-        {reward.plan === "maybe" && <p className="text-sm text-slate-500">Tidak apa-apa. Kamu dapat menentukan kandidat nanti tanpa memengaruhi penilaian.</p>}
+        {reward.plan === "maybe" && <p className="text-sm text-stone-500">Tidak apa-apa. Kamu dapat menentukan kandidat nanti tanpa memengaruhi penilaian.</p>}
       </QuestionBlock>
 
       <QuestionBlock
         number="Q15"
         title="Leadership Interest"
-        intro={<p>Posisi ini merupakan koordinator tim di bawah Ketua Rekrutmen utama, bukan menggantikan Ketua Rekrutmen JDS Batch 8. Memilih “Tidak” tidak mengurangi penilaian.</p>}
+        intro={<p>Koordinator tim memastikan pekerjaan tim berjalan sesuai rencana dan target. Peran ini opsional — memilih “Tidak” tidak mengurangi penilaian.</p>}
       >
         <RadioCards
           name="final.leadership.interest"
-          legend="Apakah kamu tertarik menjadi Ketua/Koordinator Tim Internal atau External pada Rekrutmen JDS Batch 8?"
+          legend="Apakah kamu tertarik menjadi Koordinator Tim Internal atau External pada Rekrutmen JDS Batch 8?"
           options={LEADERSHIP_OPTIONS}
           value={leadership.interest}
           error={errors["final.leadership.interest"]}
@@ -175,8 +175,8 @@ export function CommitmentStep({ answers, update, errors }: StepProps) {
       </QuestionBlock>
       <div className="card p-5 sm:p-7">
         <Checkbox name="final.consent" checked={f.consent} error={errors["final.consent"]} onChange={(v) => update((d) => void (d.final.consent = v))}>
-          Saya menyetujui pemrosesan data jawaban saya oleh Ketua Rekrutmen JDS Batch 8 untuk keperluan seleksi kepanitiaan. Saya memahami bahwa jawaban dienkripsi di perangkat saya dan
-          hanya dapat dibuka oleh Ketua Rekrutmen.
+          Saya menyetujui pemrosesan data jawaban saya oleh panitia rekrutmen JDS Batch 8 untuk keperluan seleksi kepanitiaan. Saya memahami bahwa jawaban dienkripsi di perangkat saya dan
+          hanya dapat dibuka oleh panitia penilai.
         </Checkbox>
       </div>
     </div>

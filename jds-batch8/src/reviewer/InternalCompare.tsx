@@ -12,25 +12,25 @@ const FIELDS = [
 
 export function InternalCompare({ candidates, onOpen }: { candidates: Candidate[]; onOpen: (sid: string) => void }) {
   const internal = candidates.filter((c) => c.payload.internal);
-  if (internal.length === 0) return <p className="card p-6 text-sm text-slate-500">Belum ada kandidat yang mengerjakan studi kasus Internal.</p>;
+  if (internal.length === 0) return <p className="card p-6 text-sm text-stone-500">Belum ada kandidat yang mengerjakan studi kasus Internal.</p>;
   return (
     <section className="space-y-3">
-      <p className="text-sm text-slate-500">Bandingkan ide strategi antarcalon panitia Internal. Geser ke samping bila kandidat lebih dari tiga.</p>
+      <p className="text-sm text-stone-500">Bandingkan ide strategi antarcalon panitia Internal. Geser ke samping bila kandidat lebih dari tiga.</p>
       <div className="overflow-x-auto pb-2">
         <div className="grid auto-cols-[minmax(18rem,1fr)] grid-flow-col gap-4">
           {internal.map((c) => (
             <article key={c.submissionId} className="card flex flex-col p-5">
-              <button type="button" className="text-left font-bold text-navy-900 hover:underline" onClick={() => onOpen(c.submissionId)}>
+              <button type="button" className="text-left font-bold text-forest-900 hover:underline" onClick={() => onOpen(c.submissionId)}>
                 {c.payload.personal.fullName}
               </button>
-              <p className="font-mono text-xs text-slate-400">
+              <p className="font-mono text-xs text-stone-400">
                 {c.submissionId} · {c.payload.team.preference === "flexible" ? "Flexible" : "Internal"}
               </p>
               <dl className="mt-4 space-y-3 text-sm">
                 {FIELDS.map((f) => (
                   <div key={f.label}>
-                    <dt className="text-xs font-bold tracking-wide text-accent-700 uppercase">{f.label}</dt>
-                    <dd className="mt-1 whitespace-pre-line text-slate-700 [overflow-wrap:anywhere]">{f.get(c)}</dd>
+                    <dt className="text-xs font-bold tracking-wide text-leaf-700 uppercase">{f.label}</dt>
+                    <dd className="mt-1 whitespace-pre-line text-stone-700 [overflow-wrap:anywhere]">{f.get(c)}</dd>
                   </div>
                 ))}
               </dl>

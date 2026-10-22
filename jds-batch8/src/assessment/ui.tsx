@@ -19,7 +19,7 @@ function FieldShell({ id, label, help, error, optional, children, footer }: Fiel
     <div className="space-y-1.5">
       <label htmlFor={id} className="label">
         {label}
-        {optional && <span className="ml-2 text-xs font-medium text-slate-400">(opsional)</span>}
+        {optional && <span className="ml-2 rounded-full bg-cream-200 px-2 py-0.5 text-[11px] font-medium text-[#7d7562]">opsional</span>}
       </label>
       {help && (
         <p id={`${id}-help`} className="help !mt-0">
@@ -90,7 +90,7 @@ export function TextArea({ name, label, value, onChange, error, help, placeholde
   const id = fieldId(name);
   const count = value.trim().length;
   const counter = (
-    <span className={`shrink-0 pt-1.5 text-xs tabular-nums ${min && count < min ? "text-slate-400" : "text-accent-700"}`} aria-live="off">
+    <span className={`shrink-0 pt-1.5 text-xs tabular-nums ${min && count < min ? "text-[#a49a82]" : "font-semibold text-leaf-700"}`} aria-live="off">
       {count}
       {min ? ` / min ${min}` : ""} karakter
     </span>
@@ -142,7 +142,7 @@ export function NumberField({ name, label, value, onChange, error, help, suffix,
           aria-describedby={describedBy(id, help, error)}
           onChange={(event) => onChange(event.target.value.replace(decimal ? /[^\d.,]/g : /\D/g, ""))}
         />
-        {suffix && <span className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-sm text-slate-400">{suffix}</span>}
+        {suffix && <span className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-sm text-[#a49a82]">{suffix}</span>}
       </div>
     </FieldShell>
   );
@@ -175,8 +175,8 @@ export function RadioCards<T extends string>({ name, legend, options, value, onC
           return (
             <label
               key={option.value}
-              className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3.5 transition-colors ${
-                checked ? "border-accent-500 bg-accent-400/10 ring-1 ring-accent-500" : "border-slate-200 bg-white hover:border-navy-600/40"
+              className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3.5 transition-all duration-150 ${
+                checked ? "border-forest-600 bg-leaf-100/80 shadow-[0_4px_14px_-8px_rgb(70_97_61/0.6)] ring-1 ring-forest-600" : "border-cream-300 bg-white/70 hover:border-forest-500/50 hover:bg-white"
               } ${error && !value ? "border-red-300" : ""}`}
             >
               <input
@@ -185,11 +185,11 @@ export function RadioCards<T extends string>({ name, legend, options, value, onC
                 value={option.value}
                 checked={checked}
                 onChange={() => onChange(option.value)}
-                className="mt-0.5 size-4.5 shrink-0 accent-accent-600"
+                className="mt-0.5 size-4.5 shrink-0 accent-leaf-600"
               />
               <span>
-                <span className="block text-[15px] font-medium text-navy-900">{option.label}</span>
-                {option.hint && <span className="mt-0.5 block text-sm text-slate-500">{option.hint}</span>}
+                <span className="block text-[15px] font-medium text-forest-900">{option.label}</span>
+                {option.hint && <span className="mt-0.5 block text-sm text-[#7d7562]">{option.hint}</span>}
               </span>
             </label>
           );
@@ -249,7 +249,7 @@ export function Checkbox({ name, checked, onChange, children, error }: CheckboxP
   const id = fieldId(name);
   return (
     <div>
-      <label htmlFor={id} className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3.5 ${error ? "border-red-300 bg-red-50/50" : "border-slate-200 bg-white"}`}>
+      <label htmlFor={id} className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-3.5 ${error ? "border-red-300 bg-red-50/50" : "border-cream-300 bg-white/70"}`}>
         <input
           id={id}
           name={name}
@@ -258,9 +258,9 @@ export function Checkbox({ name, checked, onChange, children, error }: CheckboxP
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-error` : undefined}
           onChange={(event) => onChange(event.target.checked)}
-          className="mt-0.5 size-4.5 shrink-0 accent-accent-600"
+          className="mt-0.5 size-4.5 shrink-0 accent-leaf-600"
         />
-        <span className="text-[15px] text-slate-700">{children}</span>
+        <span className="text-[15px] text-ink">{children}</span>
       </label>
       {error && (
         <p id={`${id}-error`} className="error-text" role="alert">
@@ -271,11 +271,11 @@ export function Checkbox({ name, checked, onChange, children, error }: CheckboxP
   );
 }
 
-export function Callout({ tone = "info", title, children }: { tone?: "info" | "warning" | "navy"; title?: ReactNode; children: ReactNode }) {
+export function Callout({ tone = "info", title, children }: { tone?: "info" | "warning" | "dark"; title?: ReactNode; children: ReactNode }) {
   const styles = {
-    info: "border-accent-500/30 bg-accent-400/10 text-navy-900",
+    info: "border-leaf-300 bg-leaf-100/70 text-forest-900",
     warning: "border-amber-300 bg-amber-50 text-amber-950",
-    navy: "border-navy-800 bg-navy-900 text-white",
+    dark: "border-forest-800 bg-forest-900 text-cream-50",
   }[tone];
   return (
     <div className={`rounded-2xl border p-4 text-[15px] leading-relaxed sm:p-5 ${styles}`}>
@@ -289,12 +289,17 @@ export function QuestionBlock({ number, title, children, intro }: { number: stri
   const headingId = useId();
   return (
     <section aria-labelledby={headingId} className="card space-y-5 p-5 sm:p-7">
-      <header className="space-y-2">
-        <p className="text-xs font-bold tracking-[0.16em] text-accent-700 uppercase">{number}</p>
-        <h3 id={headingId} className="text-lg leading-snug font-bold text-navy-900 sm:text-xl">
-          {title}
-        </h3>
-        {intro && <div className="space-y-2 text-[15px] leading-relaxed text-slate-600">{intro}</div>}
+      <header className="flex items-start gap-3.5">
+        <span className="font-display grid size-11 shrink-0 place-items-center rounded-2xl bg-leaf-100 text-[15px] font-semibold text-forest-800 ring-1 ring-leaf-300/70" aria-hidden="true">
+          {number.split(" ")[0]}
+        </span>
+        <div className="min-w-0 space-y-1.5">
+          <p className="eyebrow">{number}</p>
+          <h3 id={headingId} className="text-[1.2rem] leading-snug font-semibold text-forest-900 sm:text-[1.35rem]">
+            {title}
+          </h3>
+          {intro && <div className="space-y-2 text-[15px] leading-relaxed text-[#5b5544]">{intro}</div>}
+        </div>
       </header>
       {children}
     </section>
@@ -303,11 +308,11 @@ export function QuestionBlock({ number, title, children, intro }: { number: stri
 
 export function RepeaterCard({ title, onRemove, removable, children }: { title: string; onRemove: () => void; removable: boolean; children: ReactNode }) {
   return (
-    <div className="space-y-4 rounded-2xl border border-slate-200 bg-navy-50/60 p-4 sm:p-5">
+    <div className="space-y-4 rounded-[1.25rem] border border-cream-300 bg-cream-100/70 p-4 sm:p-5">
       <div className="flex items-center justify-between gap-3">
-        <p className="font-semibold text-navy-900">{title}</p>
+        <p className="font-display text-[1.05rem] font-semibold text-forest-900">{title}</p>
         {removable && (
-          <button type="button" onClick={onRemove} className="rounded-lg px-2.5 py-1 text-sm font-medium text-red-600 hover:bg-red-50">
+          <button type="button" onClick={onRemove} className="rounded-full px-3 py-1 text-sm font-medium text-red-700 hover:bg-red-50">
             Hapus
           </button>
         )}

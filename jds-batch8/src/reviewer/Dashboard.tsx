@@ -34,14 +34,14 @@ export function Dashboard({ candidates, reviews }: { candidates: Candidate[]; re
       <div className="card space-y-4 p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="font-bold text-navy-900">Shared target · proyeksi KPI External vs target JDS Batch 8</h2>
-            <p className="text-sm text-slate-500">
+            <h2 className="font-bold text-forest-900">Shared target · proyeksi KPI External vs target JDS Batch 8</h2>
+            <p className="text-sm text-stone-500">
               {sum.candidates} kandidat External dihitung. Subkategori boleh tumpang tindih; hanya “Total” yang mewakili peserta unik. Asumsi perencanaan: {TEAM_SIZE.externalAssumption} ×{" "}
               {TEAM_SIZE.examplePerExternalMember} = {TEAM_SIZE.externalAssumption * TEAM_SIZE.examplePerExternalMember}.
             </p>
           </div>
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={selectedOnly} onChange={(e) => setSelectedOnly(e.target.checked)} className="accent-accent-600" />
+            <input type="checkbox" checked={selectedOnly} onChange={(e) => setSelectedOnly(e.target.checked)} className="accent-leaf-600" />
             Hanya status “Terpilih — External”
           </label>
         </div>
@@ -51,11 +51,11 @@ export function Dashboard({ candidates, reviews }: { candidates: Candidate[]; re
             const pct = Math.min(100, Math.round((value / row.target) * 100));
             return (
               <div key={row.key} className="grid items-center gap-2 sm:grid-cols-[16rem_1fr_7rem]">
-                <span className="text-sm font-medium text-navy-900">{row.label}</span>
-                <div className="h-3 overflow-hidden rounded-full bg-slate-200" role="img" aria-label={`${row.label}: ${value} dari ${row.target}`}>
-                  <div className={`h-full rounded-full ${value >= row.target ? "bg-emerald-500" : "bg-accent-500"}`} style={{ width: `${pct}%` }} />
+                <span className="text-sm font-medium text-forest-900">{row.label}</span>
+                <div className="h-3 overflow-hidden rounded-full bg-stone-200" role="img" aria-label={`${row.label}: ${value} dari ${row.target}`}>
+                  <div className={`h-full rounded-full ${value >= row.target ? "bg-emerald-500" : "bg-leaf-500"}`} style={{ width: `${pct}%` }} />
                 </div>
-                <span className="text-sm tabular-nums text-slate-600">
+                <span className="text-sm tabular-nums text-stone-600">
                   {value} / {row.target}
                 </span>
               </div>
@@ -71,11 +71,11 @@ export function Dashboard({ candidates, reviews }: { candidates: Candidate[]; re
           { title: "Status seleksi", data: Object.fromEntries(SELECTION_STATUSES.map((s) => [s, byStatus[s] ?? 0])) },
         ].map((box) => (
           <div key={box.title} className="card p-5">
-            <h3 className="text-sm font-bold text-navy-900">{box.title}</h3>
+            <h3 className="text-sm font-bold text-forest-900">{box.title}</h3>
             <ul className="mt-3 space-y-1.5 text-sm">
               {Object.entries(box.data).map(([k, v]) => (
                 <li key={k} className="flex justify-between gap-3">
-                  <span className="text-slate-600">{k}</span>
+                  <span className="text-stone-600">{k}</span>
                   <span className="font-semibold tabular-nums">{v}</span>
                 </li>
               ))}

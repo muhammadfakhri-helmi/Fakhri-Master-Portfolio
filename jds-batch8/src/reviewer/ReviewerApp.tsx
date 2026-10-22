@@ -14,7 +14,7 @@ type Tab = "recap" | "dashboard" | "internal" | "detail";
 
 const STATUS_STYLE: Record<IntakeResult["status"], string> = {
   ok: "text-emerald-700",
-  duplicate_file: "text-slate-500",
+  duplicate_file: "text-stone-500",
   id_conflict: "text-amber-700",
   wrong_key: "text-red-700",
   tampered: "text-red-700",
@@ -126,18 +126,18 @@ export function ReviewerApp() {
   const exportsDisabled = candidates.length === 0;
 
   return (
-    <div className="min-h-screen bg-navy-50">
-      <header className="bg-navy-900 text-white">
+    <div className="min-h-screen bg-forest-50">
+      <header className="bg-forest-900 text-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <div>
-            <p className="text-xs font-bold tracking-[0.18em] text-accent-300 uppercase">JDS Batch 8 · Rekrutmen</p>
+            <p className="text-xs font-bold tracking-[0.18em] text-leaf-300 uppercase">JDS Batch 8 · Rekrutmen</p>
             <h1 className="text-xl font-bold">Private Reviewer (lokal)</h1>
           </div>
           <div className="flex flex-wrap gap-2 text-xs">
-            <span className={`rounded-full px-3 py-1 font-semibold ${privateKey ? "bg-emerald-400/20 text-emerald-200" : "bg-white/10 text-navy-100"}`}>
+            <span className={`rounded-full px-3 py-1 font-semibold ${privateKey ? "bg-emerald-400/20 text-emerald-200" : "bg-white/10 text-forest-100"}`}>
               {privateKey ? `Kunci dimuat · ${privateKey.keyId}` : "Kunci privat belum dimuat"}
             </span>
-            <span className="rounded-full bg-white/10 px-3 py-1 text-navy-100">{candidates.length} kandidat</span>
+            <span className="rounded-full bg-white/10 px-3 py-1 text-forest-100">{candidates.length} kandidat</span>
           </div>
         </div>
       </header>
@@ -149,11 +149,11 @@ export function ReviewerApp() {
 
         <div className="grid gap-4 lg:grid-cols-2">
           <section className="card space-y-3 p-5">
-            <h2 className="font-bold text-navy-900">1 · Muat kunci privat</h2>
+            <h2 className="font-bold text-forest-900">1 · Muat kunci privat</h2>
             {privateKey ? (
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-sm text-slate-600">
-                  Kunci aktif: <span className="font-mono font-semibold text-navy-900">{privateKey.keyId}</span> (non-extractable, hanya di memori)
+                <p className="text-sm text-stone-600">
+                  Kunci aktif: <span className="font-mono font-semibold text-forest-900">{privateKey.keyId}</span> (non-extractable, hanya di memori)
                 </p>
                 <button type="button" className="btn-ghost py-2" onClick={() => setPrivateKey(null)}>
                   Lepas kunci
@@ -165,7 +165,7 @@ export function ReviewerApp() {
                   type="file"
                   aria-label="File kunci privat"
                   accept=".json,.pem,application/json"
-                  className="block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-navy-900 file:px-3 file:py-2 file:text-white"
+                  className="block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-forest-900 file:px-3 file:py-2 file:text-white"
                   onChange={async (event) => {
                     const file = event.target.files?.[0];
                     event.target.value = "";
@@ -209,7 +209,7 @@ export function ReviewerApp() {
           </section>
 
           <section className="card space-y-3 p-5">
-            <h2 className="font-bold text-navy-900">2 · Muat file asesmen (.md)</h2>
+            <h2 className="font-bold text-forest-900">2 · Muat file asesmen (.md)</h2>
             <label
               onDragOver={(e) => {
                 e.preventDefault();
@@ -222,11 +222,11 @@ export function ReviewerApp() {
                 loadFiles(e.dataTransfer.files);
               }}
               className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-4 py-6 text-center text-sm ${
-                privateKey ? (dragging ? "border-accent-500 bg-accent-400/10" : "border-slate-300 hover:border-accent-500") : "cursor-not-allowed border-slate-200 text-slate-400"
+                privateKey ? (dragging ? "border-leaf-500 bg-leaf-400/10" : "border-stone-300 hover:border-leaf-500") : "cursor-not-allowed border-stone-200 text-stone-400"
               }`}
             >
-              <span className="font-semibold text-navy-900">Pilih atau seret banyak file sekaligus</span>
-              <span className="text-slate-500">{privateKey ? "File JDS_B8_ASSESSMENT_*.md" : "Muat kunci privat terlebih dahulu"}</span>
+              <span className="font-semibold text-forest-900">Pilih atau seret banyak file sekaligus</span>
+              <span className="text-stone-500">{privateKey ? "File JDS_B8_ASSESSMENT_*.md" : "Muat kunci privat terlebih dahulu"}</span>
               <input
                 type="file"
                 multiple
@@ -254,7 +254,7 @@ export function ReviewerApp() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-white p-3 shadow-sm">
-          <span className="px-2 text-sm font-semibold text-navy-900">Ekspor CSV (Excel):</span>
+          <span className="px-2 text-sm font-semibold text-forest-900">Ekspor CSV (Excel):</span>
           <select aria-label="Pemisah CSV" className="input w-auto py-2 text-sm" value={delimiter} onChange={(e) => setDelimiter(e.target.value as Delimiter)}>
             <option value=",">Koma (,)</option>
             <option value=";">Titik koma (;) — Excel regional Indonesia</option>
@@ -283,7 +283,7 @@ export function ReviewerApp() {
           </button>
         </div>
 
-        <nav className="flex gap-1 overflow-x-auto border-b border-navy-100" aria-label="Tampilan reviewer">
+        <nav className="flex gap-1 overflow-x-auto border-b border-forest-100" aria-label="Tampilan reviewer">
           {(
             [
               ["recap", "Rekap kandidat"],
@@ -297,7 +297,7 @@ export function ReviewerApp() {
               type="button"
               onClick={() => setTab(id)}
               aria-current={tab === id ? "page" : undefined}
-              className={`shrink-0 border-b-2 px-4 py-2.5 text-sm font-semibold ${tab === id ? "border-accent-500 text-navy-900" : "border-transparent text-slate-500 hover:text-navy-900"}`}
+              className={`shrink-0 border-b-2 px-4 py-2.5 text-sm font-semibold ${tab === id ? "border-leaf-500 text-forest-900" : "border-transparent text-stone-500 hover:text-forest-900"}`}
             >
               {label}
             </button>
@@ -318,7 +318,7 @@ export function ReviewerApp() {
               onChange={updateReview}
             />
           ) : (
-            <p className="card p-6 text-sm text-slate-500">Pilih kandidat dari tab Rekap.</p>
+            <p className="card p-6 text-sm text-stone-500">Pilih kandidat dari tab Rekap.</p>
           ))}
       </main>
     </div>

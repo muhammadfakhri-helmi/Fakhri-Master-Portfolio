@@ -28,6 +28,7 @@ const forbidden: [string, RegExp][] = [
   ["protected private key file", new RegExp(["JDS-B8-PRIVATE", "KEY-v1"].join("-"))],
   ["reviewer code", new RegExp(["Private", "Reviewer"].join(" "))],
   ["JWK private exponent", /"d"\s*:\s*"[A-Za-z0-9_-]{100,}"/],
+  ["inlined data: font (blocked by CSP font-src 'self')", /url\(["']?data:font/],
 ];
 
 for (const file of files) {

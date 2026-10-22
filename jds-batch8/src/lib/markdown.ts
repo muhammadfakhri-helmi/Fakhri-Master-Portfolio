@@ -3,7 +3,6 @@
 // plaintext — only the random submission ID, the date and the recipient key ID.
 
 import { assertEnvelope, DecryptionError, type EncryptedEnvelope } from "./crypto.ts";
-import { RECRUITMENT_LEAD } from "./content.ts";
 
 export const FENCE_LANG = "jds-b8-encrypted";
 export const FILE_PREFIX = "JDS_B8_ASSESSMENT_";
@@ -22,11 +21,11 @@ export function buildEncryptedMarkdown(envelope: EncryptedEnvelope): string {
     `- **Format:** ${envelope.format} (AES-256-GCM + RSA-OAEP SHA-256)`,
     `- **Kunci penerima:** \`${envelope.keyId}\``,
     "",
-    "Seluruh identitas dan jawaban dalam file ini terenkripsi. Hanya Ketua Rekrutmen",
-    `JDS Batch 8 (${RECRUITMENT_LEAD}) yang memegang kunci privat untuk membukanya.`,
+    "Seluruh identitas dan jawaban dalam file ini terenkripsi. Hanya panitia penilai",
+    "Rekrutmen JDS Batch 8 yang memegang kunci privat untuk membukanya.",
     "",
     "**Jangan mengubah isi file ini.** Perubahan sekecil apa pun membuat file tidak dapat dibuka.",
-    "Kirim file ini secara manual kepada Ketua Rekrutmen melalui kanal resmi yang diberikan panitia.",
+    "Kirim file ini secara manual melalui kanal resmi yang diberikan panitia.",
     "",
     "```" + FENCE_LANG,
     body,

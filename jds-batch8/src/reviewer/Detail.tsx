@@ -35,19 +35,19 @@ export function Detail({
         <section className="card p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h2 className="text-xl font-bold text-navy-900">{p.personal.fullName}</h2>
-              <p className="text-sm text-slate-600">
+              <h2 className="text-xl font-bold text-forest-900">{p.personal.fullName}</h2>
+              <p className="text-sm text-stone-600">
                 {p.personal.university} · {p.personal.major} · {p.personal.graduationYear} · {labelOf(STATUS_OPTIONS, p.personal.status)}
               </p>
-              {p.personal.currentJob && <p className="text-sm text-slate-600">{p.personal.currentJob}</p>}
+              {p.personal.currentJob && <p className="text-sm text-stone-600">{p.personal.currentJob}</p>}
             </div>
             <div className="text-right text-sm">
-              <p className="font-mono text-slate-500">{p.submissionId}</p>
+              <p className="font-mono text-stone-500">{p.submissionId}</p>
               <p>
                 Pilihan: <strong>{teamPreferenceText(p)}</strong>
               </p>
               <p>Asesmen: {TRACK_LABEL[p.track]}</p>
-              <p className="text-xs text-slate-400">Dikirim {new Date(p.submittedAt).toLocaleString("id-ID")}</p>
+              <p className="text-xs text-stone-400">Dikirim {new Date(p.submittedAt).toLocaleString("id-ID")}</p>
             </div>
           </div>
           {(repeats.length > 0 || conflict) && (
@@ -60,7 +60,7 @@ export function Detail({
 
         {kpi && (
           <section className="card space-y-2 p-5 text-sm">
-            <h3 className="font-bold text-navy-900">Indikator otomatis KPI (bukan nilai)</h3>
+            <h3 className="font-bold text-forest-900">Indikator otomatis KPI (bukan nilai)</h3>
             <p>
               Konsistensi angka: {Object.keys(kpi.errors).length === 0 ? <span className="font-semibold text-emerald-700">konsisten</span> : <span className="font-semibold text-red-700">tidak konsisten</span>}
               {kpi.weeksNeeded ? ` · estimasi ±${kpi.weeksNeeded} minggu untuk mencapai target pada volume & konversi yang dinyatakan` : ""}
@@ -84,14 +84,14 @@ export function Detail({
 
         {sections.map((section) => (
           <section key={section.step} className="card overflow-hidden">
-            <h3 className="border-b border-navy-100 bg-navy-50/70 px-5 py-2.5 font-semibold text-navy-900">{section.title}</h3>
-            <dl className="divide-y divide-slate-100">
+            <h3 className="border-b border-forest-100 bg-forest-50/70 px-5 py-2.5 font-semibold text-forest-900">{section.title}</h3>
+            <dl className="divide-y divide-stone-100">
               {section.items.map((item, i) => (
                 <div key={i} className="grid gap-1 px-5 py-3 md:grid-cols-[14rem_1fr] md:gap-4">
-                  <dt className="text-sm font-medium text-slate-500">{item.label}</dt>
-                  <dd className="text-sm whitespace-pre-line text-slate-800 [overflow-wrap:anywhere]">
+                  <dt className="text-sm font-medium text-stone-500">{item.label}</dt>
+                  <dd className="text-sm whitespace-pre-line text-stone-800 [overflow-wrap:anywhere]">
                     {item.sensitive && !showRestricted ? (
-                      <span className="text-slate-400 italic">Data terbatas disembunyikan</span>
+                      <span className="text-stone-400 italic">Data terbatas disembunyikan</span>
                     ) : Array.isArray(item.value) ? (
                       <ul className="space-y-0.5">
                         {item.value.map((v, n) => (
@@ -112,16 +112,16 @@ export function Detail({
       <aside className="space-y-4 lg:sticky lg:top-4 lg:self-start">
         <section className="card space-y-4 p-5">
           <div className="flex items-baseline justify-between">
-            <h3 className="font-bold text-navy-900">Penilaian {TRACK_LABEL[p.track]}</h3>
-            <button type="button" className="text-xs font-semibold text-accent-700" onClick={() => setShowRubric((v) => !v)}>
+            <h3 className="font-bold text-forest-900">Penilaian {TRACK_LABEL[p.track]}</h3>
+            <button type="button" className="text-xs font-semibold text-leaf-700" onClick={() => setShowRubric((v) => !v)}>
               {showRubric ? "Tutup rubrik" : "Rubrik 0–5"}
             </button>
           </div>
           {showRubric && (
-            <ol className="space-y-1.5 rounded-xl bg-navy-50 p-3 text-xs text-slate-600">
+            <ol className="space-y-1.5 rounded-xl bg-forest-50 p-3 text-xs text-stone-600">
               {RUBRIC.map((r) => (
                 <li key={r.score}>
-                  <strong className="text-navy-900">
+                  <strong className="text-forest-900">
                     {r.score} · {r.label}:
                   </strong>{" "}
                   {r.description}
@@ -131,10 +131,10 @@ export function Detail({
           )}
           {criteria.map((criterion) => (
             <fieldset key={criterion.id} className="space-y-1.5">
-              <legend className="text-sm font-semibold text-navy-900">
-                {criterion.label} <span className="font-normal text-slate-400">· {criterion.weight}%</span>
+              <legend className="text-sm font-semibold text-forest-900">
+                {criterion.label} <span className="font-normal text-stone-400">· {criterion.weight}%</span>
               </legend>
-              <p className="text-xs text-slate-500">{criterion.evidence}</p>
+              <p className="text-xs text-stone-500">{criterion.evidence}</p>
               <div className="flex gap-1">
                 {[0, 1, 2, 3, 4, 5].map((score) => {
                   const active = review.scores[criterion.id] === score;
@@ -146,7 +146,7 @@ export function Detail({
                       aria-pressed={active}
                       aria-label={`${criterion.label}: ${score}`}
                       onClick={() => set({ scores: { ...review.scores, [criterion.id]: active ? null : score } })}
-                      className={`h-9 flex-1 rounded-lg border text-sm font-semibold ${active ? "border-navy-900 bg-navy-900 text-white" : "border-slate-200 bg-white hover:border-accent-500"}`}
+                      className={`h-9 flex-1 rounded-lg border text-sm font-semibold ${active ? "border-forest-900 bg-forest-900 text-white" : "border-stone-200 bg-white hover:border-leaf-500"}`}
                     >
                       {score}
                     </button>
@@ -155,16 +155,16 @@ export function Detail({
               </div>
             </fieldset>
           ))}
-          <div className="rounded-xl bg-navy-900 p-4 text-white">
-            <p className="text-xs text-accent-300">Skor akhir (0–100)</p>
+          <div className="rounded-xl bg-forest-900 p-4 text-white">
+            <p className="text-xs text-leaf-300">Skor akhir (0–100)</p>
             <p className="text-3xl font-extrabold tabular-nums">{result.score ?? "—"}</p>
-            <p className="text-sm text-navy-100">{result.classification?.label ?? `Belum lengkap (${result.scored}/${result.total} kriteria)`}</p>
+            <p className="text-sm text-forest-100">{result.classification?.label ?? `Belum lengkap (${result.scored}/${result.total} kriteria)`}</p>
           </div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-stone-500">
             Klasifikasi adalah rekomendasi, bukan keputusan otomatis. Minat koordinator dan rencana reward rekomendasi nama tidak termasuk dalam skor.
           </p>
           <label className="block space-y-1">
-            <span className="text-sm font-semibold text-navy-900">Selection status</span>
+            <span className="text-sm font-semibold text-forest-900">Selection status</span>
             <select className="input py-2 text-sm" value={review.status} onChange={(e) => set({ status: e.target.value as SelectionStatus })}>
               {SELECTION_STATUSES.map((s) => (
                 <option key={s}>{s}</option>
@@ -172,10 +172,10 @@ export function Detail({
             </select>
           </label>
           <label className="block space-y-1">
-            <span className="text-sm font-semibold text-navy-900">Reviewer notes</span>
+            <span className="text-sm font-semibold text-forest-900">Reviewer notes</span>
             <textarea className="input min-h-28 text-sm" maxLength={10_000} value={review.notes} onChange={(e) => set({ notes: e.target.value })} />
           </label>
-          {review.updatedAt && <p className="text-xs text-slate-400">Terakhir diubah {new Date(review.updatedAt).toLocaleString("id-ID")}</p>}
+          {review.updatedAt && <p className="text-xs text-stone-400">Terakhir diubah {new Date(review.updatedAt).toLocaleString("id-ID")}</p>}
         </section>
       </aside>
     </div>
