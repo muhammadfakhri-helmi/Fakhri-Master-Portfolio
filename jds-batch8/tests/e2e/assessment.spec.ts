@@ -1,11 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
-import { mkdirSync, readdirSync, readFileSync } from "node:fs";
+import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { decryptJson } from "../../src/lib/crypto.ts";
-import { parseEncryptedMarkdown } from "../../src/lib/markdown.ts";
-import { loadPrivateKey } from "../../src/lib/private-key.ts";
-import type { SubmissionPayload } from "../../src/lib/types.ts";
-import { E2E_DIR, PASSPHRASE, paths, SITE_URL } from "./env.ts";
+import { parseAnswerMarkdown } from "../../src/lib/markdown.ts";
+import { E2E_DIR, SITE_URL } from "./env.ts";
 
 const LONG = "Langkah konkret: memetakan target per kategori, membagi tugas mingguan, dan meninjau progres setiap Jumat bersama tim.";
 const EMAIL = ["e2e.kandidat", "contoh.id"].join("@");
@@ -100,7 +97,7 @@ async function sectionDAndDownload(page: Page, opts: { leadership: string; rewar
   await page.screenshot({ path: join(shots, `${test.info().project.name}-review.png`), fullPage: true });
 
   const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: "Download Assessment (.md)" }).click()]);
-  await expect(page.getByText("File terenkripsi berhasil dibuat")).toBeVisible();
+  await expect(page.getByText("File jawaban berhasil dibuat")).toBeVisible();
   await page.screenshot({ path: join(shots, `${test.info().project.name}-done.png`), fullPage: true });
   expect(download.suggestedFilename()).toMatch(/^JDS_B8_ASSESSMENT_[0-9A-F]{6}\.md$/);
   const target = join(E2E_DIR, "downloads", `${test.info().project.name}-${download.suggestedFilename()}`);
@@ -108,13 +105,8 @@ async function sectionDAndDownload(page: Page, opts: { leadership: string; rewar
   return readFileSync(target, "utf8");
 }
 
-async function decrypt(content: string) {
-  const keyFile = readdirSync(paths.keys).find((f) => f.endsWith(".json"))!;
-  const key = await loadPrivateKey(readFileSync(join(paths.keys, keyFile), "utf8"), PASSPHRASE);
-  return decryptJson<SubmissionPayload>(parseEncryptedMarkdown(content), key.key, key.keyId);
-}
 
-test("Internal path: case study, coordinator questions, encrypted download", async ({ page }) => {
+test("Internal path: case study, coordinator questions, answer file download", async ({ page }) => {
   const problems = watch(page);
   const name = `Internal E2E ${test.info().project.name}`;
   await sectionAB(page, name, "internal");
@@ -139,8 +131,9 @@ test("Internal path: case study, coordinator questions, encrypted download", asy
   await next(page, "Reward & Leadership");
   const content = await sectionDAndDownload(page, { leadership: "lead_internal", reward: "maybe" });
 
-  for (const secret of [name, EMAIL, "Deliverable 1", LONG.slice(0, 40)]) expect(content).not.toContain(secret);
-  const payload = await decrypt(content);
+  // Readable answers, recorded by section.
+  for (const text of [`| Nama | ${name} |`, `> ${EMAIL}`, "## C · Q9 Achieving 300 Participants", "Deliverable 1 — deadline: Hari ke-10", `> ${LONG}`]) expect(content).toContain(text);
+  const payload = parseAnswerMarkdown(content);
   expect(payload).toMatchObject({ track: "internal", external: null, personal: { fullName: name, email: EMAIL } });
   expect(payload.internal?.deliverables).toHaveLength(3);
   expect(payload.final.leadership.interest).toBe("lead_internal");
@@ -149,7 +142,7 @@ test("Internal path: case study, coordinator questions, encrypted download", asy
   expect(problems).toEqual([]);
 });
 
-test("Flexible → External path: dynamic forms, KPI validation, encrypted download", async ({ page }) => {
+test("Flexible → External path: dynamic forms, KPI validation, answer file download", async ({ page }) => {
   const problems = watch(page);
   const name = `External E2E ${test.info().project.name}`;
   await sectionAB(page, name, "flexible", "external");
@@ -191,8 +184,8 @@ test("Flexible → External path: dynamic forms, KPI validation, encrypted downl
   await next(page, "Reward & Leadership");
   const content = await sectionDAndDownload(page, { leadership: "member_only", reward: "yes" });
 
-  for (const secret of [name, EMAIL, "Target Co 1", "Nama Prospek E2E", "Production engineer"]) expect(content).not.toContain(secret);
-  const payload = await decrypt(content);
+  for (const text of [`| Nama | ${name} |`, "| Pilihan tim | Flexible (studi kasus External) |", "**Perusahaan 1: Target Co 1**", "Nama: Nama Prospek E2E", "> 25"]) expect(content).toContain(text);
+  const payload = parseAnswerMarkdown(content);
   expect(payload).toMatchObject({ track: "external", internal: null, team: { preference: "flexible", flexibleTrack: "external" } });
   expect(payload.external?.companies).toHaveLength(6);
   expect(payload.external?.kpi).toMatchObject({ total: "25", offline: "19", online: "6" });

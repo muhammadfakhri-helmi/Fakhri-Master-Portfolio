@@ -175,8 +175,7 @@ export function CommitmentStep({ answers, update, errors }: StepProps) {
       </QuestionBlock>
       <div className="card p-5 sm:p-7">
         <Checkbox name="final.consent" checked={f.consent} error={errors["final.consent"]} onChange={(v) => update((d) => void (d.final.consent = v))}>
-          Saya menyetujui pemrosesan data jawaban saya oleh panitia rekrutmen JDS Batch 8 untuk keperluan seleksi kepanitiaan. Saya memahami bahwa jawaban dienkripsi di perangkat saya dan
-          hanya dapat dibuka oleh panitia penilai.
+          Saya menyetujui pemrosesan data jawaban saya oleh panitia rekrutmen JDS Batch 8 untuk keperluan seleksi kepanitiaan.
         </Checkbox>
       </div>
     </div>

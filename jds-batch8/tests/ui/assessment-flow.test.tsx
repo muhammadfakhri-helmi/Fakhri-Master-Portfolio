@@ -1,27 +1,12 @@
 // @vitest-environment jsdom
 import "@testing-library/jest-dom/vitest";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { webcrypto } from "node:crypto";
-import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "../../src/assessment/App.tsx";
-import { base64ToBytes, decryptJson, exportPublicKeyBase64, generateRecipientKeyPair, keyIdFromSpki } from "../../src/lib/crypto.ts";
-import { parseEncryptedMarkdown } from "../../src/lib/markdown.ts";
-import type { RecipientKey } from "../../src/lib/payload.ts";
-import type { SubmissionPayload } from "../../src/lib/types.ts";
+import { parseAnswerMarkdown } from "../../src/lib/markdown.ts";
 import { TEST_EMAIL, TEST_WA } from "../fixtures.ts";
 
-if (!globalThis.crypto?.subtle) Object.defineProperty(globalThis, "crypto", { value: webcrypto });
-
-let recipient: RecipientKey;
-let privateKey: CryptoKey;
 const downloads: { name: string; text: Promise<string> }[] = [];
-
-beforeAll(async () => {
-  const pair = await generateRecipientKeyPair(2048);
-  const spki = await exportPublicKeyBase64(pair.publicKey);
-  recipient = { configured: true, keyId: await keyIdFromSpki(base64ToBytes(spki)), spki };
-  privateKey = pair.privateKey;
-});
 
 beforeEach(() => {
   downloads.length = 0;
@@ -55,7 +40,7 @@ const next = () => fireEvent.click(screen.getByRole("button", { name: /^(Next|Re
 const heading = () => screen.getByRole("heading", { level: 2 }).textContent;
 
 function start() {
-  render(<App recipientKey={recipient} />);
+  render(<App />);
   fireEvent.click(screen.getByRole("button", { name: /Mulai asesmen/ }));
 }
 
@@ -98,7 +83,7 @@ function fillSectionD(opts: { reward?: "yes" | "maybe" | "no"; leadership?: stri
 
 describe("landing page", () => {
   it("shows the recruitment targets and team structure", () => {
-    render(<App recipientKey={recipient} />);
+    render(<App />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Recruitment Committee Assessment");
     expect(screen.getByText("“One Team. One Commitment. One Recruitment Goal.”")).toBeInTheDocument();
     expect(screen.getByText("300 Participants")).toBeInTheDocument();
@@ -107,10 +92,11 @@ describe("landing page", () => {
     expect(screen.getByText(/15–25 menit/)).toBeInTheDocument();
   });
 
-  it("disables the assessment until the public key is configured", () => {
-    render(<App recipientKey={{ configured: false, keyId: "", spki: "" }} />);
-    expect(screen.getByRole("button", { name: /Mulai asesmen/ })).toBeDisabled();
-    expect(screen.getByRole("status")).toHaveTextContent(/Asesmen belum dibuka/);
+  it("opens the questions directly — no key or login needed", () => {
+    render(<App />);
+    expect(screen.getByRole("button", { name: /Mulai asesmen/ })).toBeEnabled();
+    expect(screen.queryByRole("status")).toBeNull();
+    expect(document.body.textContent).not.toMatch(/enkrip|kunci/i);
   });
 });
 
@@ -237,15 +223,16 @@ describe("assessment flow", () => {
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: "Download Assessment (.md)" }));
     });
-    await waitFor(() => expect(screen.getByText("File terenkripsi berhasil dibuat")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("File jawaban berhasil dibuat")).toBeInTheDocument());
 
     expect(downloads).toHaveLength(1);
     const { name, text } = downloads[0]!;
     expect(name).toMatch(/^JDS_B8_ASSESSMENT_[0-9A-F]{6}\.md$/);
     const content = await text;
-    expect(content).not.toContain("Kandidat Uji Coba");
-    expect(content).not.toContain(TEST_EMAIL);
-    const payload = await decryptJson<SubmissionPayload>(parseEncryptedMarkdown(content), privateKey);
+    expect(content).toContain("| Nama | Kandidat Uji Coba |");
+    expect(content).toContain("> " + TEST_EMAIL);
+    expect(content).toContain("**Target total terkonfirmasi**\n\n> 20");
+    const payload = parseAnswerMarkdown(content);
     expect(payload.personal.fullName).toBe("Kandidat Uji Coba");
     expect(payload.external?.kpi).toMatchObject({ total: "20", offline: "14", online: "6" });
     expect(payload.internal).toBeNull();
@@ -254,7 +241,7 @@ describe("assessment flow", () => {
 
 describe("public wording", () => {
   it("states the objective and choices without naming the recruitment lead", () => {
-    render(<App recipientKey={recipient} />);
+    render(<App />);
     expect(screen.getByRole("heading", { name: "Tujuan asesmen" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Pilihan tim" })).toBeInTheDocument();
     for (const role of ["Internal Team", "External Team", "Flexible"]) expect(screen.getByRole("heading", { name: role })).toBeInTheDocument();

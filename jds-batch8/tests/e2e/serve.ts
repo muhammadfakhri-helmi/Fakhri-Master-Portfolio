@@ -1,28 +1,23 @@
 // Web server for the Playwright tests:
-//   1. creates a throw-away key pair (outside the repository),
-//   2. builds the public site with that public key into <tmp>/site/<repo>/jds-batch8/,
-//   3. builds the reviewer and starts reviewer/server.mjs,
-//   4. serves the site under the GitHub Pages sub-path.
+//   1. builds the public site into <tmp>/site/<repo>/jds-batch8/ (outside the repository),
+//   2. builds the reviewer and starts reviewer/server.mjs,
+//   3. serves the site under the GitHub Pages sub-path.
 
 import { execFileSync, spawn } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, rmSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join, normalize, sep } from "node:path";
 import { projectRoot } from "../../scripts/node-helpers.ts";
-import { BASE_PATH, E2E_DIR, PASSPHRASE, paths, REVIEWER_PORT, SITE_PORT } from "./env.ts";
+import { BASE_PATH, E2E_DIR, paths, REVIEWER_PORT, SITE_PORT } from "./env.ts";
 
 rmSync(E2E_DIR, { recursive: true, force: true });
 mkdirSync(E2E_DIR, { recursive: true });
 const run = (args: string[], env: Record<string, string> = {}) =>
   execFileSync(process.execPath, args, { cwd: projectRoot, stdio: "inherit", env: { ...process.env, ...env } });
 
-const keygen = join(projectRoot, "scripts", "generate-keys.ts");
-run([keygen, "--out", paths.keys, "--public-out", paths.publicKey, "--bits", "3072", "--force"], { JDS_KEY_PASSPHRASE: PASSPHRASE });
-run([keygen, "--out", paths.otherKeys, "--public-out", paths.otherPublicKey, "--bits", "3072", "--force", "--plain"]);
-
 const vite = join(projectRoot, "node_modules", "vite", "bin", "vite.js");
 const siteDir = join(paths.site, ...BASE_PATH.split("/").filter(Boolean));
-run([vite, "build", "--outDir", siteDir, "--emptyOutDir", "--logLevel", "warn"], { JDS_PUBLIC_KEY_FILE: paths.publicKey });
+run([vite, "build", "--outDir", siteDir, "--emptyOutDir", "--logLevel", "warn"]);
 run([vite, "build", "--config", "vite.reviewer.config.ts", "--logLevel", "warn"]);
 
 const reviewer = spawn(process.execPath, [join(projectRoot, "reviewer", "server.mjs")], {

@@ -1,45 +1,32 @@
-import { expect, test, type Page } from "@playwright/test";
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { expect, test } from "@playwright/test";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { request as httpRequest } from "node:http";
 import { join } from "node:path";
-import { createEncryptedAssessment, type RecipientKey } from "../../src/lib/payload.ts";
+import { createAnswerFile } from "../../src/lib/payload.ts";
 import { completeExternalAnswers, completeInternalAnswers } from "../fixtures.ts";
-import { E2E_DIR, PASSPHRASE, paths, REVIEWER_PORT, REVIEWER_URL } from "./env.ts";
+import { E2E_DIR, paths, REVIEWER_PORT, REVIEWER_URL } from "./env.ts";
 
 const shots = join(E2E_DIR, "screenshots");
 
-async function makeFiles() {
+function makeFiles() {
   mkdirSync(paths.files, { recursive: true });
-  const recipient = JSON.parse(readFileSync(paths.publicKey, "utf8")) as RecipientKey;
-  const other = JSON.parse(readFileSync(paths.otherPublicKey, "utf8")) as RecipientKey;
   const ayu = completeInternalAnswers("Ayu Internal");
   ayu.personal.email = ["ayu.internal", "contoh.id"].join("@");
   ayu.personal.whatsapp = ["0", "811 2222 3333"].join("");
-  const internal = await createEncryptedAssessment(ayu, recipient);
-  const external = await createEncryptedAssessment(completeExternalAnswers("Bima External"), recipient);
-  const repeat = await createEncryptedAssessment(completeInternalAnswers("Bima External"), recipient);
-  const foreign = await createEncryptedAssessment(completeInternalAnswers("Kunci Lain"), other);
-  const tampered = internal.content.replace(/"ciphertext": "(.)/, (_m, ch: string) => `"ciphertext": "${ch === "A" ? "B" : "A"}`);
+  const internal = createAnswerFile(ayu);
+  const external = createAnswerFile(completeExternalAnswers("Bima External"));
+  const repeat = createAnswerFile(completeInternalAnswers("Bima External"));
+  const conflict = createAnswerFile(completeInternalAnswers("Citra Konflik"));
   const files: Record<string, string> = {
     [internal.fileName]: internal.content,
     [external.fileName]: external.content,
     [repeat.fileName]: repeat.content,
     [`copy-${internal.fileName}`]: internal.content,
-    "foreign.md": foreign.content,
-    "tampered.md": tampered,
+    "conflict.md": conflict.content.split(conflict.submissionId).join(internal.submissionId),
+    "notes.md": "# Catatan biasa\n\nBukan file jawaban.",
   };
   for (const [name, content] of Object.entries(files)) writeFileSync(join(paths.files, name), content);
   return { internal, external, repeat, all: Object.keys(files).map((f) => join(paths.files, f)) };
-}
-
-const keyFile = () => join(paths.keys, readdirSync(paths.keys).find((f) => f.endsWith(".json"))!);
-const otherKeyFile = () => join(paths.otherKeys, readdirSync(paths.otherKeys).find((f) => f.endsWith(".pem"))!);
-
-async function unlock(page: Page) {
-  await page.getByLabel("File kunci privat").setInputFiles(keyFile());
-  await page.getByLabel("Passphrase kunci privat").fill(PASSPHRASE);
-  await page.getByRole("button", { name: /^Buka / }).click();
-  await expect(page.getByText(/Kunci dimuat ·/)).toBeVisible({ timeout: 20_000 });
 }
 
 function rawRequest(path: string, headers: Record<string, string>): Promise<number> {
@@ -53,28 +40,18 @@ function rawRequest(path: string, headers: Record<string, string>): Promise<numb
   });
 }
 
-test("reviewer: decrypts many files, detects duplicates, scores, saves locally and exports CSV", async ({ page }) => {
-  const { internal, external, repeat, all } = await makeFiles();
+test("reviewer: reads many answer files, detects duplicates, scores, saves locally and exports CSV", async ({ page }) => {
+  const { internal, external, repeat, all } = makeFiles();
   await page.goto(REVIEWER_URL);
   await expect(page.getByRole("heading", { name: "Private Reviewer (lokal)" })).toBeVisible();
   await expect(page.getByText(/Review tersimpan otomatis/)).toBeVisible();
-
-  // Wrong passphrase, then the right one.
-  await page.getByLabel("File kunci privat").setInputFiles(keyFile());
-  await page.getByLabel("Passphrase kunci privat").fill("passphrase yang salah sekali");
-  await page.getByRole("button", { name: /^Buka / }).click();
-  await expect(page.getByRole("alert")).toHaveText(/Passphrase salah/, { timeout: 20_000 });
-  await page.getByLabel("Passphrase kunci privat").fill(PASSPHRASE);
-  await page.getByRole("button", { name: /^Buka / }).click();
-  await expect(page.getByText(/Kunci dimuat ·/)).toBeVisible({ timeout: 20_000 });
 
   await page.getByLabel("File asesmen").setInputFiles(all);
   const log = page.getByRole("list", { name: "Hasil pemuatan file" });
   await expect(log.locator("li")).toHaveCount(6);
   await expect(log).toContainText("sudah dimuat — diabaikan");
-  await expect(log).toContainText("dienkripsi untuk kunci");
-  // The tampered copy shares its ID with a loaded file → flagged as an ID conflict, never loaded.
   await expect(log).toContainText("isi berbeda — file ini tidak dimuat");
+  await expect(log).toContainText("blok data tidak ditemukan");
   await expect(page.getByText("3 kandidat")).toBeVisible();
   await expect(page.getByText("Kemungkinan ganda")).toHaveCount(2);
 
@@ -105,9 +82,8 @@ test("reviewer: decrypts many files, detects duplicates, scores, saves locally a
   await page.getByRole("button", { name: "Bandingkan strategi Internal" }).click();
   await expect(page.getByRole("button", { name: "Ayu Internal" })).toBeVisible();
 
-  // Reload: reviews come back from the local server; answers need the key again.
+  // Reload: reviews come back from the local server; files are loaded again.
   await page.reload();
-  await unlock(page);
   await page.getByLabel("File asesmen").setInputFiles([internal, external, repeat].map((f) => join(paths.files, f.fileName)));
   await expect(page.getByText("3 kandidat")).toBeVisible();
   const row = page.locator("tr", { hasText: external.submissionId });
@@ -123,7 +99,7 @@ test("reviewer: decrypts many files, detects duplicates, scores, saves locally a
     return readFileSync(file, "utf8");
   };
   const recap = await exportCsv("Rekap kandidat");
-  expect(recap.startsWith("﻿\"Name\",\"Team Preference\",\"Weekly Availability\"")).toBe(true);
+  expect(recap.startsWith('﻿"Name","Team Preference","Weekly Availability"')).toBe(true);
   expect(recap).toContain(`"Bima External","External"`);
   expect(recap).toContain(`"85","Pemetaan perusahaan kuat","Interview","Strong Candidate"`);
   expect(recap).not.toContain("Prospek Bernama Rahasia");
@@ -134,18 +110,6 @@ test("reviewer: decrypts many files, detects duplicates, scores, saves locally a
   expect(kpi).toContain(`"20";"14";"6"`);
   const strategy = await exportCsv("Ringkasan strategi Internal");
   expect(strategy).toContain("Ayu Internal");
-
-  // A plain PEM key for a different recipient opens, but cannot decrypt these files.
-  await page.getByRole("button", { name: "Lepas kunci" }).click();
-  await page.getByLabel("File kunci privat").setInputFiles(otherKeyFile());
-  await page.getByRole("button", { name: /^Buka / }).click();
-  await expect(page.getByText(/Kunci dimuat ·/)).toBeVisible({ timeout: 20_000 });
-  await page.reload();
-  await page.getByLabel("File kunci privat").setInputFiles(otherKeyFile());
-  await page.getByRole("button", { name: /^Buka / }).click();
-  await page.getByLabel("File asesmen").setInputFiles([join(paths.files, external.fileName)]);
-  await expect(page.getByRole("list", { name: "Hasil pemuatan file" })).toContainText("dienkripsi untuk kunci");
-  await expect(page.getByText("0 kandidat")).toBeVisible();
 });
 
 test("reviewer server: localhost only, session required", async () => {

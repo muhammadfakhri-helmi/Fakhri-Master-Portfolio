@@ -5,6 +5,6 @@ import { App } from "./App.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App recipientKey={__RECIPIENT_KEY__} />
+    <App />
   </StrictMode>,
 );

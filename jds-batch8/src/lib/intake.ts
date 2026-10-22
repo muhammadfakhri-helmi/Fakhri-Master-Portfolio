@@ -1,11 +1,9 @@
-// Loading encrypted assessment files into the reviewer, with duplicate detection.
+// Loading answer files into the reviewer, with duplicate detection.
 
-import { decryptJson, DecryptionError } from "./crypto.ts";
-import { parseEncryptedMarkdown } from "./markdown.ts";
+import { AnswerFileError, parseAnswerMarkdown } from "./markdown.ts";
 import type { Candidate } from "./recap.ts";
-import type { SubmissionPayload } from "./types.ts";
 
-export type IntakeStatus = "ok" | "duplicate_file" | "id_conflict" | "wrong_key" | "tampered" | "invalid_format";
+export type IntakeStatus = "ok" | "duplicate_file" | "id_conflict" | "invalid_format";
 
 export interface IntakeResult {
   fileName: string;
@@ -14,33 +12,23 @@ export interface IntakeResult {
   submissionId?: string;
 }
 
-async function sha256Hex(text: string): Promise<string> {
-  const digest = await globalThis.crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
-  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
-}
-
 export interface IntakeState {
   candidates: Candidate[];
-  /** submissionId → hash of the encrypted block, to tell a re-loaded file from an ID collision. */
-  hashes: Record<string, string>;
-  /** submissionIds that also appeared in another file with different contents. */
+  /** submissionId → fingerprint of the answers, to tell a re-loaded file from an ID collision. */
+  fingerprints: Record<string, string>;
+  /** submissionIds that also appeared in another file with different answers. */
   conflicts: string[];
 }
 
-export const emptyIntake = (): IntakeState => ({ candidates: [], hashes: {}, conflicts: [] });
+export const emptyIntake = (): IntakeState => ({ candidates: [], fingerprints: {}, conflicts: [] });
 
-export async function intakeFile(
-  state: IntakeState,
-  fileName: string,
-  text: string,
-  key: { key: CryptoKey; keyId: string },
-): Promise<{ state: IntakeState; result: IntakeResult }> {
+export function intakeFile(state: IntakeState, fileName: string, text: string): { state: IntakeState; result: IntakeResult } {
   try {
-    const envelope = parseEncryptedMarkdown(text);
-    const sid = envelope.submissionId;
-    const hash = await sha256Hex(envelope.ciphertext + envelope.encryptedKey);
-    if (state.hashes[sid]) {
-      if (state.hashes[sid] === hash) {
+    const payload = parseAnswerMarkdown(text);
+    const sid = payload.submissionId;
+    const fingerprint = JSON.stringify(payload);
+    if (state.fingerprints[sid] !== undefined) {
+      if (state.fingerprints[sid] === fingerprint) {
         return { state, result: { fileName, status: "duplicate_file", submissionId: sid, message: `File yang sama (ID ${sid}) sudah dimuat — diabaikan.` } };
       }
       return {
@@ -49,25 +37,21 @@ export async function intakeFile(
           fileName,
           status: "id_conflict",
           submissionId: sid,
-          message: `Submission ID ${sid} sudah dipakai file lain dengan isi berbeda — file ini tidak dimuat. Periksa manual atau minta kandidat mengunduh ulang.`,
+          message: `Submission ID ${sid} sudah dipakai file lain dengan isi berbeda — file ini tidak dimuat. Periksa manual.`,
         },
       };
-    }
-    const payload = await decryptJson<SubmissionPayload>(envelope, key.key, key.keyId);
-    if (payload?.schema !== "jds-b8-assessment" || payload.submissionId !== sid) {
-      throw new DecryptionError("tampered", "Isi file tidak sesuai dengan Submission ID di luar enkripsi.");
     }
     return {
       state: {
         ...state,
         candidates: [...state.candidates, { submissionId: sid, fileName, payload }],
-        hashes: { ...state.hashes, [sid]: hash },
+        fingerprints: { ...state.fingerprints, [sid]: fingerprint },
       },
       result: { fileName, status: "ok", submissionId: sid, message: `${payload.personal.fullName} — ${sid}` },
     };
   } catch (error) {
-    const code = error instanceof DecryptionError ? error.code : "invalid_format";
-    return { state, result: { fileName, status: code, message: (error as Error).message } };
+    const message = error instanceof AnswerFileError ? error.message : "File tidak dapat dibaca.";
+    return { state, result: { fileName, status: "invalid_format", message } };
   }
 }
 

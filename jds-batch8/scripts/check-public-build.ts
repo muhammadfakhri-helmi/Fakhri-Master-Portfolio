@@ -1,9 +1,8 @@
 // Release gate for the public website build (dist/):
-//   - no private key material, protected-key files or reviewer code,
+//   - no reviewer code, source maps or inlined data: fonts,
 //   - Content-Security-Policy that forbids network requests (connect-src 'none'),
 //   - only relative asset URLs (works under any GitHub Pages sub-path),
 //   - every referenced asset exists.
-// Also warns when the recipient public key is not configured yet.
 
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
@@ -24,16 +23,13 @@ const walk = (dir: string): string[] =>
 const files = walk(dist);
 
 const forbidden: [string, RegExp][] = [
-  ["PEM private key", new RegExp(["-----BEGIN", "[A-Z ]*", "PRIVATE KEY"].join(" ?"))],
-  ["protected private key file", new RegExp(["JDS-B8-PRIVATE", "KEY-v1"].join("-"))],
   ["reviewer code", new RegExp(["Private", "Reviewer"].join(" "))],
-  ["JWK private exponent", /"d"\s*:\s*"[A-Za-z0-9_-]{100,}"/],
   ["inlined data: font (blocked by CSP font-src 'self')", /url\(["']?data:font/],
 ];
 
 for (const file of files) {
   const rel = relative(dist, file);
-  if (/\.(map|pem|key)$/i.test(file) || /reviewer/i.test(rel)) problems.push(`${rel}: tidak boleh ada di build publik`);
+  if (/\.map$/i.test(file) || /reviewer/i.test(rel)) problems.push(`${rel}: tidak boleh ada di build publik`);
   if (!/\.(html|js|css|json|svg|txt|md)$/i.test(file)) continue;
   const text = readFileSync(file, "utf8");
   for (const [name, re] of forbidden) if (re.test(text)) problems.push(`${rel}: ${name}`);
@@ -53,12 +49,6 @@ for (const page of pages) {
     if (ref.startsWith("/")) problems.push(`index.html: URL absolut "${ref}" rusak di sub-path GitHub Pages`);
     else if (!existsSync(resolve(dirname(page), ref))) problems.push(`index.html: aset hilang "${ref}"`);
   }
-}
-
-const key = JSON.parse(readFileSync(join(projectRoot, "src", "config", "recipient-public-key.json"), "utf8")) as { configured?: boolean };
-if (!key.configured) {
-  const message = "Kunci publik belum dikonfigurasi: website tampil, tetapi unduhan asesmen dinonaktifkan. Jalankan npm run keys:generate (lihat DEPLOYMENT.md).";
-  console.warn(process.env.GITHUB_ACTIONS ? `::warning::${message}` : `⚠ ${message}`);
 }
 
 if (problems.length) {

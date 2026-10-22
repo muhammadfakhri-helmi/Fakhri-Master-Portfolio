@@ -14,20 +14,21 @@ port dengan `JDS_REVIEWER_PORT`). Hentikan dengan Ctrl+C.
 
 ## 2. Membuka file
 
-1. **Muat kunci privat:** pilih `jds-b8-private-key-<KEYID>.json`, ketik passphrase, klik *Buka*.
-   Passphrase salah atau file rusak ditolak.
-2. **Muat file asesmen:** pilih atau seret banyak `JDS_B8_ASSESSMENT_*.md` sekaligus. Log
+File jawaban `.md` juga bisa langsung dibaca dengan aplikasi teks apa pun (VS Code, Notepad,
+Obsidian, GitHub). Reviewer dipakai untuk menilai banyak kandidat sekaligus.
+
+1. **Muat file jawaban:** pilih atau seret banyak `JDS_B8_ASSESSMENT_*.md` sekaligus. Log
    menunjukkan setiap file:
    - hijau: berhasil (nama — Submission ID);
    - abu-abu: file yang sama sudah dimuat (diabaikan);
    - kuning: **ID konflik** — ID sama, isi berbeda (tidak dimuat; periksa manual);
-   - merah: dienkripsi untuk kunci lain, rusak/diubah, atau bukan file asesmen.
-3. Label **Kemungkinan ganda** muncul bila dua Submission ID memiliki email, WhatsApp, atau nama yang
+   - merah: bukan file jawaban asesmen, atau blok data di akhir file rusak/diubah.
+2. Label **Kemungkinan ganda** muncul bila dua Submission ID memiliki email, WhatsApp, atau nama yang
    sama — biasanya kandidat mengirim ulang. Nilai versi yang disepakati dan beri status
    "Tidak dilanjutkan" + catatan pada versi lain.
 
-Jawaban yang didekripsi hanya ada di memori tab. Setelah reload, muat ulang kunci dan file —
-skor & catatan kembali otomatis dari penyimpanan lokal.
+Isi file hanya dibaca di tab ini. Setelah reload, muat ulang file — skor & catatan kembali otomatis
+dari penyimpanan lokal.
 
 ## 3. Tampilan
 
@@ -101,12 +102,3 @@ Pilih pemisah: koma, atau titik koma untuk Excel dengan regional Indonesia.
 
 Nama calon peserta dan kandidat rekomendasi **tidak** pernah ada di ekspor. File CSV berisi data
 pribadi kandidat: simpan di perangkat pribadi dan hapus setelah seleksi.
-
-## 6. Terminal (opsional)
-
-```bash
-npm run decrypt -- --key ~/JDS-B8-Private-Keys/jds-b8-private-key-XXXX.json JDS_B8_ASSESSMENT_*.md
-```
-
-Menampilkan ringkasan per file; tambahkan `--json` untuk isi lengkap ke layar. Tidak ada yang
-ditulis ke disk.

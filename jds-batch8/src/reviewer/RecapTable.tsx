@@ -38,7 +38,7 @@ export function RecapTable({
   }, [candidates, reviews, filter, sort]);
 
   if (candidates.length === 0) {
-    return <p className="card p-6 text-sm text-stone-500">Belum ada kandidat. Muat kunci privat lalu file asesmen.</p>;
+    return <p className="card p-6 text-sm text-stone-500">Belum ada kandidat. Muat file jawaban (.md) kandidat.</p>;
   }
 
   return (

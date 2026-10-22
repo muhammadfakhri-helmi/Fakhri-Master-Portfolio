@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Delimiter } from "../lib/csv.ts";
 import { emptyIntake, intakeFile, possibleRepeatSubmissions, type IntakeResult, type IntakeState } from "../lib/intake.ts";
-import { isProtectedKeyFile, loadPrivateKey, type LoadedPrivateKey } from "../lib/private-key.ts";
 import { externalCompaniesCsv, externalKpiCsv, internalStrategyCsv, recapCsv } from "../lib/recap.ts";
 import { emptyReview, type Review } from "../lib/scoring.ts";
 import { loadReviews, saveReview, serverAvailable } from "./api.ts";
@@ -16,8 +15,6 @@ const STATUS_STYLE: Record<IntakeResult["status"], string> = {
   ok: "text-emerald-700",
   duplicate_file: "text-stone-500",
   id_conflict: "text-amber-700",
-  wrong_key: "text-red-700",
-  tampered: "text-red-700",
   invalid_format: "text-red-700",
 };
 
@@ -33,12 +30,6 @@ function downloadCsv(name: string, csv: string) {
 const today = () => new Date().toISOString().slice(0, 10);
 
 export function ReviewerApp() {
-  const [keyText, setKeyText] = useState<string | null>(null);
-  const [keyFileName, setKeyFileName] = useState("");
-  const [passphrase, setPassphrase] = useState("");
-  const [privateKey, setPrivateKey] = useState<LoadedPrivateKey | null>(null);
-  const [keyError, setKeyError] = useState("");
-  const [keyBusy, setKeyBusy] = useState(false);
   const [intake, setIntake] = useState<IntakeState>(emptyIntake);
   const [log, setLog] = useState<IntakeResult[]>([]);
   const [reviews, setReviews] = useState<Record<string, Review>>({});
@@ -64,26 +55,9 @@ export function ReviewerApp() {
       .catch((error: Error) => setStorage({ ok: false, message: error.message }));
   }, []);
 
-  const unlockKey = async () => {
-    if (!keyText) return;
-    setKeyBusy(true);
-    setKeyError("");
-    try {
-      setPrivateKey(await loadPrivateKey(keyText, passphrase || undefined));
-      setKeyText(null);
-      setPassphrase("");
-    } catch (error) {
-      setKeyError((error as Error).message);
-    } finally {
-      setKeyBusy(false);
-    }
-  };
-
   // Files are processed one batch at a time so duplicate detection sees every earlier file.
   const loadFiles = (files: FileList | File[]) => {
-    const key = privateKey;
     const list = Array.from(files);
-    if (!key) return;
     intakeQueue.current = intakeQueue.current.then(async () => {
       let state = intakeRef.current;
       const results: IntakeResult[] = [];
@@ -92,7 +66,7 @@ export function ReviewerApp() {
           results.push({ fileName: file.name, status: "invalid_format", message: "Bukan file .md" });
           continue;
         }
-        const out = await intakeFile(state, file.name, await file.text(), key);
+        const out = intakeFile(state, file.name, await file.text());
         state = out.state;
         results.push(out.result);
       }
@@ -134,9 +108,6 @@ export function ReviewerApp() {
             <h1 className="text-xl font-bold">Private Reviewer (lokal)</h1>
           </div>
           <div className="flex flex-wrap gap-2 text-xs">
-            <span className={`rounded-full px-3 py-1 font-semibold ${privateKey ? "bg-emerald-400/20 text-emerald-200" : "bg-white/10 text-forest-100"}`}>
-              {privateKey ? `Kunci dimuat · ${privateKey.keyId}` : "Kunci privat belum dimuat"}
-            </span>
             <span className="rounded-full bg-white/10 px-3 py-1 text-forest-100">{candidates.length} kandidat</span>
           </div>
         </div>
@@ -144,72 +115,12 @@ export function ReviewerApp() {
 
       <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6">
         <p className={`rounded-xl px-4 py-2.5 text-sm ${storage.ok ? "bg-emerald-50 text-emerald-800" : "bg-amber-50 text-amber-900"}`}>
-          {storage.message || "Menghubungkan ke server lokal…"} · Jawaban yang didekripsi hanya ada di memori tab ini.
+          {storage.message || "Menghubungkan ke server lokal…"} · Isi file jawaban hanya dibaca di tab ini.
         </p>
 
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div>
           <section className="card space-y-3 p-5">
-            <h2 className="font-bold text-forest-900">1 · Muat kunci privat</h2>
-            {privateKey ? (
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-sm text-stone-600">
-                  Kunci aktif: <span className="font-mono font-semibold text-forest-900">{privateKey.keyId}</span> (non-extractable, hanya di memori)
-                </p>
-                <button type="button" className="btn-ghost py-2" onClick={() => setPrivateKey(null)}>
-                  Lepas kunci
-                </button>
-              </div>
-            ) : (
-              <>
-                <input
-                  type="file"
-                  aria-label="File kunci privat"
-                  accept=".json,.pem,application/json"
-                  className="block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-forest-900 file:px-3 file:py-2 file:text-white"
-                  onChange={async (event) => {
-                    const file = event.target.files?.[0];
-                    event.target.value = "";
-                    if (!file) return;
-                    setKeyFileName(file.name);
-                    setKeyError("");
-                    setKeyText(await file.text());
-                  }}
-                />
-                {keyText && (
-                  <form
-                    className="flex flex-col gap-2 sm:flex-row"
-                    onSubmit={(event) => {
-                      event.preventDefault();
-                      void unlockKey();
-                    }}
-                  >
-                    {isProtectedKeyFile(keyText) && (
-                      <input
-                        type="password"
-                        aria-label="Passphrase kunci privat"
-                        className="input"
-                        autoComplete="off"
-                        placeholder="Passphrase kunci"
-                        value={passphrase}
-                        onChange={(e) => setPassphrase(e.target.value)}
-                      />
-                    )}
-                    <button type="submit" className="btn-primary" disabled={keyBusy}>
-                      {keyBusy ? "Membuka…" : `Buka ${keyFileName}`}
-                    </button>
-                  </form>
-                )}
-                {keyError && (
-                  <p className="error-text" role="alert">
-                    {keyError}
-                  </p>
-                )}
-              </>
-            )}
-          </section>
-
-          <section className="card space-y-3 p-5">
-            <h2 className="font-bold text-forest-900">2 · Muat file asesmen (.md)</h2>
+            <h2 className="font-bold text-forest-900">Muat file jawaban (.md)</h2>
             <label
               onDragOver={(e) => {
                 e.preventDefault();
@@ -222,18 +133,17 @@ export function ReviewerApp() {
                 loadFiles(e.dataTransfer.files);
               }}
               className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-4 py-6 text-center text-sm ${
-                privateKey ? (dragging ? "border-leaf-500 bg-leaf-400/10" : "border-stone-300 hover:border-leaf-500") : "cursor-not-allowed border-stone-200 text-stone-400"
+                dragging ? "border-leaf-500 bg-leaf-400/10" : "border-stone-300 hover:border-leaf-500"
               }`}
             >
               <span className="font-semibold text-forest-900">Pilih atau seret banyak file sekaligus</span>
-              <span className="text-stone-500">{privateKey ? "File JDS_B8_ASSESSMENT_*.md" : "Muat kunci privat terlebih dahulu"}</span>
+              <span className="text-stone-500">File JDS_B8_ASSESSMENT_*.md dari kandidat</span>
               <input
                 type="file"
                 multiple
                 accept=".md,text/markdown"
                 aria-label="File asesmen"
                 className="sr-only"
-                disabled={!privateKey}
                 onChange={(event) => {
                   const files = event.target.files ? Array.from(event.target.files) : [];
                   event.target.value = "";
