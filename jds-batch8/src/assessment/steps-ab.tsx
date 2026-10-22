@@ -52,7 +52,7 @@ export function PersonalStep({ answers, update, errors }: StepProps) {
         />
       </QuestionBlock>
 
-      <QuestionBlock number="Q3" title="Kontak" intro={<p>Data kontak bersifat pribadi. Data ini ikut dienkripsi dan hanya dapat dibuka oleh Ketua Rekrutmen.</p>}>
+      <QuestionBlock number="Q3" title="Kontak" intro={<p>Data kontak bersifat pribadi. Data ini ikut dienkripsi dan hanya dapat dibuka oleh panitia penilai.</p>}>
         <div className="grid gap-5 sm:grid-cols-2">
           <TextField
             name="personal.email"
@@ -103,8 +103,8 @@ export function SkillsStep({ answers, update, errors }: StepProps) {
               return (
                 <label
                   key={skill}
-                  className={`cursor-pointer rounded-full border px-3.5 py-2 text-sm font-medium transition-colors has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-accent-400/40 ${
-                    checked ? "border-navy-900 bg-navy-900 text-white" : "border-slate-300 bg-white text-slate-700 hover:border-navy-600"
+                  className={`cursor-pointer rounded-full border px-3.5 py-2 text-sm font-medium transition-colors has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-leaf-400/40 ${
+                    checked ? "border-forest-900 bg-forest-900 text-white" : "border-stone-300 bg-white text-stone-700 hover:border-forest-600"
                   }`}
                 >
                   <input type="checkbox" className="sr-only" checked={checked} onChange={() => toggle(skill)} />
@@ -156,7 +156,7 @@ export function SkillsStep({ answers, update, errors }: StepProps) {
         />
         <TextArea
           name="personal.scheduleConstraints"
-          label="Kendala jadwal yang perlu diketahui Ketua Rekrutmen"
+          label="Kendala jadwal yang perlu diketahui panitia"
           optional
           rows={3}
           maxLength={LIMITS.medium}

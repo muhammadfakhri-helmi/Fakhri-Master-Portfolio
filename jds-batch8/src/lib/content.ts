@@ -13,7 +13,6 @@ import type {
   WeeklyHours,
 } from "./types.ts";
 
-export const RECRUITMENT_LEAD = "Muhammad Fakhri Helmi";
 
 export const TARGETS = {
   total: 300,

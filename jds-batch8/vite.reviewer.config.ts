@@ -31,6 +31,8 @@ export default defineConfig({
     emptyOutDir: true,
     target: "es2022",
     sourcemap: false,
+    // Never inline assets as data: URIs — the CSP only allows fonts from the site itself.
+    assetsInlineLimit: 0,
     rolldownOptions: { input: { reviewer: fileURLToPath(new URL("reviewer.html", import.meta.url)) } },
   },
   server: { port: 5192, strictPort: true, host: "127.0.0.1" },

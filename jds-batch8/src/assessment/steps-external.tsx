@@ -14,7 +14,7 @@ export function ExternalCompaniesStep({ answers, update, errors }: StepProps) {
       intro={
         <>
           <p>Sebagai anggota External Team, kamu memiliki tanggung jawab mencari calon peserta yang relevan dengan visi JDS Batch 8.</p>
-          <p className="font-semibold text-navy-900">
+          <p className="font-semibold text-forest-900">
             Perusahaan apa saja yang secara spesifik ingin kamu targetkan untuk mengajak calon peserta bergabung dengan JDS Batch 8? (minimal {MIN_COMPANIES} perusahaan)
           </p>
         </>
@@ -80,7 +80,7 @@ export function ExternalProspectsStep({ answers, update, errors }: StepProps) {
     <QuestionBlock
       number="Q10"
       title="Personal Candidate Target"
-      intro={<p className="font-semibold text-navy-900">Siapa calon peserta yang secara realistis ingin kamu ajak untuk bergabung dengan JDS Batch 8? (minimal {MIN_PROSPECTS} target)</p>}
+      intro={<p className="font-semibold text-forest-900">Siapa calon peserta yang secara realistis ingin kamu ajak untuk bergabung dengan JDS Batch 8? (minimal {MIN_PROSPECTS} target)</p>}
     >
       <Callout tone="warning" title="Lindungi data pihak ketiga">
         <ul className="list-disc space-y-1 pl-5">
@@ -168,7 +168,7 @@ export function ExternalKpiStep({ answers, update, errors }: StepProps) {
     <QuestionBlock
       number="Q11"
       title="Personal Recruitment KPI"
-      intro={<p className="font-semibold text-navy-900">Berapa peserta yang secara realistis sanggup kamu kontribusikan hingga benar-benar terkonfirmasi bergabung dengan JDS Batch 8?</p>}
+      intro={<p className="font-semibold text-forest-900">Berapa peserta yang secara realistis sanggup kamu kontribusikan hingga benar-benar terkonfirmasi bergabung dengan JDS Batch 8?</p>}
     >
       <Callout title="Contoh target awal">
         <p>
@@ -188,18 +188,18 @@ export function ExternalKpiStep({ answers, update, errors }: StepProps) {
         ))}
       </div>
 
-      <div className="grid gap-2.5 rounded-2xl bg-navy-900 p-4 text-sm text-navy-100 sm:grid-cols-3" aria-live="polite">
+      <div className="grid gap-2.5 rounded-2xl bg-forest-900 p-4 text-sm text-forest-100 sm:grid-cols-3" aria-live="polite">
         <p>
-          <span className="block text-xs text-accent-300">Peserta unik</span>
+          <span className="block text-xs text-leaf-300">Peserta unik</span>
           <span className="text-lg font-bold text-white tabular-nums">{n.total ?? "–"}</span>
         </p>
         <p>
-          <span className="block text-xs text-accent-300">Offline + online</span>
+          <span className="block text-xs text-leaf-300">Offline + online</span>
           <span className="text-lg font-bold text-white tabular-nums">{sumLine(n.offline, n.online)}</span>
           {n.total !== undefined && n.offline !== undefined && n.online !== undefined && (n.offline + n.online === n.total ? " ✓" : " ≠ total")}
         </p>
         <p>
-          <span className="block text-xs text-accent-300">Experienced + fresh graduate</span>
+          <span className="block text-xs text-leaf-300">Experienced + fresh graduate</span>
           <span className="text-lg font-bold text-white tabular-nums">{sumLine(n.experienced, n.freshGraduate)}</span>
           {n.total !== undefined && n.experienced !== undefined && n.freshGraduate !== undefined && (n.experienced + n.freshGraduate === n.total ? " ✓" : " ≠ total")}
         </p>
@@ -231,7 +231,7 @@ export function ExternalKpiStep({ answers, update, errors }: StepProps) {
         />
       </div>
       {check.weeksNeeded !== null && (
-        <p className="rounded-xl bg-accent-400/10 px-4 py-3 text-sm text-navy-900">
+        <p className="rounded-xl bg-leaf-400/10 px-4 py-3 text-sm text-forest-900">
           Dengan {n.weeklyProspects} prospek/minggu dan konversi {n.conversionRate}%, kamu memperoleh ±{(((n.weeklyProspects ?? 0) * (n.conversionRate ?? 0)) / 100).toFixed(1)} peserta per
           minggu — sekitar <strong>{check.weeksNeeded} minggu</strong> untuk mencapai {n.total} peserta.
         </p>
@@ -271,9 +271,9 @@ export function ExternalKpiStep({ answers, update, errors }: StepProps) {
 export function ExternalOutreachStep({ answers, update, errors }: StepProps) {
   return (
     <QuestionBlock number="Q12" title="Real Outreach Simulation">
-      <Callout tone="navy">
+      <Callout tone="dark">
         <p>Seorang engineer yang bekerja di service company selama tujuh tahun bertanya:</p>
-        <p className="text-lg font-semibold text-accent-300">“Saya sudah bekerja cukup lama. Apa manfaatnya saya ikut JDS?”</p>
+        <p className="text-lg font-semibold text-leaf-300">“Saya sudah bekerja cukup lama. Apa manfaatnya saya ikut JDS?”</p>
       </Callout>
       <TextArea
         name="external.outreachMessage"
@@ -295,7 +295,7 @@ const FIRST30: { field: keyof StepProps["answers"]["external"]["first30"]; label
   { field: "weeklyActivities", label: "Aktivitas mingguan" },
   { field: "followUp", label: "Follow-up" },
   { field: "conversionTarget", label: "Target konversi" },
-  { field: "reporting", label: "Cara melaporkan progres kepada Internal dan Ketua Rekrutmen" },
+  { field: "reporting", label: "Cara melaporkan progres kepada tim Internal dan koordinator rekrutmen" },
 ];
 
 export function ExternalFirst30Step({ answers, update, errors }: StepProps) {

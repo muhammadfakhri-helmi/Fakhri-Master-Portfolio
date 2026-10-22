@@ -37,6 +37,7 @@ const fill = (page: Page, name: string, value: string) => page.locator(`[name="$
 const choose = (page: Page, name: string, value: string) => page.locator(`input[type="radio"][name="${name}"][value="${value}"]`).check();
 async function next(page: Page, expectedHeading: string) {
   await noHorizontalOverflow(page);
+  expect(await page.locator("body").innerText(), "public pages must not name the recruitment lead").not.toMatch(/Ketua|Fakhri/);
   await page.getByRole("button", { name: /^(Next|Review jawaban)/ }).click();
   await expect(h2(page)).toHaveText(expectedHeading);
 }
@@ -53,7 +54,7 @@ async function sectionAB(page: Page, name: string, team: "internal" | "external"
   await expect(h2(page)).toHaveText("Personal Background");
 
   // Next on an empty step shows errors and stays.
-  await page.getByRole("button", { name: "Next →" }).click();
+  await page.getByRole("button", { name: "Next", exact: true }).click();
   await expect(page.getByText(/isian yang perlu dilengkapi/)).toBeVisible();
 
   await fill(page, "personal.fullName", name);
@@ -178,7 +179,7 @@ test("Flexible → External path: dynamic forms, KPI validation, encrypted downl
   await fill(page, "external.kpi.prospectSources", "Komunitas alumni dan LinkedIn");
   await fill(page, "external.kpi.halfKpiPlan", LONG);
   await fill(page, "external.kpi.accountableCommitment", LONG);
-  await page.getByRole("button", { name: "Next →" }).click();
+  await page.getByRole("button", { name: "Next", exact: true }).click();
   await expect(page.getByText(/Offline \+ online harus sama dengan target total \(20 \+ 6 = 26, target 25\)/)).toBeVisible();
   await fill(page, "external.kpi.offline", "19");
   await expect(page.getByText(/sekitar 9 minggu/)).toBeVisible();

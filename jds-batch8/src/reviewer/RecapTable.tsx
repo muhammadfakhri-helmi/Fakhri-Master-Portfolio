@@ -38,7 +38,7 @@ export function RecapTable({
   }, [candidates, reviews, filter, sort]);
 
   if (candidates.length === 0) {
-    return <p className="card p-6 text-sm text-slate-500">Belum ada kandidat. Muat kunci privat lalu file asesmen.</p>;
+    return <p className="card p-6 text-sm text-stone-500">Belum ada kandidat. Muat kunci privat lalu file asesmen.</p>;
   }
 
   return (
@@ -58,7 +58,7 @@ export function RecapTable({
       </div>
       <div className="card overflow-x-auto">
         <table className="w-full min-w-[1100px] text-left text-sm">
-          <thead className="bg-navy-900 text-xs text-navy-100">
+          <thead className="bg-forest-900 text-xs text-forest-100">
             <tr>
               {["Name", "Team Preference", "Weekly Availability", "Leadership Interest", "Target (Off/On)", "Target Companies", "KPI", "Reward Plan", "Score", "Classification", "Status", ""].map((h) => (
                 <th key={h} className="px-3 py-2.5 font-semibold">
@@ -67,19 +67,19 @@ export function RecapTable({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-stone-100">
             {rows.map(({ c, review, result }) => {
               const p = c.payload;
               const ext = p.external;
               const kpiOk = ext ? Object.keys(checkKpi(ext.kpi).errors).length === 0 : null;
               const flags = [...(repeats[c.submissionId]?.length ? ["Kemungkinan ganda"] : []), ...(conflicts.includes(c.submissionId) ? ["ID konflik"] : [])];
               return (
-                <tr key={c.submissionId} className="align-top hover:bg-navy-50">
+                <tr key={c.submissionId} className="align-top hover:bg-forest-50">
                   <td className="px-3 py-2.5">
-                    <button type="button" className="text-left font-semibold text-navy-900 underline-offset-2 hover:underline" onClick={() => onOpen(c.submissionId)}>
+                    <button type="button" className="text-left font-semibold text-forest-900 underline-offset-2 hover:underline" onClick={() => onOpen(c.submissionId)}>
                       {p.personal.fullName}
                     </button>
-                    <p className="font-mono text-xs text-slate-400">{c.submissionId}</p>
+                    <p className="font-mono text-xs text-stone-400">{c.submissionId}</p>
                     {flags.map((f) => (
                       <span key={f} className="mt-1 mr-1 inline-block rounded bg-amber-100 px-1.5 py-0.5 text-[11px] font-semibold text-amber-800">
                         {f}
@@ -97,7 +97,7 @@ export function RecapTable({
                   <td className="px-3 py-2.5">{result.classification?.label ?? "—"}</td>
                   <td className="px-3 py-2.5">{review.status}</td>
                   <td className="px-3 py-2.5">
-                    <button type="button" className="rounded-lg px-2 py-1 text-xs font-semibold text-accent-700 hover:bg-accent-400/10" onClick={() => onOpen(c.submissionId)}>
+                    <button type="button" className="rounded-lg px-2 py-1 text-xs font-semibold text-leaf-700 hover:bg-leaf-400/10" onClick={() => onOpen(c.submissionId)}>
                       Nilai →
                     </button>
                   </td>

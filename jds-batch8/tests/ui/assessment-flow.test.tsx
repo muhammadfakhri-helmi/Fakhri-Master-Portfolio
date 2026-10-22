@@ -110,7 +110,7 @@ describe("landing page", () => {
   it("disables the assessment until the public key is configured", () => {
     render(<App recipientKey={{ configured: false, keyId: "", spki: "" }} />);
     expect(screen.getByRole("button", { name: /Mulai asesmen/ })).toBeDisabled();
-    expect(screen.getByRole("status")).toHaveTextContent(/belum siap/);
+    expect(screen.getByRole("status")).toHaveTextContent(/Asesmen belum dibuka/);
   });
 });
 
@@ -249,5 +249,15 @@ describe("assessment flow", () => {
     expect(payload.personal.fullName).toBe("Kandidat Uji Coba");
     expect(payload.external?.kpi).toMatchObject({ total: "20", offline: "14", online: "6" });
     expect(payload.internal).toBeNull();
+  });
+});
+
+describe("public wording", () => {
+  it("states the objective and choices without naming the recruitment lead", () => {
+    render(<App recipientKey={recipient} />);
+    expect(screen.getByRole("heading", { name: "Tujuan asesmen" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Pilihan tim" })).toBeInTheDocument();
+    for (const role of ["Internal Team", "External Team", "Flexible"]) expect(screen.getByRole("heading", { name: role })).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/Ketua|Fakhri/);
   });
 });
