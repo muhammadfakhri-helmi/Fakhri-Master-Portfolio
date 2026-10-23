@@ -34,7 +34,17 @@ dicatat di file. Ini pencegah dan penanda, bukan jaminan: kandidat tetap bisa me
 dari sumber lain, dan pengguna teknis dapat melewati pembatasan di browser. Nilai kualitas dan
 keaslian jawaban saat review/wawancara.
 
-## Reviewer lokal
+## Dashboard Kelayakan
+
+- Halaman `reviewer.html` dipublikasikan bersama asesmen, tetapi **tidak berisi data**: file jawaban
+  dibaca di browser pemakainya dan CSP `connect-src 'none'` mencegah halaman mengirim data.
+- Versi online menyimpan skor, catatan, dan status di localStorage browser penilai (bukan isi
+  jawaban). Siapa pun yang memakai browser/perangkat yang sama dapat melihatnya — gunakan perangkat
+  pribadi.
+- Halaman asesmen kandidat tidak memuat kode dashboard (dicek oleh `check:build`).
+- Rubrik dan bobot penilaian terlihat oleh siapa pun yang membuka halaman dashboard.
+
+## Reviewer lokal (opsional)
 
 - File jawaban dibaca di tab browser; isinya tidak dikirim ke server reviewer.
 - Server `reviewer/server.mjs` hanya listen di `127.0.0.1`, menolak header Host lain

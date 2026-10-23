@@ -3,7 +3,9 @@ import { labelOf, STATUS_OPTIONS, TRACK_LABEL } from "../lib/content.ts";
 import { describeSubmission } from "../lib/describe.ts";
 import { teamPreferenceText, type Candidate } from "../lib/recap.ts";
 import { computeScore, CRITERIA, RUBRIC, SELECTION_STATUSES, type Review, type SelectionStatus } from "../lib/scoring.ts";
+import { eligibilityOf, preScreen } from "../lib/eligibility.ts";
 import { checkKpi } from "../lib/validation.ts";
+import { CheckChip } from "./EligibilityDashboard.tsx";
 
 export function Detail({
   candidate,
@@ -25,6 +27,8 @@ export function Detail({
   const criteria = CRITERIA[p.track];
   const result = computeScore(p.track, review.scores);
   const kpi = p.external ? checkKpi(p.external.kpi) : null;
+  const eligibility = eligibilityOf(candidate, review);
+  const checks = preScreen(candidate, repeats);
   const restrictedCount = sections.flatMap((s) => s.items).filter((i) => i.sensitive).length;
 
   const set = (patch: Partial<Review>) => onChange({ ...review, ...patch, updatedAt: new Date().toISOString() });
@@ -63,19 +67,35 @@ export function Detail({
           )}
         </section>
 
-        {kpi && (
-          <section className="card space-y-2 p-5 text-sm">
-            <h3 className="font-bold text-forest-900">Indikator otomatis KPI (bukan nilai)</h3>
-            <p>
-              Konsistensi angka: {Object.keys(kpi.errors).length === 0 ? <span className="font-semibold text-emerald-700">konsisten</span> : <span className="font-semibold text-red-700">tidak konsisten</span>}
-            </p>
-            {[...Object.values(kpi.errors), ...kpi.warnings].map((m) => (
+        <section className="card space-y-3 p-5 text-sm" aria-label="Kelayakan dan pra-seleksi">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h3 className="font-bold text-forest-900">Kelayakan & pra-seleksi otomatis</h3>
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                {
+                  eligible: "bg-emerald-100 text-emerald-800",
+                  interview: "bg-amber-100 text-amber-900",
+                  not_eligible: "bg-red-100 text-red-800",
+                  unscored: "bg-stone-100 text-stone-700",
+                }[eligibility.id]
+              }`}
+            >
+              {eligibility.label} · {eligibility.basis}
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {checks.map((check) => (
+              <CheckChip key={check.id} check={check} />
+            ))}
+          </div>
+          {kpi &&
+            [...Object.values(kpi.errors), ...kpi.warnings].map((m) => (
               <p key={m} className="text-amber-800">
                 • {m}
               </p>
             ))}
-          </section>
-        )}
+          <p className="text-xs text-stone-500">Pra-seleksi hanya penanda untuk diperiksa. Kelayakan mengikuti skor dan status yang kamu tetapkan di panel penilaian.</p>
+        </section>
 
         {restrictedCount > 0 && (
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">

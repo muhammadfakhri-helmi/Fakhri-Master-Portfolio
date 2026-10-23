@@ -1,6 +1,19 @@
 # Reviewer Guide — Ketua Rekrutmen JDS Batch 8
 
-## 1. Menjalankan reviewer
+## 1. Membuka Dashboard Kelayakan
+
+**Cara termudah (tanpa install):** buka
+**https://muhammadfakhri-helmi.github.io/Fakhri-Master-Portfolio/jds-batch8/reviewer.html**
+di laptop atau HP, lalu seret file `.md` kandidat ke halaman itu.
+
+- File jawaban hanya dibaca di perangkatmu — tidak di-upload ke mana pun (halaman tidak dapat
+  mengirim data).
+- Skor, catatan, dan status tersimpan di **browser itu saja** (localStorage). Pakai
+  **Backup skor (.json)** untuk menyimpan cadangan atau pindah perangkat, lalu **Pulihkan backup**
+  di perangkat lain. Data hilang bila riwayat/data situs browser dihapus.
+- Setiap kali halaman dibuka ulang, muat ulang file `.md`; skor kembali otomatis.
+
+**Alternatif (server lokal, skor disimpan sebagai file):**
 
 ```bash
 cd jds-batch8
@@ -12,7 +25,7 @@ Buka **http://127.0.0.1:5199/** di browser yang sama dengan terminal. Skor, cata
 disimpan otomatis di `~/JDS-B8-Reviewer/reviews.json` (ubah dengan `JDS_REVIEWER_DATA=<folder>`;
 port dengan `JDS_REVIEWER_PORT`). Hentikan dengan Ctrl+C.
 
-## 2. Membuka file
+## 2. Memuat file
 
 File jawaban `.md` juga bisa langsung dibaca dengan aplikasi teks apa pun (VS Code, Notepad,
 Obsidian, GitHub). Reviewer dipakai untuk menilai banyak kandidat sekaligus.
@@ -34,6 +47,23 @@ dari penyimpanan lokal.
 
 ## 3. Tampilan
 
+- **Dashboard kelayakan** (tampilan utama):
+  - Ringkasan **Layak / Perlu wawancara / Belum layak / Belum dinilai**.
+  - Kelayakan mengikuti skor penilaianmu: ≥ 75 Layak, 65–74 Perlu wawancara, < 65 Belum layak.
+    Status yang kamu pilih (Terpilih, Interview, Tidak dilanjutkan) mengalahkan skor. Tanpa skor
+    lengkap kandidat tetap "Belum dinilai".
+  - **Kuota Internal 5 orang**: berapa kandidat Internal yang sudah layak.
+  - **Proyeksi External**: jumlah target peserta dari kandidat External yang layak, dibanding 300.
+  - **Pra-seleksi otomatis** per kandidat (hijau OK, kuning perhatikan, merah kurang) — hanya penanda:
+    | Indikator | OK | Perhatikan | Kurang |
+    | --- | --- | --- | --- |
+    | Waktu per minggu | ≥ 6 jam | 3–5 jam | < 3 jam |
+    | Kedalaman jawaban (rata-rata kata) | ≥ 15 | 8–14 | < 8 |
+    | KPI (External) | konsisten, ≥ 10 peserta | < 10 peserta | angka tidak konsisten |
+    | Penempatan | bersedia di tim mana pun | dengan pertimbangan / hanya tim pilihan | — |
+    | Copy-paste | tidak ada percobaan | ada percobaan (diblokir) | — |
+    | Duplikasi | — | data identitas sama dengan file lain | — |
+  - Papan kandidat per status; klik **Lihat & nilai →** untuk menilai.
 - **Rekap kandidat:** filter pilihan tim, urut skor/nama/status, indikator konsistensi KPI.
 - **Dashboard target:** jumlah target peserta seluruh kandidat External (atau hanya yang berstatus
   "Terpilih — External") dibandingkan target 300 / 200 offline / 100 online.
