@@ -11,9 +11,12 @@ Website asesmen calon panitia **Rekrutmen Jakarta Drilling Society (JDS) Batch 8
   `JDS_B8_ASSESSMENT_<ID>.md` yang bisa dibaca biasa, lalu dikirim manual ke panitia. Tanpa login,
   tanpa server, tanpa database. CSP `connect-src 'none'` membuat halaman ini tidak bisa mengirim
   data ke mana pun.
-- **Reviewer** (Node.js, hanya `127.0.0.1`): membuka banyak file `.md` sekaligus, menampilkan profil,
-  strategi, perusahaan target, KPI, calon peserta, minat koordinator dan rencana reward; penilaian
-  berbobot 0–5; deteksi duplikasi; ekspor CSV untuk Excel.
+- **Dashboard Kelayakan** (`/jds-batch8/reviewer.html`, tanpa install): seret banyak file `.md`
+  sekaligus — dibaca di perangkat sendiri, tidak di-upload. Menampilkan Layak / Perlu wawancara /
+  Belum layak / Belum dinilai, kuota Internal, proyeksi peserta External, pra-seleksi otomatis,
+  detail jawaban, penilaian berbobot 0–5, deteksi duplikasi, ekspor CSV untuk Excel, dan backup skor.
+  Skor tersimpan di browser (localStorage); versi server lokal (`npm run reviewer`, 127.0.0.1)
+  menyimpannya sebagai file.
 
 Dokumen lain: [DEPLOYMENT.md](DEPLOYMENT.md) · [SECURITY.md](SECURITY.md) · [REVIEWER_GUIDE.md](REVIEWER_GUIDE.md)
 
@@ -74,15 +77,15 @@ npm run dev            # website asesmen → http://localhost:5190
 | `npm run check:build` | Gerbang rilis: tidak ada kode reviewer di `dist/`, CSP ada, path relatif, font tidak di-inline |
 | `npm run verify` | typecheck → unit & UI test → build → check:build (dijalankan CI) |
 | `npm run test:e2e` | Playwright: alur Internal & Flexible→External di desktop dan mobile, unduh file `.md`, reviewer, ekspor CSV |
-| `npm run reviewer` | Build & jalankan reviewer di http://127.0.0.1:5199 |
+| `npm run reviewer` | Dashboard versi server lokal di http://127.0.0.1:5199 (skor disimpan sebagai file) |
 
 ## Struktur
 
 ```
 index.html                     entry website publik
-reviewer.html                  entry reviewer (tidak ikut build publik)
 src/assessment/                UI asesmen (React): beranda, langkah A–D, review, unduhan
-src/reviewer/                  UI reviewer: muat file, rekap, dashboard, perbandingan strategi, detail & skor
+reviewer.html, src/reviewer/   Dashboard Kelayakan: muat file, kelayakan, rekap, perbandingan strategi, detail & skor
+src/lib/eligibility.ts         pra-seleksi otomatis + status kelayakan dari skor
 src/lib/markdown.ts            format file jawaban .md (tulis & baca)
 src/lib/validation.ts          validasi per langkah + KPI
 src/lib/scoring.ts             kriteria berbobot, rubrik 0–5, klasifikasi

@@ -10,6 +10,7 @@ import {
   WEEKLY_HOURS_OPTIONS,
 } from "./content.ts";
 import { toCsv, type Delimiter } from "./csv.ts";
+import { eligibilityOf } from "./eligibility.ts";
 import { computeScore, emptyReview, type Review } from "./scoring.ts";
 import type { SubmissionPayload } from "./types.ts";
 import { checkKpi } from "./validation.ts";
@@ -44,6 +45,7 @@ export const RECAP_HEADER = [
   "Assessment Track",
   "Submission ID",
   "Paste Attempts Blocked",
+  "Eligibility",
 ];
 
 export function teamPreferenceText(payload: SubmissionPayload): string {
@@ -90,6 +92,7 @@ export function recapRow(candidate: Candidate, review: Review = emptyReview(cand
     TRACK_LABEL[p.track],
     p.submissionId,
     p.integrity?.pasteBlocked ?? "",
+    eligibilityOf(candidate, review).label,
   ];
 }
 

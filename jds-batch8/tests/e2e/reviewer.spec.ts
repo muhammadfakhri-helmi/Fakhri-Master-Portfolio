@@ -4,7 +4,7 @@ import { request as httpRequest } from "node:http";
 import { join } from "node:path";
 import { createAnswerFile } from "../../src/lib/payload.ts";
 import { completeExternalAnswers, completeInternalAnswers } from "../fixtures.ts";
-import { E2E_DIR, paths, REVIEWER_PORT, REVIEWER_URL } from "./env.ts";
+import { E2E_DIR, paths, REVIEWER_PORT, REVIEWER_URL, SITE_URL } from "./env.ts";
 
 const shots = join(E2E_DIR, "screenshots");
 
@@ -43,8 +43,8 @@ function rawRequest(path: string, headers: Record<string, string>): Promise<numb
 test("reviewer: reads many answer files, detects duplicates, scores, saves locally and exports CSV", async ({ page }) => {
   const { internal, external, repeat, all } = makeFiles();
   await page.goto(REVIEWER_URL);
-  await expect(page.getByRole("heading", { name: "Private Reviewer (lokal)" })).toBeVisible();
-  await expect(page.getByText(/Review tersimpan otomatis/)).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Dashboard Kelayakan Panitia" })).toBeVisible();
+  await expect(page.getByText(/tersimpan otomatis di .*reviews\.json/)).toBeVisible();
 
   await page.getByLabel("File asesmen").setInputFiles(all);
   const log = page.getByRole("list", { name: "Hasil pemuatan file" });
@@ -53,10 +53,18 @@ test("reviewer: reads many answer files, detects duplicates, scores, saves local
   await expect(log).toContainText("isi berbeda — file ini tidak dimuat");
   await expect(log).toContainText("blok data tidak ditemukan");
   await expect(page.getByText("3 kandidat")).toBeVisible();
-  await expect(page.getByText("Kemungkinan ganda")).toHaveCount(2);
+  await expect(page.locator(`span[title^="Duplikasi"]`)).toHaveCount(2);
 
-  // Detail + restricted third-party data + scoring.
-  await page.getByRole("button", { name: "Bima External" }).first().click();
+  // Eligibility dashboard (default view): everyone starts as "Belum dinilai".
+  await expect(page.getByTestId("count-unscored")).toContainText("3");
+  await expect(page.getByTestId("count-eligible")).toContainText("0");
+  const card = (sid: string) => page.getByLabel(/^Kolom /).locator("li", { hasText: `External · ${sid}` });
+  const externalCard = card(external.submissionId);
+  await expect(externalCard).toContainText("KPI");
+  await page.screenshot({ path: join(shots, "reviewer-eligibility-empty.png"), fullPage: true });
+
+  // Detail + scoring.
+  await externalCard.getByRole("button", { name: "Lihat & nilai →" }).click();
   await expect(page.getByRole("heading", { name: "Bima External", level: 2 })).toBeVisible();
   await expect(page.getByText(/Kemungkinan pengiriman ganda/)).toBeVisible();
   await expect(page.getByText("Operator Satu")).toBeVisible();
@@ -69,14 +77,24 @@ test("reviewer: reads many answer files, detects duplicates, scores, saves local
   ];
   for (const [criterion, score] of scores) await page.getByRole("button", { name: `${criterion}: ${score}`, exact: true }).click();
   await expect(page.getByText("Strong Candidate")).toBeVisible();
+  await expect(page.getByLabel("Kelayakan dan pra-seleksi")).toContainText("Layak · Skor 85");
+  await page.screenshot({ path: join(shots, "reviewer-detail.png"), fullPage: true });
+
+  // Score 85 → Layak; the External projection counts this candidate's KPI.
+  await page.getByRole("button", { name: "Dashboard kelayakan" }).click();
+  await expect(page.getByTestId("count-eligible")).toContainText("1");
+  await expect(page.getByLabel("Kolom Layak")).toContainText("Bima External");
+  await expect(page.getByRole("img", { name: "Proyeksi External layak: 20 dari 300" })).toBeVisible();
+  await page.screenshot({ path: join(shots, "reviewer-eligibility.png"), fullPage: true });
+
+  // An explicit status overrides the score.
+  await card(external.submissionId).getByRole("button", { name: "Lihat & nilai →" }).click();
   await page.locator("aside select").selectOption("Interview");
   await page.locator("aside textarea").fill("Pemetaan perusahaan kuat");
-  await page.screenshot({ path: join(shots, "reviewer-detail.png"), fullPage: true });
   await page.waitForTimeout(1200); // debounce → saved on the local server
+  await page.getByRole("button", { name: "Dashboard kelayakan" }).click();
+  await expect(page.getByLabel("Kolom Perlu wawancara")).toContainText("Bima External");
 
-  // Dashboard and Internal comparison.
-  await page.getByRole("button", { name: "Dashboard target" }).click();
-  await expect(page.getByRole("img", { name: "Total peserta: 20 dari 300" })).toBeVisible();
   await page.getByRole("button", { name: "Bandingkan strategi Internal" }).click();
   await expect(page.getByRole("button", { name: "Ayu Internal" })).toBeVisible();
 
@@ -84,6 +102,7 @@ test("reviewer: reads many answer files, detects duplicates, scores, saves local
   await page.reload();
   await page.getByLabel("File asesmen").setInputFiles([internal, external, repeat].map((f) => join(paths.files, f.fileName)));
   await expect(page.getByText("3 kandidat")).toBeVisible();
+  await page.getByRole("button", { name: "Rekap kandidat", exact: true }).click();
   const row = page.locator("tr", { hasText: external.submissionId });
   await expect(row).toContainText("85");
   await expect(row).toContainText("Interview");
@@ -100,6 +119,7 @@ test("reviewer: reads many answer files, detects duplicates, scores, saves local
   expect(recap.startsWith('﻿"Name","Team Preference","Weekly Availability"')).toBe(true);
   expect(recap).toContain(`"Bima External","External"`);
   expect(recap).toContain(`"85","Pemetaan perusahaan kuat","Interview","Strong Candidate"`);
+  expect(recap).toContain(`"Perlu wawancara"`);
   await page.getByLabel("Pemisah CSV").selectOption(";");
   const companies = await exportCsv("Perusahaan target External");
   expect(companies).toContain(`"Bima External";"${external.submissionId}";"Operator Satu"`);
@@ -113,4 +133,35 @@ test("reviewer server: localhost only, session required", async () => {
   expect(await rawRequest("/api/reviews", { Host: `127.0.0.1:${REVIEWER_PORT}` })).toBe(403);
   expect(await rawRequest("/api/reviews", { Host: `evil.example:${REVIEWER_PORT}` })).toBe(421);
   expect(await rawRequest("/../package.json", { Host: `127.0.0.1:${REVIEWER_PORT}` })).toBe(404);
+});
+
+test("online dashboard (GitHub Pages): no install, files stay on the device, scores kept in this browser", async ({ page }) => {
+  const { external } = makeFiles();
+  const requests: string[] = [];
+  page.on("request", (request) => {
+    if (!request.url().startsWith(SITE_URL) && !request.url().startsWith("blob:")) requests.push(request.url());
+  });
+  await page.goto(`${SITE_URL}reviewer.html`);
+  await expect(page.getByRole("heading", { name: "Dashboard Kelayakan Panitia" })).toBeVisible();
+  await expect(page.getByText("Skor & catatan tersimpan otomatis di browser ini")).toBeVisible();
+  await page.getByLabel("File asesmen").setInputFiles(join(paths.files, external.fileName));
+  await expect(page.getByText("1 kandidat")).toBeVisible();
+  await page.locator("li", { hasText: external.submissionId }).getByRole("button", { name: "Lihat & nilai →" }).click();
+  for (const [criterion, score] of [["Target Company & Candidate Mapping", 4], ["Recruitment KPI Feasibility", 4], ["Outreach & Conversion Strategy", 4], ["Collaboration & Accountability", 4], ["Commitment", 4]] as const) {
+    await page.getByRole("button", { name: `${criterion}: ${score}`, exact: true }).click();
+  }
+  await page.waitForTimeout(800);
+
+  // Reload: the score survives in localStorage; the file must be loaded again.
+  await page.reload();
+  await page.getByLabel("File asesmen").setInputFiles(join(paths.files, external.fileName));
+  await expect(page.getByLabel("Kolom Layak")).toContainText("Bima External");
+  await expect(page.getByLabel("Kolom Layak")).toContainText("80");
+
+  // Backup export contains the score.
+  const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: "Backup skor (.json)" }).click()]);
+  const backup = join(E2E_DIR, "downloads", download.suggestedFilename());
+  await download.saveAs(backup);
+  expect(JSON.parse(readFileSync(backup, "utf8")).reviews[external.submissionId].scores.mapping).toBe(4);
+  expect(requests).toEqual([]);
 });
