@@ -72,7 +72,11 @@ export function RecapTable({
               const p = c.payload;
               const ext = p.external;
               const kpiOk = ext ? Object.keys(checkKpi(ext.kpi).errors).length === 0 : null;
-              const flags = [...(repeats[c.submissionId]?.length ? ["Kemungkinan ganda"] : []), ...(conflicts.includes(c.submissionId) ? ["ID konflik"] : [])];
+              const flags = [
+                ...(repeats[c.submissionId]?.length ? ["Kemungkinan ganda"] : []),
+                ...(conflicts.includes(c.submissionId) ? ["ID konflik"] : []),
+                ...(p.integrity?.pasteBlocked ? [`Paste diblokir ×${p.integrity.pasteBlocked}`] : []),
+              ];
               return (
                 <tr key={c.submissionId} className="align-top hover:bg-forest-50">
                   <td className="px-3 py-2.5">

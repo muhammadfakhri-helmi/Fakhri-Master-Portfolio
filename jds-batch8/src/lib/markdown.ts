@@ -42,6 +42,7 @@ export function buildAnswerMarkdown(payload: SubmissionPayload): string {
     `| Nama | ${cell(payload.personal.fullName)} |`,
     `| Pilihan tim | ${cell(team)} |`,
     `| Dikirim | ${cell(date)} |`,
+    ...(payload.integrity ? [`| Percobaan paste yang diblokir | ${payload.integrity.pasteBlocked} |`] : []),
     "",
   ];
 

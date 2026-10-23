@@ -32,6 +32,12 @@ Tidak ada pertanyaan tentang pengalaman organisasi/kepanitiaan sebelumnya.
 Validasi KPI External: target 1–300 peserta dan offline + online = total. Jawaban teks cukup
 singkat (minimal 20–30 karakter).
 
+**Larangan copy-paste:** semua kolom jawaban (esai dan tindakan koordinator) menolak paste,
+drag-and-drop teks, dan sisipan clipboard dari keyboard HP. Kandidat melihat pesan "Copy-paste
+tidak diizinkan", dan jumlah percobaan yang diblokir dicatat di file `.md`
+(`Percobaan paste yang diblokir`). Kolom identitas & kontak (nama, kampus, email, WhatsApp, angka)
+tetap boleh di-paste.
+
 ## File jawaban (.md)
 
 ~~~markdown

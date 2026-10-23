@@ -24,7 +24,7 @@ function ObjectiveCard({ team }: { team: Team }) {
           </li>
         ))}
       </ul>
-      <p className="mt-4 text-[13px] text-cream-200/80">Jawab singkat dan jelas — cukup 2–4 kalimat per pertanyaan.</p>
+      <p className="mt-4 text-[13px] text-cream-200/80">Jawab singkat dan jelas — cukup 2–4 kalimat per pertanyaan, dengan kata-katamu sendiri. Copy-paste dinonaktifkan.</p>
     </section>
   );
 }

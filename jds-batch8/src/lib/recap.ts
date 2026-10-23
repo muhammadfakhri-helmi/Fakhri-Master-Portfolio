@@ -43,6 +43,7 @@ export const RECAP_HEADER = [
   "Classification",
   "Assessment Track",
   "Submission ID",
+  "Paste Attempts Blocked",
 ];
 
 export function teamPreferenceText(payload: SubmissionPayload): string {
@@ -88,6 +89,7 @@ export function recapRow(candidate: Candidate, review: Review = emptyReview(cand
     result.classification?.label ?? "",
     TRACK_LABEL[p.track],
     p.submissionId,
+    p.integrity?.pasteBlocked ?? "",
   ];
 }
 

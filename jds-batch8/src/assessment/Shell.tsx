@@ -47,7 +47,7 @@ export function Shell({ home, nav, onHome, onSection, stepLabel, children }: She
             <p className="font-display text-base font-semibold text-forest-900">Tips menjawab</p>
           </div>
           <p className="mt-2 text-[13px] leading-relaxed text-[#6b6450]">
-            Tulis langkah nyata, angka, dan prioritas — bukan sekadar kesediaan. Jawaban hanya tersimpan di tab ini sampai kamu mengunduh file.
+            Tulis langkah nyata, angka, dan prioritas dengan kata-katamu sendiri — copy-paste dinonaktifkan di kolom jawaban. Jawaban hanya tersimpan di tab ini sampai kamu mengunduh file.
           </p>
         </div>
       </aside>

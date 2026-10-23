@@ -7,6 +7,7 @@ import type { Answers } from "../lib/types.ts";
 import { stepsFor, validateAll, validateStep, type StepId } from "../lib/validation.ts";
 import { SceneBanner, Sprout } from "./Illustration.tsx";
 import { Landing } from "./Landing.tsx";
+import { PasteGuardContext } from "./paste-guard.tsx";
 import { SECTIONS, Shell, type NavState, type SectionId } from "./Shell.tsx";
 import { CommitmentStep, RewardLeadershipStep } from "./steps-d.tsx";
 import { PersonalStep, SkillsStep, TeamStep } from "./steps-ab.tsx";
@@ -55,6 +56,8 @@ export function App() {
   const [file, setFile] = useState<AnswerFile | null>(null);
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState("");
+  const [pasteBlocked, setPasteBlocked] = useState(0);
+  const countBlockedPaste = useCallback(() => setPasteBlocked((n) => n + 1), []);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   const update: Update = useCallback((mutate) => {
@@ -111,7 +114,7 @@ export function App() {
     setBusy(true);
     setFailure("");
     try {
-      const created = file ?? createAnswerFile(answers);
+      const created = file ?? createAnswerFile(answers, { pasteBlocked });
       setFile(created);
       downloadText(created.fileName, created.content);
       setPhase("done");
@@ -128,6 +131,7 @@ export function App() {
     setFile(null);
     setStepIndex(0);
     setMaxReached(-1);
+    setPasteBlocked(0);
     setShowErrors(false);
     setPhase("landing");
     window.scrollTo({ top: 0 });
@@ -229,6 +233,7 @@ export function App() {
   }
 
   return (
+    <PasteGuardContext.Provider value={countBlockedPaste}>
     <Shell
       home={phase === "landing"}
       nav={nav}
@@ -241,6 +246,7 @@ export function App() {
     >
       {content}
     </Shell>
+    </PasteGuardContext.Provider>
   );
 }
 

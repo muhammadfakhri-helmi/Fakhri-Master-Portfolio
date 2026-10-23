@@ -115,4 +115,10 @@ export interface SubmissionPayload {
   internal: InternalAssessment | null;
   external: ExternalAssessment | null;
   final: FinalSection;
+  /** Answer-field paste/drop attempts that the website blocked (older files have none). */
+  integrity?: Integrity;
+}
+
+export interface Integrity {
+  pasteBlocked: number;
 }

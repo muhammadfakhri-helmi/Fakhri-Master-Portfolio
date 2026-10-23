@@ -110,6 +110,7 @@ export function RewardLeadershipStep({ answers, update, errors }: StepProps) {
                 <TextField
                   key={i}
                   name={`final.leadership.actions.${i}`}
+                  noPaste
                   label={`Tindakan ${i + 1}`}
                   maxLength={LIMITS.medium}
                   value={action}

@@ -4,6 +4,7 @@ import {
   CalendarCheck,
   FileText,
   ChartLine,
+  ClipboardX,
   Clock,
   Compass,
   Gauge,
@@ -295,6 +296,7 @@ export function Landing({ onStart }: { onStart: () => void }) {
               { icon: FileText, text: "Semua jawaban direkam ke satu file .md yang bisa kamu baca dan simpan sendiri." },
               { icon: WifiOff, text: "Tidak ada login, server, database, atau analytics — halaman ini tidak mengirim data ke mana pun." },
               { icon: Clock, text: "Jawaban hanya ada di tab ini. Jangan menutup atau me-refresh halaman sebelum mengunduh file." },
+              { icon: ClipboardX, text: "Copy-paste dinonaktifkan di kolom jawaban. Tulis jawabanmu sendiri; percobaan paste ikut tercatat di file." },
               { icon: Send, text: "Data kontak dan jawabanmu hanya digunakan panitia untuk seleksi kepanitiaan." },
             ].map(({ icon: Icon, text }) => (
               <li key={text} className="flex gap-3">

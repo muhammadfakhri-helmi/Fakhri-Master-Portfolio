@@ -1,6 +1,8 @@
+import { ClipboardX } from "lucide-react";
 import { useId, type ReactNode } from "react";
 import type { Option } from "../lib/content.ts";
 import { LIMITS } from "../lib/validation.ts";
+import { PASTE_BLOCKED_MESSAGE, useNoPaste } from "./paste-guard.tsx";
 
 export const fieldId = (key: string) => `f-${key.replace(/[^a-zA-Z0-9]+/g, "-")}`;
 
@@ -12,9 +14,10 @@ interface FieldShellProps {
   optional?: boolean;
   children: ReactNode;
   footer?: ReactNode;
+  pasteBlocked?: boolean;
 }
 
-function FieldShell({ id, label, help, error, optional, children, footer }: FieldShellProps) {
+function FieldShell({ id, label, help, error, optional, children, footer, pasteBlocked }: FieldShellProps) {
   return (
     <div className="space-y-1.5">
       <label htmlFor={id} className="label">
@@ -27,6 +30,12 @@ function FieldShell({ id, label, help, error, optional, children, footer }: Fiel
         </p>
       )}
       {children}
+      {pasteBlocked && (
+        <p role="status" className="flex items-center gap-2 rounded-xl bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900 ring-1 ring-amber-200">
+          <ClipboardX className="size-4 shrink-0" aria-hidden="true" />
+          {PASTE_BLOCKED_MESSAGE}
+        </p>
+      )}
       <div className="flex items-start justify-between gap-3">
         {error ? (
           <p id={`${id}-error`} className="error-text" role="alert">
@@ -57,13 +66,17 @@ interface TextFieldProps {
   inputMode?: "numeric" | "decimal" | "text" | "email" | "tel";
   autoComplete?: string;
   maxLength?: number;
+  /** Block pasting/dropping text (answer fields). */
+  noPaste?: boolean;
 }
 
-export function TextField({ name, label, value, onChange, error, help, placeholder, optional, type = "text", inputMode, autoComplete = "off", maxLength = LIMITS.short }: TextFieldProps) {
+export function TextField({ name, label, value, onChange, error, help, placeholder, optional, type = "text", inputMode, autoComplete = "off", maxLength = LIMITS.short, noPaste = false }: TextFieldProps) {
   const id = fieldId(name);
+  const guard = useNoPaste(name, noPaste);
   return (
-    <FieldShell id={id} label={label} help={help} error={error} optional={optional}>
+    <FieldShell id={id} label={label} help={help} error={error} optional={optional} pasteBlocked={guard.blocked}>
       <input
+        {...guard.inputProps}
         id={id}
         name={name}
         type={type}
@@ -86,8 +99,10 @@ interface TextAreaProps extends Omit<TextFieldProps, "type" | "inputMode" | "aut
   rows?: number;
 }
 
-export function TextArea({ name, label, value, onChange, error, help, placeholder, optional, min, rows = 4, maxLength = LIMITS.essay }: TextAreaProps) {
+/** Free-text answer. Pasting is blocked unless noPaste is set to false. */
+export function TextArea({ name, label, value, onChange, error, help, placeholder, optional, min, rows = 4, maxLength = LIMITS.essay, noPaste = true }: TextAreaProps) {
   const id = fieldId(name);
+  const guard = useNoPaste(name, noPaste);
   const count = value.trim().length;
   const counter = (
     <span className={`shrink-0 pt-1.5 text-xs tabular-nums ${min && count < min ? "text-[#a49a82]" : "font-semibold text-leaf-700"}`} aria-live="off">
@@ -96,8 +111,9 @@ export function TextArea({ name, label, value, onChange, error, help, placeholde
     </span>
   );
   return (
-    <FieldShell id={id} label={label} help={help} error={error} optional={optional} footer={counter}>
+    <FieldShell id={id} label={label} help={help} error={error} optional={optional} footer={counter} pasteBlocked={guard.blocked}>
       <textarea
+        {...guard.inputProps}
         id={id}
         name={name}
         rows={rows}

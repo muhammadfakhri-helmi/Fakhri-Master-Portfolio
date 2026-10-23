@@ -27,6 +27,13 @@ diperiksa. Konsekuensinya, kerahasiaan bergantung pada cara file dikirim dan dis
 - Pemeriksaan privasi portfolio (`scripts/check.mjs` di root repo) ikut memindai folder ini dan
   situs gabungan.
 
+## Larangan copy-paste
+
+Kolom jawaban menolak paste, drop, dan `beforeinput` bertipe sisipan clipboard; jumlah percobaan
+dicatat di file. Ini pencegah dan penanda, bukan jaminan: kandidat tetap bisa mengetik ulang teks
+dari sumber lain, dan pengguna teknis dapat melewati pembatasan di browser. Nilai kualitas dan
+keaslian jawaban saat review/wawancara.
+
 ## Reviewer lokal
 
 - File jawaban dibaca di tab browser; isinya tidak dikirim ke server reviewer.
