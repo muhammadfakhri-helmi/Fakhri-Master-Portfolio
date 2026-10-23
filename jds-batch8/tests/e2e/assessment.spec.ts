@@ -162,3 +162,29 @@ test("Flexible → External path: five External objective questions, KPI check, 
   expect(payload.final.reward).toMatchObject({ plan: "yes", nomineeBackground: "Production engineer 4 tahun", transparencyAck: true });
   expect(problems).toEqual([]);
 });
+
+test("copy-paste with the keyboard is blocked in answer fields but allowed for contact details", async ({ page, context }) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"], { origin: new URL(SITE_URL).origin });
+  const problems = watch(page);
+  await page.goto(SITE_URL);
+  await page.getByRole("button", { name: /Mulai asesmen/ }).click();
+  await page.evaluate(() => navigator.clipboard.writeText("tempel.ini"));
+
+  // Contact field: the real paste goes through.
+  await page.locator('[name="personal.email"]').focus();
+  await page.keyboard.press("ControlOrMeta+V");
+  await expect(page.locator('[name="personal.email"]')).toHaveValue("tempel.ini");
+
+  // Answer field (Section B): the paste is refused and the candidate is told why.
+  await page.locator('[name="personal.email"]').fill("");
+  const name = `Paste E2E ${test.info().project.name}`;
+  await sectionAB(page, name, "internal");
+  await page.evaluate(() => navigator.clipboard.writeText("Jawaban yang disalin dari tempat lain, panjang dan rapi."));
+  await page.locator('[name="team.reason"]').fill("");
+  await page.locator('[name="team.reason"]').focus();
+  await page.keyboard.press("ControlOrMeta+V");
+  await expect(page.locator('[name="team.reason"]')).toHaveValue("");
+  await expect(page.getByRole("status")).toHaveText("Copy-paste tidak diizinkan. Tulis jawabanmu sendiri.");
+  await page.screenshot({ path: join(shots, `${test.info().project.name}-paste-blocked.png`) });
+  expect(problems).toEqual([]);
+});

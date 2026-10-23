@@ -214,3 +214,38 @@ describe("public wording", () => {
     expect(document.body.textContent).not.toMatch(/Ketua|Fakhri/);
   });
 });
+
+describe("copy-paste guard", () => {
+  it("blocks pasting into answers, allows it in contact fields, and records attempts in the file", async () => {
+    start();
+    // Contact details may be pasted.
+    expect(fireEvent.paste(field("personal.email"))).toBe(true);
+    expect(screen.queryByText(/Copy-paste tidak diizinkan/)).toBeNull();
+
+    fillSectionAB("internal");
+    expect(heading()).toBe("Internal Team · Objective & Strategi");
+    const answer = field("internal.strategy");
+    expect(fireEvent.paste(answer)).toBe(false);
+    expect(screen.getByRole("status")).toHaveTextContent("Copy-paste tidak diizinkan. Tulis jawabanmu sendiri.");
+    expect(fireEvent.drop(field("internal.tracking"))).toBe(false);
+    // Mobile keyboards insert clipboard text through beforeinput.
+    const insert = new InputEvent("beforeinput", { inputType: "insertFromPaste", data: "teks", cancelable: true, bubbles: true });
+    field("internal.recovery").dispatchEvent(insert);
+    expect(insert.defaultPrevented).toBe(true);
+    // Typing is untouched.
+    const typing = new InputEvent("beforeinput", { inputType: "insertText", data: "a", cancelable: true, bubbles: true });
+    field("internal.recovery").dispatchEvent(typing);
+    expect(typing.defaultPrevented).toBe(false);
+
+    document.querySelectorAll<HTMLTextAreaElement>('textarea[name^="internal."]').forEach((el) => fireEvent.change(el, { target: { value: LONG } }));
+    next();
+    fillSectionD();
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: "Download Assessment (.md)" }));
+    });
+    await waitFor(() => expect(screen.getByText("File jawaban berhasil dibuat")).toBeInTheDocument());
+    const content = await downloads[0]!.text;
+    expect(content).toContain("| Percobaan paste yang diblokir | 3 |");
+    expect(parseAnswerMarkdown(content).integrity).toEqual({ pasteBlocked: 3 });
+  });
+});

@@ -23,7 +23,9 @@ Obsidian, GitHub). Reviewer dipakai untuk menilai banyak kandidat sekaligus.
    - abu-abu: file yang sama sudah dimuat (diabaikan);
    - kuning: **ID konflik** — ID sama, isi berbeda (tidak dimuat; periksa manual);
    - merah: bukan file jawaban asesmen, atau blok data di akhir file rusak/diubah.
-2. Label **Kemungkinan ganda** muncul bila dua Submission ID memiliki email, WhatsApp, atau nama yang
+2. Label **Paste diblokir ×N** muncul bila kandidat mencoba menempel teks ke kolom jawaban
+   (diblokir oleh website). Ini informasi tambahan untuk wawancara, bukan dasar penolakan otomatis.
+3. Label **Kemungkinan ganda** muncul bila dua Submission ID memiliki email, WhatsApp, atau nama yang
    sama — biasanya kandidat mengirim ulang. Nilai versi yang disepakati dan beri status
    "Tidak dilanjutkan" + catatan pada versi lain.
 

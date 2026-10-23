@@ -48,6 +48,11 @@ export function Detail({
               </p>
               <p>Asesmen: {TRACK_LABEL[p.track]}</p>
               <p className="text-xs text-stone-400">Dikirim {new Date(p.submittedAt).toLocaleString("id-ID")}</p>
+              {p.integrity && (
+                <p className={`mt-1 text-xs font-semibold ${p.integrity.pasteBlocked ? "text-amber-700" : "text-stone-400"}`}>
+                  Percobaan paste yang diblokir: {p.integrity.pasteBlocked}
+                </p>
+              )}
             </div>
           </div>
           {(repeats.length > 0 || conflict) && (

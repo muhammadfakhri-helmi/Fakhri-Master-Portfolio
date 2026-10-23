@@ -1,6 +1,6 @@
 import { assessmentTrack, createInitialAnswers } from "./initial.ts";
 import { assessmentFileName, buildAnswerMarkdown } from "./markdown.ts";
-import type { Answers, SubmissionPayload } from "./types.ts";
+import type { Answers, Integrity, SubmissionPayload } from "./types.ts";
 
 /** Random 6-character submission ID, e.g. 7F29A3. */
 export function newSubmissionId(): string {
@@ -22,7 +22,12 @@ function trimDeep<T>(value: T): T {
  * case assessment, nominee details only when they plan to nominate, and the
  * coordinator questions only when they are interested.
  */
-export function buildPayload(answers: Answers, submissionId: string, submittedAt = new Date().toISOString()): SubmissionPayload {
+export function buildPayload(
+  answers: Answers,
+  submissionId: string,
+  submittedAt = new Date().toISOString(),
+  integrity: Integrity = { pasteBlocked: 0 },
+): SubmissionPayload {
   const track = assessmentTrack(answers);
   if (!track) throw new Error("Pilihan tim belum lengkap.");
   const a = trimDeep(answers);
@@ -43,6 +48,7 @@ export function buildPayload(answers: Answers, submissionId: string, submittedAt
     internal: track === "internal" ? a.internal : null,
     external: track === "external" ? { ...a.external, companies: a.external.companies.filter(Boolean) } : null,
     final: { ...a.final, reward, leadership },
+    integrity,
   };
 }
 
@@ -53,8 +59,8 @@ export interface AnswerFile {
 }
 
 /** The downloaded .md: readable answers plus a data block the reviewer app reads. */
-export function createAnswerFile(answers: Answers): AnswerFile {
+export function createAnswerFile(answers: Answers, integrity?: Integrity): AnswerFile {
   const submissionId = newSubmissionId();
-  const payload = buildPayload(answers, submissionId);
+  const payload = buildPayload(answers, submissionId, undefined, integrity);
   return { fileName: assessmentFileName(submissionId), content: buildAnswerMarkdown(payload), submissionId };
 }
